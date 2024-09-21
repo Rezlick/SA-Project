@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Space, Table, Button, Col, Row, Divider, message, Dropdown, Modal, Progress, InputNumber } from "antd";
+import { Space, Table, Button, Col, Row, Divider, message, Dropdown, Modal, Progress } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined, DashOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMembers, DeleteMemberByID, AddPointsToMember } from "../../../services/https/index";
+import { GetMembers, DeleteMemberByID } from "../../../services/https/index";
 import { MemberInterface } from "../../../interfaces/Member";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -102,7 +102,6 @@ export default function Member() {
     if (selectedMemberId) {
       try {
         const res = await DeleteMemberByID(selectedMemberId);
-
         if (res.status === 200) {
           messageApi.success("ลบข้อมูลสำเร็จ");
           await getMembers(); // Refresh the list after deleting a member

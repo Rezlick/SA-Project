@@ -11,6 +11,8 @@ function LoginPages() {
 
   const onFinish = async (values: LoginInterface) => {
     let res = await SignIn(values);
+    console.log(res);
+    
 
     if (res.status === 200) {
       messageApi.success("เข้าสู่ระบบสำเร็จ");
@@ -18,10 +20,9 @@ function LoginPages() {
       localStorage.setItem("page", "dashboard");
       localStorage.setItem("token_type", res.data.token_type);
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("id", res.data.id);
-      localStorage.setItem("firstName", res.data.firstName);
-      localStorage.setItem("lastName", res.data.lastName);
+      localStorage.setItem("employeeID", res.data.employeeID);
       localStorage.setItem("positionID", res.data.positionID);
+      localStorage.setItem("token_expiration", res.data.token_expiration)
       const positionID = localStorage.getItem("positionID")
       let role = "";
       if (positionID === '1') {

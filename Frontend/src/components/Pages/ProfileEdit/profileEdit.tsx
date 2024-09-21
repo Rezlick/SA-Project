@@ -9,15 +9,12 @@ import {
   Input,
   Card,
   message,
-  Select,
   Upload,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import { EmployeeInterface } from "../../../interfaces/Employee";
-import { GenderInterface } from "../../../interfaces/Gender";
-import { PositionInterface } from "../../../interfaces/Position";
-import { GetEmployeeByID, UpdateEmployee, GetPositions, GetGenders } from "../../../services/https";
+import { GetEmployeeByID, UpdateEmployee } from "../../../services/https";
 import { useNavigate, Link } from "react-router-dom";
 
 import type { GetProp, UploadFile, UploadProps } from "antd";
@@ -27,12 +24,10 @@ type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function ProfileEdit() {
   const navigate = useNavigate();
-  const id = localStorage.getItem("id")
+  const employeeID = localStorage.getItem("employeeID")
   const [messageApi, contextHolder] = message.useMessage();
 
   const [form] = Form.useForm();
-
-  const [genders, setGenders] = useState<GenderInterface[]>([]);
 
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -87,25 +82,9 @@ function ProfileEdit() {
     }
   };
 
-  const getGenders = async () => {
-    try {
-      const res = await GetGenders(); // Fetch data from the API
-
-      if (res.status === 200) {
-        setGenders(res.data); // Set the data from the API response
-      } else {
-        setGenders([]);
-        messageApi.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
-      }
-    } catch (error) {
-      setGenders([]);
-      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
-    }
-  };
-
   const onFinish = async (values: EmployeeInterface) => {
     values.Profile = fileList[0].thumbUrl;
-    const res = await UpdateEmployee(id || "", values);
+    const res = await UpdateEmployee(employeeID || "", values);
     if (res.status === 200) {
       messageApi.open({
         type: "success",
@@ -123,15 +102,10 @@ function ProfileEdit() {
   };
 
   useEffect(() => {
-    if (id) {
-      getUserById(id);
+    if (employeeID) {
+      getUserById(employeeID);
     }
-
-    
-
-    getGenders();
-
-  }, [id]);
+  }, [employeeID]);
 
   return (
     <div>

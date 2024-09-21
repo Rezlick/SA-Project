@@ -158,8 +158,8 @@ async function AddPointsToMember(memberID: string, points: number) {
 async function changePassword(employeeID: string, payload: ChangePasswordInterface) {
   return await axios
     .patch(
-      `${apiUrl}/employee/${employeeID}/changePassword`, // Fix the endpoint URL typo
-      payload, // Send the payload directly, no need to wrap in another object
+      `${apiUrl}/employee/${employeeID}/changePassword`, 
+      payload, 
       requestOptions
     )
     .then((res) => res)

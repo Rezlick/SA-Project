@@ -20,7 +20,7 @@ function MemberCreate() {
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [ranks, setRanks] = useState<RankInterface[]>([]);
-  const employeeID = localStorage.getItem("id");
+  const employeeID = localStorage.getItem("employeeID");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 

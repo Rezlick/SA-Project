@@ -5,7 +5,7 @@ import { changePassword } from "../../../services/https";
 
 function ChangePassword() {
   const navigate = useNavigate();
-  const id = localStorage.getItem("id"); 
+  const employeeID = localStorage.getItem("employeeID"); 
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
 
@@ -25,7 +25,7 @@ function ChangePassword() {
     };
 
     try {
-      const res = await changePassword(id || "", payload); 
+      const res = await changePassword(employeeID || "", payload); 
       if (res.status === 200) {
         messageApi.open({
           type: "success",
@@ -49,14 +49,14 @@ function ChangePassword() {
   };
 
   useEffect(() => {
-    if (!id) {
+    if (!employeeID) {
       messageApi.open({
         type: "error",
         content: "ไม่พบข้อมูลผู้ใช้",
       });
       navigate("/profileEdit");
     }
-  }, [id, navigate, messageApi]);
+  }, [employeeID, navigate, messageApi]);
 
   return (
     <div>

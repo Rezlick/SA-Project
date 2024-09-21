@@ -24,7 +24,7 @@ function Sider() {
   const [lastName, setLastName] = useState("");
   const [positionName, setPositionName] = useState("");
   const [profile, setProfile] = useState("");
-  const employeeID = localStorage.getItem("id");
+  const employeeID = localStorage.getItem("employeeID");
 
   // Function to fetch positions and set the appropriate position name
   const getEmployeeById = async () => {

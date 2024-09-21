@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+}
+
+.logo {
+  object-fit: contain;
+  height: 100px;
+  width: 100px;
+  border-radius: 5%;
+}

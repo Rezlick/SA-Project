@@ -1,0 +1,33 @@
+.custom-button {
+    width: 100px;
+    height: 100px;
+    /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
+    border-radius: 25px;
+    margin: 6px;
+    background-color: #ffffff;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .custom-button:hover {
+    background-color: #ffffff; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+    transform: scale(1.02); /* ขยายปุ่มเล็กน้อยเมื่อ hover */
+  }
+  
+  .even-row {
+    background-color: #f0f0f0; /* สีพื้นหลังสำหรับแถวคู่ */
+  }
+  
+  .odd-row {
+    background-color: #ffffff; /* สีพื้นหลังสำหรับแถวคี่ */
+  }
+  
+  .ant-pagination-item-active {
+    border-color: #000000 !important; /* เปลี่ยนสีขอบเป็นสีแดงเมื่อ active */
+  }
+  
+  .ant-pagination-item-active a {
+    color: #000000 !important; /* สีตัวอักษรเมื่อ active */
+  }

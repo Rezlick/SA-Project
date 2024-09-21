@@ -1,0 +1,16 @@
+.btn {
+    max-width: auto;
+    border-radius: 20px;
+    background-color: #e0dede;
+    border-color: #FF7D29;
+}
+
+.profile {
+    display: flex;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid #e0dede;
+    background-color: white;
+}

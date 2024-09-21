@@ -28,24 +28,24 @@ func main() {
        router.Use(middlewares.Authorizes())
 
        // Employee Route
-       router.POST("/employee", controller.CreateEmployee)
-       router.GET("/employees", controller.GetEmployees)
-       router.GET("/employee/:id", controller.GetEmployeeByID)
-       router.PATCH("/employee/:id", controller.UpdateEmployee)
-       router.DELETE("/employee/:id", controller.DeleteEmployee)
+       r.POST("/employee", controller.CreateEmployee)
+       r.GET("/employees", controller.GetEmployees)
+       r.GET("/employee/:id", controller.GetEmployeeByID)
+       r.PATCH("/employee/:id", controller.UpdateEmployee)
+       r.DELETE("/employee/:id", controller.DeleteEmployee)
 
        // Member Routes
-       router.POST("/member", controller.CreateMember)
-       router.GET("/members", controller.GetMembers)
-       router.GET("/member/:id", controller.GetMemberByID)
-       router.PATCH("/member/:id", controller.UpdateMember)
-       router.DELETE("/member/:id", controller.DeleteMember)
+       r.POST("/member", controller.CreateMember)
+       r.GET("/members", controller.GetMembers)
+       r.GET("/member/:id", controller.GetMemberByID)
+       r.PATCH("/member/:id", controller.UpdateMember)
+       r.DELETE("/member/:id", controller.DeleteMember)
 
        // Gender Routes
-       router.GET("/genders", controller.GetGenders)
+       r.GET("/genders", controller.GetGenders)
 
        // Position Routes
-       router.GET("/positions", controller.GetPositions)
+       r.GET("/positions", controller.GetPositions)
 
        // Rank Routes
        r.GET("/ranks", controller.GetRanks)

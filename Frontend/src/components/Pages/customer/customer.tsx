@@ -15,13 +15,17 @@ function Customer() {
             <div className="customer-page">
                 <Card className="card" style={{ justifyContent: 'center', justifyItems: 'center' }}>
                     <Row>
-                        <Col>
-                            <img className="logo" src={logo} alt="Logo" />
-                        </Col>
+                        <img className="logo" src={logo} alt="Logo" />
+                    </Row>
+                    <Row>
                         <Card className="card-white">
+                            <Card style={{ marginTop: '50px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                                <span>หมายเลขออเดอร์</span>
+                            </Card>
 
                         </Card>
                     </Row>
+
                 </Card>
             </div>
         </div>

@@ -23,7 +23,7 @@ const CustomerLayout: React.FC = () => {
                             }}
                         >
                             <Routes>
-                                <Route path="/customer" element={<Customer />} />
+                                <Route path="/customer/booking/:id" element={<Customer />} />
                             </Routes>
                         </div>
                     </Content>

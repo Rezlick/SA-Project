@@ -212,6 +212,13 @@ async function CreateBooking(data: BookingInterface) {
   }
 }
 
+async function CheckBooking(name: string) {
+  return await axios
+  .post(`${apiUrl}/api/check-booking/${name}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
 async function GetBookingByID(id: string) {
   return await axios
   .get(`${apiUrl}/booking/${id}`, requestOptions)
@@ -373,6 +380,7 @@ export {
   GetReceipts,
   CreateReceipt,
   CheckCoupons,
+  CheckBooking,
   AddPointsToMember,
   changePassword,
   GetMemberCountForMonth,

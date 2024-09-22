@@ -110,7 +110,7 @@ function MemberCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกเบอร์โทรศัพท์ ที่ขึ้นต้นด้วย 0!",
+                    message: "กรุณากรอกเบอร์โทรศัพท์ที่ขึ้นต้นด้วย 0 !",
                   },
                 ]}
               >

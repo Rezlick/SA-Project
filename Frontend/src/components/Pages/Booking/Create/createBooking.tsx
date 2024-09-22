@@ -26,7 +26,7 @@ import { PackageInterface } from "../../../../interfaces/Package";
 import { TableInterface } from "../../../../interfaces/Table";
 import { TableCapacityInterface } from "../../../../interfaces/TableCapacity";
 import { useNavigate, useLocation } from "react-router-dom";
-import "../booking.css";
+
 
 function CreateBookingTable() {
   const navigate = useNavigate();

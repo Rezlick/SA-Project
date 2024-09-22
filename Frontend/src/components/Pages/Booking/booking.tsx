@@ -17,7 +17,7 @@ import { TableInterface } from "../../../interfaces/Table";
 import { TableCapacityInterface } from "../../../interfaces/TableCapacity";
 import { TableStatusInterface } from "../../../interfaces/TableStatus";
 import "./booking.css";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 
 function Booking() {
   const [tables, setTables] = useState<TableInterface[]>([]);

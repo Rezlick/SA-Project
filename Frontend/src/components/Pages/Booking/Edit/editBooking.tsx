@@ -23,7 +23,6 @@ import {
   import { SoupInterface } from "../../../../interfaces/Soup";
   import { PackageInterface } from "../../../../interfaces/Package";
   import { useNavigate, useParams } from "react-router-dom";
-  import "../booking.css";
   
   function EditBookingTable() {
     const navigate = useNavigate();

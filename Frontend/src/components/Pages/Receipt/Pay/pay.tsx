@@ -28,10 +28,10 @@ function Pay() {
         let res = await GetBookingByID(id);
         if (res.status === 200) {
           form.setFieldsValue({
-            Table: "Table : " + res.data.Table.table_type,
+            Table: "Table : " + res.data.table.table_name,
             Booking: "หมายเลขออเดอร์ : " + res.data.ID,
-            Package: "Package : " + res.data.Package.name,
-            NumberOfCustomer: "จำนวนลูกค้า : " + res.data.number_of_customers + " ท่าน"
+            Package: "Package : " + res.data.package.name,
+            NumberOfCustomer: "จำนวนลูกค้า : " + res.data.number_of_customer + " ท่าน"
           });
         } else {
           message.open({
@@ -52,6 +52,8 @@ function Pay() {
             setCouponID(res.data.couponID)
           } else {
             message.error("Coupon ไม่ถูกต้อง");
+            setCouponDiscount(0)
+            setCouponID(0)
           }
     }
 
@@ -71,7 +73,8 @@ function Pay() {
 
     const calculator = async (id: string) => {
         let res = await GetBookingByID(id);
-        const TotalPrice = res.data.Package.price * res.data.number_of_customers
+        console.log(res)
+        const TotalPrice = res.data.package.price * res.data.number_of_customer
         const RankDiscount = Math.round(TotalPrice * RDiscount)
         const CDiscount = CouponDiscount
         const TotalDiscount = Math.round(RankDiscount + CDiscount)
@@ -251,7 +254,7 @@ function Pay() {
                                         />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={8}>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={7}>
                                         <Form.Item
                                             label="Phone"
                                             name="input_phone"
@@ -276,7 +279,7 @@ function Pay() {
                                         />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={5}>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                         <Form.Item
                                             name="FirstName"
                                             >

@@ -255,3 +255,34 @@ func DeleteBooking(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Booking deleted and table status updated to available successfully"})
 }
+
+func CheckBooking(c *gin.Context){ 
+	var booking entity.Booking
+	var table entity.Table
+
+	// รับค่า name จากพารามิเตอร์
+	tableName := c.Param("name")
+
+	db := config.DB()
+
+	// ตรวจสอบว่ามี Table ที่มีชื่อ table_name ตรงกับที่รับมาหรือไม่และมี table_status_id เป็น 2
+	tableResult := db.Where("table_name = ? AND table_status_id = ?", tableName, 2).First(&table)
+	if tableResult.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Table not found or Table is not available"})
+		return
+	}
+
+	// ตรวจสอบว่ามี Booking ที่เชื่อมกับ table_id ตรงกันหรือไม่
+	bookingResult := db.Where("table_id = ?", table.ID).First(&booking)
+	if bookingResult.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Booking not found"})
+		return
+	}
+
+	// ส่งข้อมูลกลับเมื่อเจอ Booking
+	c.JSON(http.StatusOK, gin.H{
+        "isValid": true,
+		"message":   "Booking is valid",
+		"bookingID": booking.ID,  // ส่ง ID ของ booking ที่ตรงกัน
+	})
+}

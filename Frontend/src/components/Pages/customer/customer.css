@@ -25,7 +25,7 @@
     object-fit: fill;
     width: 100px;
     height: 100px;
-    border: 1px solid #FF7D29;
+    border: 2px solid #FF7D29;
     border-radius: 100%;
     margin-left: 20px;
     z-index: 1;
@@ -35,11 +35,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;       
+    height: 100vh;   
 }
 
 .card-white {
     margin-top: -60px;
     height: 76vh;
-    width: 65vh;
+    width: 62vh;
+    border: 2px solid #FF7D29;; /* Light, warm orange border */
+    background-color:#ffca89;
 }
+

@@ -25,6 +25,9 @@ const CreateBookingTable = Loadable(lazy(() => import("../components/Pages/Booki
 const TableList = Loadable(lazy(() => import("../components/Pages/Booking/BookingList/bookingList")));
 const EditBookingTable = Loadable(lazy(() => import("../components/Pages/Booking/Edit/editBooking")));
 
+const Order = Loadable(lazy(() => import("../components/Pages/order/order")));
+const OrderDetail = Loadable(lazy(() => import("../components/Pages/order/detail/detail")));
+
 const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
   const dashboardRoute = {
     path: "/dashboard",
@@ -79,6 +82,16 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       element: <TableList />,
     },
   ]
+  const orderRoutes = [
+    {
+      path: "/order",
+      element: <Order />,
+    },
+    {
+      path: "/order/detail/:id",
+      element: <OrderDetail />
+    }
+  ]
 
   return {
     path: "/",
@@ -108,6 +121,11 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       {
         path: "/booking",
         children: bookingRoutes,
+      },
+
+      {
+        path: "/order",
+        children: orderRoutes,
       },
 
       // Employee routes, accessible only to IT role

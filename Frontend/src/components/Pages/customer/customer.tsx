@@ -19,38 +19,38 @@ function Customer() {
 
     const fetchBookingById = async () => {
         if (!id) {
-          message.error("Invalid booking ID!");
-          return;
+            message.error("Invalid booking ID!");
+            return;
         }
-    
+
         try {
-          const res = await GetBookingByID(id);
-          if (res && res.data) {
-            setBooking(res.data);
-            setTableName(res.data.table?.table_name ?? "N/A");
-            form.setFieldsValue({
-              number_of_customer: res.data.number_of_customer,
-              package_id: res.data.package_id,
-            });
-    
-          } else {
-            throw new Error("Failed to fetch booking data.");
-          }
+            const res = await GetBookingByID(id);
+            if (res && res.data) {
+                setBooking(res.data);
+                setTableName(res.data.table?.table_name ?? "N/A");
+                form.setFieldsValue({
+                    number_of_customer: res.data.number_of_customer,
+                    package_id: res.data.package_id,
+                });
+
+            } else {
+                throw new Error("Failed to fetch booking data.");
+            }
         } catch (error) {
-          const errorMessage =
-            (error as Error).message || "An unknown error occurred.";
-          console.error("Error fetching booking data:", error);
-          message.error("Failed to fetch booking data: " + errorMessage);
+            const errorMessage =
+                (error as Error).message || "An unknown error occurred.";
+            console.error("Error fetching booking data:", error);
+            message.error("Failed to fetch booking data: " + errorMessage);
         }
-      };
+    };
 
 
-      useEffect(() => {
+    useEffect(() => {
         fetchBookingById();
-      }, [id]);
-      
+    }, [id]);
+
     return (
-        <div>
+        <>
             <img className="img-background" src={Background} alt="Background" />
             <div className="customer-page">
                 <Card className="card" style={{ justifyContent: 'center', justifyItems: 'center' }}>
@@ -58,7 +58,6 @@ function Customer() {
                         <img className="logo" src={logo} alt="Logo" />
                     </Row>
                     <Row>
-
                         <Card className="card-white">
                             <Col xs={24}>
                                 <Card style={{ marginTop: '50px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
@@ -84,7 +83,7 @@ function Customer() {
 
                 </Card>
             </div>
-        </div>
+        </>
     );
 }
 

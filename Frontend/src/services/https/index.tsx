@@ -84,6 +84,13 @@ async function CheckMembers(PhoneNumber: string) {
   .catch((e) => e.response);
 }
 
+async function CheckPhone(phoneNumber: string) {
+  return await axios
+  .post(`${apiUrl}/checkPhone/${phoneNumber}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
 async function GetMemberByID(id: string | undefined) {
   return await axios
     .get(`${apiUrl}/member/${id}`, requestOptions)
@@ -406,4 +413,5 @@ export {
   GetOrderProducts,
   GetOrderProductsByOrderID,
   GetProductsByID,
+  CheckPhone,
 };

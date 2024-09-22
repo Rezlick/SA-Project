@@ -9,7 +9,7 @@ const CustomerPages = Loadable(lazy(() => import("../components/Pages/customer/c
 
 const CustomerRoutes = (): RouteObject => {
     return {
-      path: "/customer",
+      path: "/customer/booking/:id",
       element: <CustomerPages />,
       
     };

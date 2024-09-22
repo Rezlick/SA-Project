@@ -1,0 +1,114 @@
+.button {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    transform: scale(1.1);
+    background-color: #ff3333; /* สีของปุ่มเมื่อ hover */
+  }
+  
+  .payment-button {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .payment-button:hover {
+    transform: scale(1.1);
+    background-color: #28a745; /* สีของปุ่มเมื่อ hover */
+  }
+  
+  .qr-button {
+    background-color: #2f82ff;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .qr-button:hover {
+    transform: scale(1.1);
+    background-color: #418bfa; /* สีของปุ่มเมื่อ hover */
+  }
+
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(61, 61, 61, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.confirm-button, .cancel-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.confirm-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    margin-right: 10px;
+}
+
+.cancel-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}
+
+.confirm-button:hover, .cancel-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-button:active, .cancel-button:active {
+    transform: scale(0.95);
+}
+
+.centered-input {
+  text-align: center; /* จัดข้อความให้อยู่กลางภายใน Input */
+  font-size: 16px;
+}
+
+.custom-form .ant-form-item-label > label {
+  font-size: 18px; /* ปรับขนาดตัวอักษร */
+  text-align: center; /* จัดตำแหน่งตรงกลาง */
+}

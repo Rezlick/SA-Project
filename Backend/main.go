@@ -41,6 +41,7 @@ func main() {
         r.GET("/member/:id", controller.GetMemberByID)
         r.PATCH("/member/:id", controller.UpdateMember)
         r.DELETE("/member/:id", controller.DeleteMember)
+        r.POST("/checkPhone/:phoneNumber", controller.CheckPhone)
 
         // Gender Routes
         r.GET("/genders", controller.GetGenders)

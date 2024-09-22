@@ -26,7 +26,7 @@ func Authorizes() gin.HandlerFunc {
         // Split the header to check for "Bearer" prefix
         tokenParts := strings.Fields(clientToken)
         if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
-            c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error":"กรุณารีเฟรชหน้าจอ 1 ครั้ง"})
+            c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error":"Incorrect Authorization header provided"})
             return
         }
 

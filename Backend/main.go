@@ -37,6 +37,7 @@ func main() {
         // Member Routes
         r.POST("/member", controller.CreateMember)
         r.GET("/members", controller.GetMembers)
+        r.POST("/api/check-member/:phonenumber", controller.CheckMember)
         r.GET("/member/:id", controller.GetMemberByID)
         r.PATCH("/member/:id", controller.UpdateMember)
         r.DELETE("/member/:id", controller.DeleteMember)
@@ -55,8 +56,12 @@ func main() {
         r.GET("/memberCountForDay", controller.GetMemberCountForDay)
         r.GET("/memberCountForMonth", controller.GetMemberCountForMonth)
 
-        // Receipt Routes
+        // Receipt s
         r.GET("/receipt", controller.GetReceipts)
+        r.POST("/receipt", controller.CreateReceipt)
+
+        // Coupon 
+        r.POST("/api/check-coupon/:code", controller.CheckCoupon)
 
         // Add point route
         r.PATCH("/member/:id/addPoints", controller.AddPointsToMember)

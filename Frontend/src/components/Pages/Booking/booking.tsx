@@ -120,7 +120,7 @@ import {
     };
   
     return (
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 0]}>
         <Col xs={24}>
           <h1 className="heading">Table Selection</h1>
           <Divider/>
@@ -132,7 +132,7 @@ import {
             ) : tables.length === 0 ? (
               <Empty description="No tables available" className="emptyState" />
             ) : (
-              <Row gutter={[16, 16]} justify="center" align="middle">
+              <Row gutter={[16, 8]} justify="center" align="middle">
                 {tables.map((table) => {
                   const tableCapacity = tableCaps.find(
                     (cap) => cap.ID === table.table_capacity_id

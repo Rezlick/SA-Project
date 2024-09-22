@@ -16,14 +16,15 @@ function OrderDetail() {
   const [product, setProductsByID] = useState<ProductInterface[]>([]);
   const [order, setOrderByID] = useState<OrderInterface[]>([]);
   const [form] = Form.useForm(); // Ant Design form
-  const { id } = useParams<{ id: string }>();
-  const employeeID = localStorage.getItem("id");
+  const { id } = useParams<{ id: string }>(); // Check if `id` is valid
+  const employeeID = localStorage.getItem("employeeID") || "No ID found";
   const [isSubmitting, setIsSubmitting] = useState(false); // Track button state
 
+  console.log("employee ID =", employeeID);
+  
   const onFinish = async (values: OrderInterface) => {
-    values.EmployeeID = Number(employeeID); // Ensure EmployeeID is a valid number
+    values.EmployeeID = Number(employeeID);
     setIsSubmitting(true); // Disable the button after the first click
-
     try {
       const res = await UpdateOrder(id, values);
       if (res && res.status === 200) {
@@ -140,7 +141,7 @@ function OrderDetail() {
       align: "center",
     },
   ];
-
+  
   return (
     <>
       <Form form={form} onFinish={onFinish}>

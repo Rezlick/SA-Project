@@ -18,7 +18,8 @@ const EditEmployee = Loadable(lazy(() => import("../components/Pages/Employee/ed
 const ProfileEdit = Loadable(lazy(() => import("../components/Pages/ProfileEdit/profileEdit")))
 const ChangePassword = Loadable(lazy(() => import("../components/Pages/ProfileEdit/changePassword")))
 
-const Payment = Loadable(lazy(() => import("../components/Pages/Payment/payment")))
+const Receipt = Loadable(lazy(() => import("../components/Pages/Receipt/receipt")))
+const Pay = Loadable(lazy(() => import("../components/Pages/Receipt/Pay/pay")))
 
 const Booking = Loadable(lazy(() => import("../components/Pages/Booking/booking")));
 const CreateBookingTable = Loadable(lazy(() => import("../components/Pages/Booking/Create/createBooking")));
@@ -96,10 +97,20 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
         element: <ChangePassword />,
       },
       {
-        path: "/payment",
-        element: <Payment />,
-      },
+        path: "/receipt",
+        children: [
+          {
+            path: "/receipt",
+            element: <Receipt />,
+          },
+          {
 
+            path: "/receipt/pay",
+
+            element: <Pay />
+          },
+        ]
+      },
       {
         path: "/member",
         children: memberRoutes,

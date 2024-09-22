@@ -231,7 +231,7 @@ func GetMemberCountForDay(c *gin.Context) {
 func CheckMember(c *gin.Context){
 	var member entity.Member
 	var rank entity.Rank
-	MPhone := c.Param("phonenumber")
+	MPhone := c.Param("PhoneNumber")
 
 	db := config.DB()
 
@@ -243,7 +243,7 @@ func CheckMember(c *gin.Context){
 	}
 
     if member.ID == 1 {
-        rank.Name = "Non"
+        rank.Name = "None"
         rank.Discount = 0
         c.JSON(http.StatusOK, gin.H{
             "isValid": true,

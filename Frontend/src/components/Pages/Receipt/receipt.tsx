@@ -11,6 +11,7 @@ import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 
 function Receipt() {
+
   const [tables, setTables] = useState<TableInterface[]>([]);
   const [tableStatus, setTableStatus] = useState<TableStatusInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -81,7 +82,7 @@ function Receipt() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [tablesRes , statusRes] = await Promise.all([
+        const [tablesRes , statusRes ] = await Promise.all([
           GetTables(),
           GetTableStatus(),
         ]);
@@ -128,9 +129,7 @@ function Receipt() {
 
     if (table.table_name) {
       const params = new URLSearchParams({
-        tableId: table.ID.toString(),
         tableName: table.table_name,
-        tableStatus: tableStatus.toString(),
       }).toString();
 
       window.location.href = `/receipt/pay?${params}`;

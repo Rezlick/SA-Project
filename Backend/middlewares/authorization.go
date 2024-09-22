@@ -1,11 +1,11 @@
 package middlewares
 
 import (
-   "net/http"
-   "time"
-   "strings"
-   "github.com/SA_Project/services"
-   "github.com/gin-gonic/gin"
+    "net/http"
+    "time"
+    "strings"
+    "github.com/SA_Project/services"
+    "github.com/gin-gonic/gin"
 )
 
 var HashKey = []byte("very-secret")
@@ -57,4 +57,3 @@ func Authorizes() gin.HandlerFunc {
         c.Next()
     }
 }
- 

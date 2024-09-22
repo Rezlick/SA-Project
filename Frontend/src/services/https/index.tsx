@@ -2,10 +2,10 @@ import { ChangePasswordInterface } from "../../interfaces/ChangePassword";
 import { EmployeeInterface } from "../../interfaces/Employee";
 import { LoginInterface } from "../../interfaces/Login";
 import { MemberInterface } from "../../interfaces/Member";
-import axios from "axios";
 import { TableInterface } from "../../interfaces/Table";
 import { BookingSoupInterface } from "../../interfaces/BookingSoup";
 import { BookingInterface } from "../../interfaces/Booking";
+import axios from "axios";
 
 const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
@@ -166,7 +166,6 @@ async function changePassword(employeeID: string, payload: ChangePasswordInterfa
     .catch((e) => e.response);
 }
 
-// Booking functions
 async function GetBooking() {
   return await axios
   .get(`${apiUrl}/booking`, requestOptions)
@@ -182,7 +181,7 @@ async function CreateBooking(data: BookingInterface) {
   } catch (error) {
       if (axios.isAxiosError(error)) {
           console.error("Axios Error Response:", error.response?.data);
-          return error.response?.data; // Return error response data for further handling
+          return error.response?.data; 
       }
       console.error("An unexpected error occurred:", error);
       return { error: "An unexpected error occurred" };

@@ -10,5 +10,5 @@ type Package struct {
 	Name      string 	`json:"name"`
 	Price     int    	`json:"price"`
 	Point     int 		`json:"point"`
-	
+
 }

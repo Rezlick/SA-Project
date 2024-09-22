@@ -16,5 +16,5 @@ func GetSoups(c *gin.Context) {
 	db := config.DB()
 	db.Find(&soups)
 	c.JSON(http.StatusOK, &soups)
-	
+
 }

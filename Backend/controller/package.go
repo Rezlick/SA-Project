@@ -8,10 +8,9 @@ import (
 	"github.com/SA_Project/entity"
 
 )
-
-// GET /packages
+// GET All Packages
 func GetPackages(c *gin.Context) {
-	
+
 	var packages []entity.Package
 	db := config.DB()
 	db.Find(&packages)

@@ -5,7 +5,6 @@ import (
     "github.com/SA_Project/config"
     "github.com/SA_Project/entity"
     "github.com/gin-gonic/gin"
-    // "gorm.io/gorm"
 )
 
 // GetAll Tables
@@ -48,7 +47,6 @@ func UpdateStatus(c *gin.Context) {
         return
     }
 
-    // Ensure the status ID is set to 2
     if input.TableStatusID != 2 {
         c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid status ID"})
         return
@@ -62,11 +60,3 @@ func UpdateStatus(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Table status updated successfully"})
 }
-
-// func getStatusIDByStatus(status string, db *gorm.DB) (uint, error) {
-//     var tableStatus entity.TableStatus
-//     if err := db.Where("status = ?", status).First(&tableStatus).Error; err != nil {
-//         return 0, err
-//     }
-//     return tableStatus.ID, nil
-// }

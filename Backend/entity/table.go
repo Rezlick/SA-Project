@@ -8,7 +8,7 @@ type Table struct {
     TableStatusID    uint          `json:"table_status_id"`
     TableStatus      TableStatus   `gorm:"foreignKey:TableStatusID"`
     
-    // Relationship to TableCapacity (Many-to-One)
+    //Many-to-One
     TableCapacityID  uint          `json:"table_capacity_id"`
     TableCapacity    TableCapacity `gorm:"foreignKey:TableCapacityID"`
 }

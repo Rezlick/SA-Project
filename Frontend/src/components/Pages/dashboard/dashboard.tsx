@@ -17,12 +17,14 @@ const columns: ColumnsType<DataType> = [
 ];
 
 export default function Dashboard() {
+  const [form] = Form.useForm();
+
   const [data, setData] = useState<DataType[]>([]);
   const [memberCountForCurrentMonth, setMemberCountForCurrentMonth] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDayMode, setIsDayMode] = useState<boolean>(false);
 
-  const [selectedMode, setSelectedMode] = useState<string>("month");
+  const [mode, setMode] = useState('month');
 
   const currentMonth = new Intl.DateTimeFormat('th-TH', { month: 'long' }).format(new Date());
 
@@ -80,6 +82,8 @@ export default function Dashboard() {
 
   const handleModeChange = (e: any) => {
     setIsDayMode(e.target.value === "day");
+    setMode(e.target.value);
+    form.resetFields(['MonthID']);
   };
 
   useEffect(() => {
@@ -88,6 +92,7 @@ export default function Dashboard() {
 
   return (
     <>
+    <Form form={form}>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <h2>แดชบอร์ด</h2>
@@ -124,23 +129,47 @@ export default function Dashboard() {
           </Card>
         </Col>
 
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Radio.Group defaultValue="month" buttonStyle="solid" onChange={handleModeChange} >
-            <Radio.Button value="month" >สถิติรายเดือน</Radio.Button>
-            <Radio.Button value="day">สถิติรายวัน</Radio.Button>
-          </Radio.Group>
-        </Col>
+      <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+      <Radio.Group defaultValue="month" buttonStyle="solid" onChange={handleModeChange}>
+      <Radio.Button
+        value="month"
+        style={{
+          backgroundColor: mode === 'month' ? '#FF7D29' : '', // Apply color if selected
+          color: mode === 'month' ? '#fff' : '', // Ensure text is white on the selected button
+        }}
+      >
+        สถิติรายเดือน
+      </Radio.Button>
 
-        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-          <Form.Item name="MonthID" rules={[{ required: true, message: "กรุณาเลือกเดือนหรือวัน!" }]}>
-            <DatePicker onChange={(date) => handleDateChange(date?.toDate() || null)} picker={isDayMode ? "date" : "month"} />
-          </Form.Item>
-        </Col>
+      <Radio.Button
+        value="day"
+        style={{
+          backgroundColor: mode === 'day' ? '#FF7D29' : '', // Apply color if selected
+          color: mode === 'day' ? '#fff' : '', // Ensure text is white on the selected button
+        }}
+      >
+        สถิติรายวัน
+      </Radio.Button>
+    </Radio.Group>
+      </Col>
+
+      <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+        <Form.Item
+          name="MonthID"
+          rules={[{ required: true, message: 'กรุณาเลือกเดือนหรือวัน!' }]}
+        >
+          <DatePicker
+            onChange={(date) => handleDateChange(date?.toDate() || null)}
+            picker={isDayMode ? 'date' : 'month'} // Switch between date and month picker
+          />
+        </Form.Item>
+      </Col>
 
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Table columns={columns} dataSource={data} pagination={false} style={{ height: "100%" }} />
         </Col>
       </Row>
+    </Form>
     </>
   );
 }

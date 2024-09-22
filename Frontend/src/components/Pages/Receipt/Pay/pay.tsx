@@ -4,7 +4,7 @@ import { Link , useNavigate } from 'react-router-dom';
 
 import { message , Card , Row , Col , Form , Input , Button } from "antd";
 
-import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember} from "../../../../services/https";
+import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking} from "../../../../services/https";
 
 import './pay.css';
 import { ReceiptInterface } from "../../../../interfaces/Receipt";
@@ -12,10 +12,8 @@ import { ReceiptInterface } from "../../../../interfaces/Receipt";
 function Pay() {
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
-    const tableId = queryParams.get("tableId") || "";
     const tableName = queryParams.get("tableName") || "Unknown Table";
-    const tableStatus = queryParams.get("tableStatus") || "";
-    const [BookingID, setBookingID] = useState("");
+    const [BookID, setBookingID] = useState<string>("");
     const [showPopup, setShowPopup] = useState(false);
     const [showQR, setShowQR ] = useState(false);
     const [form] = Form.useForm();
@@ -32,13 +30,16 @@ function Pay() {
     const [cooldown, setCooldown] = useState(false);  // สถานะ cooldown
     const [isSubmitting, setIsSubmitting] = useState(false); // Track button state
 
+    const getIDBooking = async () =>{
+        const res = await CheckBooking(tableName);
+        if (res.data.isValid) {
+            setBookingID(res.data.bookingID)
+          }
+    }
+
     const getBookingById = async (id: string) => {
         let res = await GetBookingByID(id);
-        console.log(res)
         if (res.status === 200) {
-            if (res.data.DeletedAt == null && res.data.table_id == Number(tableId) && res.data.table.table_name == tableName && res.data.table.table_status_id == Number(tableStatus)){
-                setBookingID(res.data.ID)
-            }
           setPoint(res.data.package.point)
           form.setFieldsValue({
             Table: "Table : " + res.data.table.table_name,
@@ -112,10 +113,11 @@ function Pay() {
    
 
     useEffect(() => {
-        getBookingById(BookingID);
-        calculator(BookingID);
+        getIDBooking();
+        getBookingById(BookID);
+        calculator(BookID);
         CheckMember();
-    }, [CouponDiscount,FirstName]);
+    }, [CouponDiscount,FirstName,BookID]);
 
     const handleConfirmPayment = () => {
         setShowQR(false);
@@ -136,7 +138,7 @@ function Pay() {
             // สร้างข้อมูลใบเสร็จ
             setIsSubmitting(true)
             const receiptData: ReceiptInterface = {
-                BookingID: 2, // สมมุติว่าคุณมีการกำหนด BookingID ไว้
+                BookingID: Number(BookID), // สมมุติว่าคุณมีการกำหนด BookingID ไว้
                 totalprice: NetTotaol,
                 totaldiscount: values.totaldiscount,
                 CouponID: CouponID, // ใช้ค่า CouponID ที่ตรวจสอบแล้วจาก Coupon

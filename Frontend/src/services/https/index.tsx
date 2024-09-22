@@ -5,6 +5,7 @@ import { MemberInterface } from "../../interfaces/Member";
 import { TableInterface } from "../../interfaces/Table";
 import { BookingSoupInterface } from "../../interfaces/BookingSoup";
 import { BookingInterface } from "../../interfaces/Booking";
+import { OrderInterface } from "../../interfaces/Order";
 import axios from "axios";
 
 const apiUrl = "http://localhost:8000";
@@ -275,6 +276,59 @@ async function UpdateBookingSoups(id: string | undefined, data: BookingSoupInter
       .catch((e) => e.response);
 }
 
+async function GetStatusOrders() {
+  return await axios
+    .get(`${apiUrl}/order`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetOrders() {
+  return await axios
+    .get(`${apiUrl}/order`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetOrderByID(id: string | undefined) {
+  return await axios
+    .get(`${apiUrl}/order/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function UpdateOrder(id: string | undefined, data: OrderInterface) {
+  return await axios
+    .patch(
+      `${apiUrl}/order/${id}`, 
+      data, 
+      requestOptions
+    )
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetOrderProducts() {
+  return await axios
+    .get(`${apiUrl}/order/detail`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetOrderProductsByOrderID(id: string | undefined) {
+  return await axios
+    .get(`${apiUrl}/order/detail/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetProductsByID(id: string | undefined) {
+  return await axios
+    .get(`${apiUrl}/order/detail/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 
 export {
   SignIn,
@@ -310,5 +364,12 @@ export {
   CreateBooking,
   GetBookingByID,
   UpdateBooking,
-  DeleteBookingByID
+  DeleteBookingByID,
+  GetStatusOrders,
+  GetOrders,
+  GetOrderByID,
+  UpdateOrder,
+  GetOrderProducts,
+  GetOrderProductsByOrderID,
+  GetProductsByID,
 };

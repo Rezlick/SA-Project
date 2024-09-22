@@ -77,9 +77,9 @@ async function GetMembers() {
     .catch((e) => e.response);
 }
 
-async function CheckMembers(phonenumber: string) {
+async function CheckMembers(PhoneNumber: string) {
   return await axios
-  .post(`${apiUrl}/api/check-member/${phonenumber}`, requestOptions)
+  .post(`${apiUrl}/api/check-member/${PhoneNumber}`, requestOptions)
   .then((res) => res)
   .catch((e) => e.response);
 }

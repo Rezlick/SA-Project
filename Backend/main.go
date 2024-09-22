@@ -74,6 +74,7 @@ func main() {
 		r.POST("/booking", controller.CreateBooking)
 		r.PATCH("/booking/:id", controller.UpdateBooking)
 		r.DELETE("/booking/:id", controller.DeleteBooking)
+        r.POST("/api/check-booking/:name", controller.CheckBooking)
 
 		// Booking Soups
 		r.POST("/booking_soups", controller.CreateBookingSoup)

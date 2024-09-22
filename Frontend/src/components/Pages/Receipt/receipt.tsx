@@ -2,7 +2,7 @@ import { Link  } from 'react-router-dom';
 import { Card, Table, Col, Row, Statistic, Button , message } from 'antd';
 import { WalletOutlined, FileSyncOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { ReceiptInterface } from "../../../interfaces/Receipt";
-import { GetReceipts , GetTablebys } from "../../../services/https";
+import { GetReceipts , GetTables } from "../../../services/https";
 import { useState, useEffect } from "react";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
@@ -43,7 +43,7 @@ function Receipt() {
 
   const FetchHoldData = async () => {
     try {
-      const res = await GetTablebys();  // ดึงข้อมูลการจอง (Booking)
+      const res = await GetTables();  // ดึงข้อมูลการจอง (Booking)
       const dataFromTable = res.data; // เข้าถึงข้อมูลจาก API
       const reservedTables = dataFromTable.filter((item: { table_status_id: number}) => item.table_status_id === 2);
       const countIDs = reservedTables.length;
@@ -170,7 +170,7 @@ function Receipt() {
     {
       key: 'BookingID',
       title: 'Booking',
-      render: (record) => <>{record.Booking?.Table?.table_type || "N/A"}</>,
+      render: (record) => <>{record.Booking?.table?.table_name || "N/A"}</>,
     },
     {
       key: 'total_price',

@@ -5,12 +5,13 @@ import (
 )
 
 type Coupon struct {
-	
 	gorm.Model
-	Code 				string 		`json:"code"`
-	Discount_coupon 	int 		`json:"discount_coupon"`
+
+	Code string `json:"code"`
+
+	Discount int `json:"discount"`
 
 	// Coupon เป็น 1 ต่อหลายกับ Receipt
-	Receipt 			[]Receipt 	`gorm:"foreignKey:coupon_id"`
 
+	Receipt []Receipt `gorm:"foreignKey:CouponID"`
 }

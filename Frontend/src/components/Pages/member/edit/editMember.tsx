@@ -144,7 +144,23 @@ function MemberEdit() {
                   },
                 ]}
               >
-                <Input minLength={10} maxLength={10}/>
+                <Input 
+                  minLength={10} 
+                  maxLength={10} 
+                  onKeyPress={(event) => {
+                    const inputValue = event.target.value;
+                    
+                    // Allow only digits
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                    
+                    // Prevent input if the first character isn't 0
+                    if (inputValue.length === 0 && event.key !== '0') {
+                      event.preventDefault(); // Block the input if the first digit isn't 0
+                    }
+                  }}
+                />
               </Form.Item>
             </Col>
 

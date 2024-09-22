@@ -471,7 +471,7 @@ function Pay() {
 
                     {/* Pop-up ยืนยันการชำระเงิน */}
                     {showPopup && (
-                        <Card className="popup-overlay">
+                        <Card className="popup-overlay" style={{zIndex:1}}>
                             <div className="popup">
                                 <h2>ยืนยันการชำระเงิน</h2>
                                 <div className="popup-buttons">

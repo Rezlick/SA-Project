@@ -227,3 +227,34 @@ func GetMemberCountForDay(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"memberCount": count})
 }
+
+func CheckMember(c *gin.Context){
+	var member entity.Member
+	var rank entity.Rank
+	MPhone := c.Param("phonenumber")
+
+	db := config.DB()
+
+	result := db.Where("phone_number = ?", MPhone).First(&member)
+
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	rankResult := db.Where("id = ?", member.RankID).First(&rank)
+
+	if rankResult.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Member found, but unable to find rank: " + rankResult.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"isValid": true,
+		"message": "Member is valid",
+		"MemberID": member.ID,
+		"FirstName": member.FirstName,
+		"Rank": rank.Name,
+		"Discount": rank.Discount,
+	})
+}

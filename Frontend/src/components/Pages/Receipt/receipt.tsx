@@ -211,7 +211,7 @@ function Receipt() {
       </Col>
       {/* Button Section */}
       <Col span={12} >
-              <Card style={{ borderRadius: '20px', width: '100%', height: '30vh' , marginBottom:'10px'}}>
+              <Card style={{ borderRadius: '20px', width: '100%', height: 'auto' , marginBottom:'10px'}}>
           <h2 style={{ marginTop: '-3px' }}>Daily List Summary</h2>
           <Row
             style={{
@@ -225,6 +225,7 @@ function Receipt() {
                 style={{
                   boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                   borderRadius: '20px',
+                  height:"auto"
                 }}
               >
                 <Statistic
@@ -232,7 +233,7 @@ function Receipt() {
                   value={HoldValue}
                   valueStyle={{ color: "black" }}
                   prefix={<FileSyncOutlined style={{ marginRight: '8px' }}/>}
-                  suffix={<span style={{ marginLeft: '8px' }}>รายการ</span>}
+                  suffix={<span style={{ marginLeft: '8px' }}>โต๊ะ</span>}
                 />
               </Card>
             </Col>
@@ -248,7 +249,7 @@ function Receipt() {
                   value={SuccessValue}
                   valueStyle={{ color: "black" }}
                   prefix={<FileDoneOutlined style={{ marginRight: '8px' }}/>}
-                  suffix={<span style={{ marginLeft: '8px' }}>รายการ</span>}
+                  suffix={<span style={{ marginLeft: '8px' }}>โต๊ะ</span>}
                 />
               </Card>
             </Col>
@@ -270,7 +271,7 @@ function Receipt() {
             </Col>
           </Row>
         </Card>
-        <Card style={{ borderRadius: '20px', height: '65vh' }}>
+        <Card style={{ borderRadius: '20px', height: 'auto' }}>
           <Card style={{ backgroundColor: "#F5F5F5", height: '100%' , borderRadius:'20px' }}>
             <Row gutter={[16, 16]}>
               {buttons}

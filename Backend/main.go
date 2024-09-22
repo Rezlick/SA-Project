@@ -37,7 +37,7 @@ func main() {
         // Member Routes
         r.POST("/member", controller.CreateMember)
         r.GET("/members", controller.GetMembers)
-        r.POST("/api/check-member/:phonenumber", controller.CheckMember)
+        r.POST("/api/check-member/:PhoneNumber", controller.CheckMember)
         r.GET("/member/:id", controller.GetMemberByID)
         r.PATCH("/member/:id", controller.UpdateMember)
         r.DELETE("/member/:id", controller.DeleteMember)

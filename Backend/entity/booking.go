@@ -12,5 +12,4 @@ type Booking struct {
     Table             Table       `json:"table" gorm:"foreignKey:TableID"`
     EmployeeID        uint        `json:"employee_id"`
     Employee          Employee    `json:"employee" gorm:"foreignKey:EmployeeID"`
-    Receipt			[]Receipt	  `gorm:"foreignKey: booking_id"`
 }

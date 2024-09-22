@@ -20,6 +20,8 @@ import Table from "../Pages/Booking/booking";
 import TableBooking from "../Pages/Booking/Create/createBooking";
 import EditBookingTable from "../Pages/Booking/Edit/editBooking";
 import TableList from "../Pages/Booking/BookingList/bookingList";
+import Order from "../Pages/order/order";
+import OrderDetail from "../Pages/order/detail/detail"
 
 const {Content} = Layout;
 
@@ -84,6 +86,8 @@ const FullLayout: React.FC = () => {
               <Route path="/booking/create" element={<TableBooking />} />
               <Route path="/booking/edit/:id" element={<EditBookingTable />} />
               <Route path="/booking/booking_list" element={<TableList />} />
+              <Route path="/order" element={<Order />} />
+              <Route path="/order/detail/:id" element={<OrderDetail />} />
             </Routes>
           </div>
         </Content>

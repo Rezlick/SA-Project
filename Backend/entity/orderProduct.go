@@ -2,7 +2,7 @@ package entity
 
 import "gorm.io/gorm"
 
-type OrderProduct struct {
+type Order_Product struct {
 	
 	gorm.Model
 	Quantity    uint

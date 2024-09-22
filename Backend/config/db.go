@@ -37,6 +37,7 @@ func SetupDatabase() {
       &entity.TableCapacity{},
       &entity.TableStatus{},
       &entity.Package{},
+      &entity.Status_Order{},
 	)
 
    MemberGuest := entity.Member{FirstName: "Guest", LastName: "User",PhoneNumber: "0"}
@@ -47,6 +48,9 @@ func SetupDatabase() {
 
    coupoun1 := entity.Coupon{Code: "DISCOUNT10",Discount: 10}
    coupoun2 := entity.Coupon{Code: "DISCOUNT20",Discount: 20}
+
+   status1 := entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"}
+	status2 := entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"}
 
    PositionAdmin := entity.Position{Name: "IT"}
    PositionRestaurantManager := entity.Position{Name: "RestaurantManager"}
@@ -88,6 +92,9 @@ func SetupDatabase() {
    CapacityFour := entity.TableCapacity{MinCustomer: 1, MaxCustomer: 4}
    CapacitySix := entity.TableCapacity{MinCustomer: 5, MaxCustomer: 6}
    CapacityEight := entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8}
+
+   db.FirstOrCreate(&status1, &entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"})
+   db.FirstOrCreate(&status2, &entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"})
 
 
    db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User", PhoneNumber: "0"})

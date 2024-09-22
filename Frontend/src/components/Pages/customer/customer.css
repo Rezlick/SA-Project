@@ -27,7 +27,8 @@
     height: 100px;
     border: 1px solid #FF7D29;
     border-radius: 100%;
-    
+    margin-left: 20px;
+    z-index: 1;
 }
 
 .customer-page {
@@ -38,5 +39,7 @@
 }
 
 .card-white {
-    
+    margin-top: -60px;
+    height: 76vh;
+    width: 65vh;
 }

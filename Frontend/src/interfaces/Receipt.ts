@@ -2,8 +2,8 @@ export interface ReceiptInterface {
     ID?: number;
     CreatedAt?: Date;
     BookingID?: number;
-    totalprice?: Float64Array;
-    totaldiscount?: Float64Array;
+    totalprice?: number;
+    totaldiscount?: number;
     CouponID?: number,
     MemberID?: number;
     EmployeeID?: number;

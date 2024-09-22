@@ -8,9 +8,9 @@ type Receipt struct {
 	// Pk ของ Receipt เป็น uint ใช้คำสั่ง gorm.Model สร้าง Pk ให้ได้เลย
 	gorm.Model
 
-	TotalPrice 		float64		`json:"totalprice"`
+	TotalPrice 		int		`json:"totalprice"`
 
-	TotalDiscount 	float64		`json:"totaldiscount"`
+	TotalDiscount 	int		`json:"totaldiscount"`
 
 
 	// การเชื่่อม foreignkey จากตารางอื่น 

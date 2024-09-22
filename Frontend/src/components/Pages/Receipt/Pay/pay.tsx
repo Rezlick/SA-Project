@@ -19,11 +19,13 @@ function Pay() {
     const [FirstName, setFirstName] = useState("");
     const [RankName, setRankName] = useState("");
     const [Point, setPoint] = useState<number>(0);
+    const [NetTotaol, setNetTotal] = useState<number>(0);
     const [MemberID, setMemberID] = useState<number>(0);
     const [RDiscount, setRDiscount] = useState<number>(0);
     const [CouponDiscount, setCouponDiscount] = useState<number>(0);
     const [CouponID, setCouponID] = useState<number>(0);
     const [cooldown, setCooldown] = useState(false);  // สถานะ cooldown
+    const [isSubmitting, setIsSubmitting] = useState(false); // Track button state
 
     const getBookingById = async (id: string) => {
         let res = await GetBookingByID(id);
@@ -81,6 +83,7 @@ function Pay() {
         const CDiscount = CouponDiscount
         const TotalDiscount = Math.round(RankDiscount + CDiscount)
         const NetTotal = TotalPrice - TotalDiscount
+        setNetTotal(NetTotal)
         form.setFieldsValue({
             RankDiscount: RankDiscount,
             NetTotal: NetTotal,
@@ -123,9 +126,10 @@ function Pay() {
     const onFinish = async (values: ReceiptInterface) => {
         try {
             // สร้างข้อมูลใบเสร็จ
+            setIsSubmitting(true)
             const receiptData: ReceiptInterface = {
                 BookingID: 2, // สมมุติว่าคุณมีการกำหนด BookingID ไว้
-                totalprice: values.totalprice,
+                totalprice: NetTotaol,
                 totaldiscount: values.totaldiscount,
                 CouponID: CouponID, // ใช้ค่า CouponID ที่ตรวจสอบแล้วจาก Coupon
                 MemberID: MemberID, // ดึงข้อมูล MemberID จากผลลัพธ์การเรียก Booking
@@ -471,13 +475,13 @@ function Pay() {
                         {/* ปุ่มแสดง QR และยืนยันการชำระเงิน */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
                                 {/* <Link to="/receipt/pay/qr"> */}
-                                    <button className="qr-button" onClick={handleQR}>
+                                    <Button className="qr-button" onClick={handleQR}>
                                         แสดง QR
-                                    </button>
+                                    </Button>
                                 {/* </Link> */}
-                            <button className="payment-button" onClick={handleConfirmPayment}>
+                            <Button disabled={isSubmitting}  className="payment-button" onClick={handleConfirmPayment}>
                                 ยืนยัน (การชำระเงิน)
-                            </button>
+                            </Button>
                         </div>
 
                 </Card>

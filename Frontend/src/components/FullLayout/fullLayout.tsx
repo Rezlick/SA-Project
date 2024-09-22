@@ -62,8 +62,8 @@ const FullLayout: React.FC = () => {
           <div
             style={{
               padding: 24,
-              minHeight: "90%",
-              maxHeight: "95%",
+              minHeight: "93%",
+              maxHeight: "93%",
               background: colorBgContainer,
             }}
           >

@@ -77,9 +77,9 @@ func SetupDatabase() {
    Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
    Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
    
-   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 50}
-   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 100}
-   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 150}
+   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 2}
+   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 3}
+   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 4}
 
    StatusAvailable := entity.TableStatus{Status: "Available"}
    StatusReserved := entity.TableStatus{Status: "Occupied"}
@@ -124,9 +124,9 @@ func SetupDatabase() {
    db.FirstOrCreate(&StatusReserved, &entity.TableStatus{Status: "Occupied"})
    db.FirstOrCreate(&StatusNotAvailable, &entity.TableStatus{Status: "Cleaning"})
    
-   db.FirstOrCreate(&CapacityFour, &entity.TableCapacity{MinCustomer: 1, MaxCustomer: 4})
-   db.FirstOrCreate(&CapacitySix, &entity.TableCapacity{MinCustomer: 5, MaxCustomer: 6})
-   db.FirstOrCreate(&CapacityEight, &entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8})
+   db.FirstOrCreate(&CapacityFour, &entity.TableCapacity{MinCustomer: 1, MaxCustomer: 2})
+   db.FirstOrCreate(&CapacitySix, &entity.TableCapacity{MinCustomer: 5, MaxCustomer: 3})
+   db.FirstOrCreate(&CapacityEight, &entity.TableCapacity{MinCustomer: 7, MaxCustomer: 4})
 
    db.FirstOrCreate(&Soup1, &entity.Soup{Name: "น้ำใส"})
    db.FirstOrCreate(&Soup2, &entity.Soup{Name: "น้ำดำ"})

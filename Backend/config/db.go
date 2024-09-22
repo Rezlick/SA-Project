@@ -39,11 +39,14 @@ func SetupDatabase() {
       &entity.Package{},
 	)
 
-   MemberGuest := entity.Member{FirstName: "Guest", LastName: "User"}
+   MemberGuest := entity.Member{FirstName: "Guest", LastName: "User",PhoneNumber: "0"}
 
    GenderMale := entity.Gender{Name: "ชาย"}
    GenderFemale := entity.Gender{Name: "หญิง"}
    GenderOther := entity.Gender{Name: "อื่นๆ"}
+
+   coupoun1 := entity.Coupon{Code: "DISCOUNT10",Discount: 10}
+   coupoun2 := entity.Coupon{Code: "DISCOUNT20",Discount: 20}
 
    PositionAdmin := entity.Position{Name: "IT"}
    PositionRestaurantManager := entity.Position{Name: "RestaurantManager"}
@@ -87,7 +90,7 @@ func SetupDatabase() {
    CapacityEight := entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8}
 
 
-   db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User"})
+   db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User", PhoneNumber: "0"})
 
    db.FirstOrCreate(&RankBronze, &entity.Rank{Name: "Bronze", Discount: 0.03, PointToUpgrade: 20})
    db.FirstOrCreate(&RankSilver, &entity.Rank{Name: "Silver", Discount: 0.065, PointToUpgrade: 40})
@@ -134,6 +137,8 @@ func SetupDatabase() {
    db.FirstOrCreate(&Package_seafood, &entity.Package{Name: "ทะเล"})
    db.FirstOrCreate(&Package_beef, &entity.Package{Name: "เนื้อ"})
 
+   db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
+   db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
 
    hashedPassword, _ := HashPassword("12345")
 

@@ -4,7 +4,7 @@ import { Link , useNavigate } from 'react-router-dom';
 
 import { message , Card , Row , Col , Form , Input , Button } from "antd";
 
-import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers} from "../../../../services/https";
+import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember} from "../../../../services/https";
 
 import './pay.css';
 import { ReceiptInterface } from "../../../../interfaces/Receipt";
@@ -18,6 +18,7 @@ function Pay() {
     const [phone, setPhone] = useState("");
     const [FirstName, setFirstName] = useState("");
     const [RankName, setRankName] = useState("");
+    const [Point, setPoint] = useState<number>(0);
     const [MemberID, setMemberID] = useState<number>(0);
     const [RDiscount, setRDiscount] = useState<number>(0);
     const [CouponDiscount, setCouponDiscount] = useState<number>(0);
@@ -27,6 +28,7 @@ function Pay() {
     const getBookingById = async (id: string) => {
         let res = await GetBookingByID(id);
         if (res.status === 200) {
+            setPoint(res.data.package.point)
           form.setFieldsValue({
             Table: "Table : " + res.data.table.table_name,
             Booking: "หมายเลขออเดอร์ : " + res.data.ID,
@@ -135,6 +137,9 @@ function Pay() {
     
             if (res.status === 201) {
                 message.success("ชำระเงินสำเร็จ");
+                if(MemberID != 1){
+                    AddPointsToMember(String(MemberID),Point)
+                }
                 setTimeout(() => {
                     navigate("/receipt");
                 }, 2000);

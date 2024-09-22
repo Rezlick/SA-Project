@@ -32,7 +32,7 @@ function MemberEdit() {
       form.setFieldsValue({
         FirstName: res.data.FirstName,
         LastName: res.data.LastName,
-        PhoneNumber: res.data.PhoneNumber,
+        PhoneNumber: res.data.phonenumber,
         RankID: res.data.RankID,
       });
     } else {
@@ -140,7 +140,7 @@ function MemberEdit() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกเบอร์โทรศัพท์ !",
+                    message: "กรุณากรอกเบอร์โทรศัพท์ที่ขึ้นต้นด้วย 0 !",
                   },
                 ]}
               >
@@ -160,6 +160,7 @@ function MemberEdit() {
                       event.preventDefault(); // Block the input if the first digit isn't 0
                     }
                   }}
+                  
                 />
               </Form.Item>
             </Col>

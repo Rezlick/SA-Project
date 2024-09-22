@@ -8,7 +8,7 @@ type Member struct{
 	gorm.Model
 	FirstName		string			
 	LastName		string			
-	PhoneNumber		string		
+	PhoneNumber		string      `json:"phonenumber"`
 	Point 			int	
 
 	// FK from Rank
@@ -17,6 +17,8 @@ type Member struct{
 	// FK from Employee
 	EmployeeID		uint		
 	Employee		Employee	`gorm:"foreignKey: employee_id"`
+
+    Receipt			[]Receipt	`gorm:"foreignKey: member_id"`
 }
 
 func (m *Member) BeforeUpdate(tx *gorm.DB) (err error) {

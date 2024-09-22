@@ -10,6 +10,6 @@ type Product struct {
 	EmployeeID  		uint	
 	Employee 			Employee 		`gorm:"foreignKey:EmployeeID"`
 
-	Order_Product 		[]OrderProduct `gorm:"foreignKey:product_id"`
+	Order_Product 		[]Order_Product `gorm:"foreignKey:product_id"`
 
 }

@@ -11,6 +11,11 @@ import { ReceiptInterface } from "../../../../interfaces/Receipt";
 
 function Pay() {
     const navigate = useNavigate();
+    const queryParams = new URLSearchParams(location.search);
+    const tableId = queryParams.get("tableId") || "";
+    const tableName = queryParams.get("tableName") || "Unknown Table";
+    const tableStatus = queryParams.get("tableStatus") || "";
+    const [BookingID, setBookingID] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [showQR, setShowQR ] = useState(false);
     const [form] = Form.useForm();
@@ -29,8 +34,12 @@ function Pay() {
 
     const getBookingById = async (id: string) => {
         let res = await GetBookingByID(id);
+        console.log(res)
         if (res.status === 200) {
-            setPoint(res.data.package.point)
+            if (res.data.DeletedAt == null && res.data.table_id == Number(tableId) && res.data.table.table_name == tableName && res.data.table.table_status_id == Number(tableStatus)){
+                setBookingID(res.data.ID)
+            }
+          setPoint(res.data.package.point)
           form.setFieldsValue({
             Table: "Table : " + res.data.table.table_name,
             Booking: "หมายเลขออเดอร์ : " + res.data.ID,
@@ -77,7 +86,6 @@ function Pay() {
 
     const calculator = async (id: string) => {
         let res = await GetBookingByID(id);
-        console.log(res)
         const TotalPrice = res.data.package.price * res.data.number_of_customer
         const RankDiscount = Math.round(TotalPrice * RDiscount)
         const CDiscount = CouponDiscount
@@ -104,8 +112,8 @@ function Pay() {
    
 
     useEffect(() => {
-        getBookingById("2");
-        calculator("2");
+        getBookingById(BookingID);
+        calculator(BookingID);
         CheckMember();
     }, [CouponDiscount,FirstName]);
 

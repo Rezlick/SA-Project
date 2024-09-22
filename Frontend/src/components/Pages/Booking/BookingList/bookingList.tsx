@@ -137,7 +137,7 @@ function TableList() {
           <Table
             dataSource={bookingData}
             columns={columns}
-            pagination={false}
+            pagination={{ pageSize: 4 }}
             bordered
             title={() => "Booking List"}
             loading={loading}

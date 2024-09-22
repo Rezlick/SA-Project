@@ -11,7 +11,7 @@ type Order struct {
 	Booking 			Booking 		`gorm:"foreignKey:BookingID"`
 
 	EmployeeID 			uint
-	Employee 			Employee 		`gorm:"foreignKey:EmployeeID"`
+	Employee 			Employee 		`gorm:"foreignKey:employee_id"`
 
 	Status_OrderID 		uint
 	Status_Order 		Status_Order 	`gorm:"foreignKey:Status_OrderID"`

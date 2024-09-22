@@ -5,6 +5,8 @@ import { MemberInterface } from "../../interfaces/Member";
 import { TableInterface } from "../../interfaces/Table";
 import { BookingSoupInterface } from "../../interfaces/BookingSoup";
 import { BookingInterface } from "../../interfaces/Booking";
+import { ReceiptInterface } from "../../interfaces/Receipt";
+
 import axios from "axios";
 
 const apiUrl = "http://localhost:8000";
@@ -72,6 +74,13 @@ async function GetMembers() {
     .get(`${apiUrl}/members`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
+}
+
+async function CheckMembers(phonenumber: string) {
+  return await axios
+  .post(`${apiUrl}/api/check-member/${phonenumber}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
 }
 
 async function GetMemberByID(id: string | undefined) {
@@ -144,6 +153,13 @@ async function GetReceipts() {
   .catch((e) => e.response);
 }
 
+async function CreateReceipt(data: ReceiptInterface) {
+  return await axios
+    .post(`${apiUrl}/receipt`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 async function AddPointsToMember(memberID: string, points: number) {
   return await axios
     .patch(
@@ -169,6 +185,13 @@ async function changePassword(employeeID: string, payload: ChangePasswordInterfa
 async function GetBooking() {
   return await axios
   .get(`${apiUrl}/booking`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
+async function CheckCoupons(code: string) {
+  return await axios
+  .post(`${apiUrl}/api/check-coupon/${code}`, requestOptions)
   .then((res) => res)
   .catch((e) => e.response);
 }
@@ -285,6 +308,7 @@ export {
   DeleteEmployeeByID,
   CreateMember,
   GetMembers,
+  CheckMembers,
   GetMemberByID,
   UpdateMember,
   DeleteMemberByID,
@@ -293,6 +317,8 @@ export {
   GetRanks,
   GetMemberCountForCurrentMonth,
   GetReceipts,
+  CreateReceipt,
+  CheckCoupons,
   AddPointsToMember,
   changePassword,
   GetMemberCountForMonth,

@@ -1,4 +1,4 @@
-import { Col, Row, Card, Button, Table, message, Modal } from "antd";
+import { Col, Row, Button, Table, message, Modal } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,12 +10,12 @@ function TableList() {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState<BookingInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   const fetchBookingData = async () => {
     setLoading(true);
     try {
       const res = await GetBooking();
-      console.log(res);
       if (res.status === 200) {
         setBookingData(res.data);
       } else {
@@ -30,6 +30,12 @@ function TableList() {
 
   useEffect(() => {
     fetchBookingData();
+
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleButtonClick = () => {
@@ -43,7 +49,8 @@ function TableList() {
   const handleDelete = (id: number) => {
     Modal.confirm({
       title: "Confirm Deletion",
-      content: "จะลบหาพ่อมึงหรอ อุตสาช่าห์สร้างมาอย่างยาก",
+      content: "Are you sure you want to delete this booking?",
+      centered: true,
       onOk: async () => {
         try {
           await DeleteBookingByID(id.toString());
@@ -123,19 +130,21 @@ function TableList() {
         </Col>
 
         <Col xs={24}>
-          <Card className="table-list-card">
-            <Table
-              dataSource={bookingData}
-              columns={columns}
-              pagination={false}
-              bordered
-              title={() => "Booking List"}
-              loading={loading}
-              className="table-list"
-              rowKey="ID"
-              rowClassName="custom-row"
-            />
-          </Card>
+          <div className="current-time">
+            <span>Current Time: </span>
+            <span className="time-display">{currentTime}</span>
+          </div>
+          <Table
+            dataSource={bookingData}
+            columns={columns}
+            pagination={false}
+            bordered
+            title={() => "Booking List"}
+            loading={loading}
+            className="table-list"
+            rowKey="ID"
+            rowClassName="custom-row"
+          />
         </Col>
 
         <Col xs={24}>

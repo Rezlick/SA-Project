@@ -9,6 +9,7 @@ import {
   SolutionOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
+  OrderedListOutlined
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
@@ -181,6 +182,13 @@ function Sider() {
                 <Link to="/payment">
                   <DollarOutlined />
                   <span>ชำระเงิน</span>
+                </Link>
+              </Menu.Item>
+
+              <Menu.Item key="Order" onClick={() => setCurrentPage("Order")}>
+                <Link to="/order">
+                  <OrderedListOutlined />
+                  <span>รายละเอียดออเดอร์</span>
                 </Link>
               </Menu.Item>
 

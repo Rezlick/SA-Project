@@ -44,23 +44,8 @@ function Customer() {
         }
       };
 
-      const fetchPackages = async () => {
-        try {
-          const res = await GetPackages();
-          if (res.status === 200) {
-            setPackages(res.data);
-          } else {
-            setPackages([]);
-            message.error(res.data.error || "Cannot fetch packages.");
-          }
-        } catch (error) {
-          setPackages([]);
-          message.error("Error fetching packages.");
-        }
-      };
 
       useEffect(() => {
-        fetchPackages();
         fetchBookingById();
       }, [id]);
       

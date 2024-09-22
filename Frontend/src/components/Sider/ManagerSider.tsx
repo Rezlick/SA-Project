@@ -190,7 +190,7 @@ function ManagerSider() {
               </Menu.Item>
 
               <Menu.Item key="payment" onClick={() => setCurrentPage("payment")}>
-                <Link to="/payment">
+                <Link to="/receipt">
                   <DollarOutlined />
                   <span>ชำระเงิน</span>
                 </Link>

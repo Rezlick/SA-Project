@@ -39,11 +39,14 @@ func SetupDatabase() {
       &entity.Package{},
 	)
 
-   MemberGuest := entity.Member{FirstName: "Guest", LastName: "User"}
+   MemberGuest := entity.Member{FirstName: "Guest", LastName: "User",PhoneNumber: "0"}
 
    GenderMale := entity.Gender{Name: "ชาย"}
    GenderFemale := entity.Gender{Name: "หญิง"}
    GenderOther := entity.Gender{Name: "อื่นๆ"}
+
+   coupoun1 := entity.Coupon{Code: "DISCOUNT10",Discount: 10}
+   coupoun2 := entity.Coupon{Code: "DISCOUNT20",Discount: 20}
 
    PositionAdmin := entity.Position{Name: "IT"}
    PositionRestaurantManager := entity.Position{Name: "RestaurantManager"}
@@ -74,9 +77,9 @@ func SetupDatabase() {
    Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
    Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
    
-   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 50}
-   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 100}
-   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 150}
+   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 2}
+   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 3}
+   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 4}
 
    StatusAvailable := entity.TableStatus{Status: "Available"}
    StatusReserved := entity.TableStatus{Status: "Occupied"}
@@ -87,7 +90,7 @@ func SetupDatabase() {
    CapacityEight := entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8}
 
 
-   db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User"})
+   db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User", PhoneNumber: "0"})
 
    db.FirstOrCreate(&RankBronze, &entity.Rank{Name: "Bronze", Discount: 0.03, PointToUpgrade: 20})
    db.FirstOrCreate(&RankSilver, &entity.Rank{Name: "Silver", Discount: 0.065, PointToUpgrade: 40})
@@ -121,9 +124,9 @@ func SetupDatabase() {
    db.FirstOrCreate(&StatusReserved, &entity.TableStatus{Status: "Occupied"})
    db.FirstOrCreate(&StatusNotAvailable, &entity.TableStatus{Status: "Cleaning"})
    
-   db.FirstOrCreate(&CapacityFour, &entity.TableCapacity{MinCustomer: 1, MaxCustomer: 4})
-   db.FirstOrCreate(&CapacitySix, &entity.TableCapacity{MinCustomer: 5, MaxCustomer: 6})
-   db.FirstOrCreate(&CapacityEight, &entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8})
+   db.FirstOrCreate(&CapacityFour, &entity.TableCapacity{MinCustomer: 1, MaxCustomer: 2})
+   db.FirstOrCreate(&CapacitySix, &entity.TableCapacity{MinCustomer: 5, MaxCustomer: 3})
+   db.FirstOrCreate(&CapacityEight, &entity.TableCapacity{MinCustomer: 7, MaxCustomer: 4})
 
    db.FirstOrCreate(&Soup1, &entity.Soup{Name: "น้ำใส"})
    db.FirstOrCreate(&Soup2, &entity.Soup{Name: "น้ำดำ"})
@@ -134,6 +137,8 @@ func SetupDatabase() {
    db.FirstOrCreate(&Package_seafood, &entity.Package{Name: "ทะเล"})
    db.FirstOrCreate(&Package_beef, &entity.Package{Name: "เนื้อ"})
 
+   db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
+   db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
 
    hashedPassword, _ := HashPassword("12345")
 

@@ -1,15 +1,16 @@
 import { Link  } from 'react-router-dom';
-import { Card, Table, Col, Row, Statistic, Button, Divider , message } from 'antd';
+import { Card, Table, Col, Row, Statistic, Button , message } from 'antd';
 import { WalletOutlined, FileSyncOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { ReceiptInterface } from "../../../interfaces/Receipt";
-import { GetReceipts, AddPointsToMember, GetMembers } from "../../../services/https";
+import { GetReceipts , GetTables } from "../../../services/https";
 import { useState, useEffect } from "react";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 
-function Payment() {
-  const [messageApi, contextHolder] = message.useMessage();
+function Receipt() {
+
   const [receipt, setReceipt] = useState<ReceiptInterface[]>([]);
+  const [HoldValue, setHoldValue] = useState<number>(0);
   const [SuccessValue, setSuccessValue] = useState<number>(0);
   const [TotalPrice, setTotalPrice] = useState<number>(0);
 
@@ -40,17 +41,29 @@ function Payment() {
     }
   };
 
+  const FetchHoldData = async () => {
+    try {
+      const res = await GetTables();  // ดึงข้อมูลการจอง (Booking)
+      const dataFromTable = res.data; // เข้าถึงข้อมูลจาก API
+      const reservedTables = dataFromTable.filter((item: { table_status_id: number}) => item.table_status_id === 2);
+      const countIDs = reservedTables.length;
+      setHoldValue(countIDs);    
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
   const FetchTotalPrice = async () => {
     try {
       const res = await GetReceipts();
       const dataFromTable = res.data; // แทนที่ someValue ด้วยชื่อฟิลด์ที่คุณต้องการจาก API
       
       type DataItem = {
-        Totalprice: number;
+        totalprice: number;
       };
             
       const totalprice = dataFromTable.reduce((result: number, item: DataItem) => {
-        return result + item.Totalprice;
+        return result + item.totalprice;
       }, 0);
       setTotalPrice(totalprice); // อัพเดทค่า value ใน state
     } catch (error) {
@@ -60,6 +73,7 @@ function Payment() {
 
   useEffect(() => {
     getReceipts();
+    FetchHoldData();
     FetchSuccessData();
     FetchTotalPrice();
   }, []);
@@ -142,8 +156,11 @@ function Payment() {
     {
       key: 'date_time',
       title: 'Date Time',
-      dataIndex: 'date',
-      render: (record) => <p>{dayjs(record).format("DD MMM YYYY HH:mm ")}</p>,
+      // dataIndex: 'date',
+      render: (record) => {
+        const date = record.CreatedAt;
+        return <p>{dayjs(date).format("HH:mm : DD MMM YYYY")}</p>;
+      },
     },
     {
       key: 'id',
@@ -153,17 +170,17 @@ function Payment() {
     {
       key: 'BookingID',
       title: 'Booking',
-      render: (record) => <>{record.Booking?.Table?.table_type || "N/A"}</>,
+      render: (record) => <>{record.Booking?.table?.table_name || "N/A"}</>,
     },
     {
       key: 'total_price',
       title: 'Total Price',
-      dataIndex: 'Totalprice',
+      dataIndex: 'totalprice',
     },
     {
       key: 'CounponID',
       title: 'Coupon',
-      render: (record) => <>{record.Coupon?.code || "N/A"}</>,
+      render: (record) => <>{record.Coupon?.code || "ไม่มี"}</>,
     },
     {
       key: 'MemberID',
@@ -173,142 +190,97 @@ function Payment() {
     {
       key: 'Employee',
       title: 'Employee',
+      // dataIndex: 'EmployeeID',
       render: (record) => <>{record.Employee?.FirstName || "N/A"}</>,
     },
   ];
 
-  // const data = [
-  //   {
-  //     id: '1',
-  //     booking_id: 'F1',
-  //     total_price: 399,
-  //     coupon: 'DC10',
-  //     member_id: 'Oat',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '2',
-  //     booking_id: 'F2',
-  //     total_price: 299,
-  //     coupon: 'DC15',
-  //     member_id: 'A',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '3',
-  //     booking_id: 'F4',
-  //     total_price: 199,
-  //     coupon: 'DC20',
-  //     member_id: 'C',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '4',
-  //     booking_id: 'F3',
-  //     total_price: 299,
-  //     coupon: 'DC20',
-  //     member_id: 'D',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '5',
-  //     booking_id: 'S1',
-  //     total_price: 701,
-  //     coupon: 'DC20',
-  //     member_id: 'D',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '6',
-  //     booking_id: 'S1',
-  //     total_price: 701,
-  //     coupon: 'DC20',
-  //     member_id: 'D',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '7',
-  //     booking_id: 'S1',
-  //     total_price: 701,
-  //     coupon: 'DC20',
-  //     member_id: 'D',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '8',
-  //     booking_id: 'S1',
-  //     total_price: 701,
-  //     coupon: 'DC20',
-  //     member_id: 'D',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  //   {
-  //     id: '9',
-  //     booking_id: 'S1',
-  //     total_price: 701,
-  //     coupon: 'DC20',
-  //     member_id: 'D',
-  //     employee_id: 'Tae',
-  //     date_time: '10/11/2000'
-  //   },
-  // ];
-
   return (
-    <>
-      {contextHolder}
-      <Row gutter={[16, 16]} style={{ height: "80vh" }}>
-        <Col xs={24} md={12}>
-          <Card style={{ borderRadius: '20px', padding: '0px', height: 'auto' }}>
-            <h3>Receipt History</h3>
-            <Table
-              dataSource={receipt}
-              columns={columns}
-              rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
-              pagination={{ pageSize: 5 }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} md={12}>
-          <Card style={{ borderRadius: '20px', marginBottom: '10px' }}>
-            <h3>Daily List Summary</h3>
-            <Row justify="space-around" align="middle">
-              <Col xs={24} sm={12} md={7}>
-                <Card style={{ borderRadius: '20px', boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>
-                  <Statistic title="กำลังดำเนินการ" value={5} prefix={<FileSyncOutlined />} />
-                </Card>
-              </Col>
-              <Col xs={24} sm={12} md={7}>
-                <Card style={{ borderRadius: '20px', boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>
-                  <Statistic title="ทำรายการสำเร็จ" value={SuccessValue} prefix={<FileDoneOutlined />} />
-                </Card>
-              </Col>
-              <Col xs={24} sm={12} md={7}>
-                <Card style={{ borderRadius: '20px', boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>
-                  <Statistic title="รายได้รวม" value={TotalPrice} prefix={<WalletOutlined />} suffix="฿" />
-                </Card>
-              </Col>
+    <Row gutter={[16, 16]}>
+      {/* Content Section */}
+      <Col span={12}>
+        <Card style={{ borderRadius: '20px', padding: '0px', width: '100%', height: '55vh' }}>
+          <h2 style={{ marginTop: '-3px' }}>Receipt History</h2>
+          <Table
+            dataSource={receipt}
+            columns={columns}
+            rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
+            pagination={{ pageSize: 3 }}
+          />
+        </Card>
+      </Col>
+      {/* Button Section */}
+      <Col span={12} >
+              <Card style={{ borderRadius: '20px', width: '100%', height: 'auto' , marginBottom:'10px'}}>
+          <h2 style={{ marginTop: '-3px' }}>Daily List Summary</h2>
+          <Row
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}
+          >
+            <Col xs={24} sm={24} md={12} lg={12} xl={7}>
+              <Card
+                style={{
+                  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                  borderRadius: '20px',
+                  height:"auto"
+                }}
+              >
+                <Statistic
+                  title="กำลังดำเนินการ"
+                  value={HoldValue}
+                  valueStyle={{ color: "black" }}
+                  prefix={<FileSyncOutlined style={{ marginRight: '8px' }}/>}
+                  suffix={<span style={{ marginLeft: '8px' }}>โต๊ะ</span>}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={7}>
+              <Card
+                style={{
+                  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                  borderRadius: '20px',
+                }}
+              >
+                <Statistic
+                  title="ทำรายการสำเร็จ"
+                  value={SuccessValue}
+                  valueStyle={{ color: "black" }}
+                  prefix={<FileDoneOutlined style={{ marginRight: '8px' }}/>}
+                  suffix={<span style={{ marginLeft: '8px' }}>โต๊ะ</span>}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} sm={24} md={12} lg={12} xl={7}>
+              <Card
+                style={{
+                  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                  borderRadius: '20px',
+                }}
+              >
+                <Statistic
+                  title="รายได้รวม"
+                  value={TotalPrice}
+                  valueStyle={{ color: "black"}}
+                  prefix={<WalletOutlined style={{ marginRight: '8px' }}/>}
+                  suffix={<span style={{ marginLeft: '2px' }}>฿</span>}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+        <Card style={{ borderRadius: '20px', height: 'auto' }}>
+          <Card style={{ backgroundColor: "#F5F5F5", height: '100%' , borderRadius:'20px' }}>
+            <Row gutter={[16, 16]}>
+              {buttons}
             </Row>
           </Card>
-
-          <Card style={{ borderRadius: '20px' }}>
-            <Card style={{ backgroundColor: "#F5F5F5", borderRadius: '20px' }}>
-              <Row gutter={[16, 8]}>
-                {buttons}
-              </Row>
-            </Card>
-          </Card>
-        </Col>
-      </Row>
-   </> 
+        </Card>
+      </Col>
+    </Row>
   );
 }
 
-export default Payment;
+export default Receipt;

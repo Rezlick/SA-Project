@@ -20,7 +20,8 @@ function Customer() {
                     <Row>
                         <Card className="card-white">
                             <Card style={{ marginTop: '50px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                                <span>หมายเลขออเดอร์</span>
+                                <h3>หมายเลขออเดอร์ : </h3>
+                                <h3>หมายเลขโต๊ะ : </h3>
                             </Card>
 
                         </Card>

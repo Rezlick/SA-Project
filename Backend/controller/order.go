@@ -1,10 +1,10 @@
 package controller
 
 import (
-    "net/http"
-    "github.com/gin-gonic/gin"
-    "github.com/SA_Project/config"
-    "github.com/SA_Project/entity"
+	"github.com/SA_Project/config"
+	"github.com/SA_Project/entity"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // GetOrders retrieves all orders with related data
@@ -27,7 +27,7 @@ func GetOrders(c *gin.Context) {
 }
 
 func GetOrderByID(c *gin.Context) {
-    ID := c.Param("id")
+	ID := c.Param("id")
 	var order entity.Order
 
 	db := config.DB()
@@ -45,40 +45,40 @@ func GetOrderByID(c *gin.Context) {
 
 // UpdateOrder updates the EmployeeID and Status_OrderID for an order
 func UpdateOrder(c *gin.Context) {
-    var order entity.Order
-    orderID := c.Param("id")
+	var order entity.Order
+	orderID := c.Param("id")
 
-    db := config.DB()
+	db := config.DB()
 
-    // Fetch the order from the database
-    result := db.First(&order, orderID)
-    if result.Error != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Order ID not found"})
-        return
-    }
+	// Fetch the order from the database
+	result := db.First(&order, orderID)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Order ID not found"})
+		return
+	}
 
-    var input struct {
-        EmployeeID uint `json:"EmployeeID"`
-    }
+	var input struct {
+		EmployeeID uint `json:"EmployeeID"`
+	}
 
-    if err := c.ShouldBindJSON(&input); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error":   "Bad request, unable to map payload",
-            "details": err.Error(),
-        })
-        return
-    }
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad request, unable to map payload",
+			"details": err.Error(),
+		})
+		return
+	}
 
-    // Check if the employee exists
-    var employee entity.Employee
-    db.First(&employee, input.EmployeeID)
-    if employee.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
-        return
-    }
+	// Check if the employee exists
+	var employee entity.Employee
+	db.First(&employee, input.EmployeeID)
+	if employee.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
+		return
+	}
 
-    // Update the EmployeeID and Status_OrderID fields
-    db.Model(&order).Updates(map[string]interface{}{"EmployeeID": input.EmployeeID, "Status_OrderID": 1})
+	// Update the EmployeeID and Status_OrderID fields
+	db.Model(&order).Updates(map[string]interface{}{"EmployeeID": input.EmployeeID, "Status_OrderID": 1})
 
-    c.JSON(http.StatusOK, gin.H{"message": "Order updated successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Order updated successfully"})
 }

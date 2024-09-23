@@ -90,9 +90,6 @@ func SetupDatabase() {
    order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
    order3 := entity.Order{BookingID: 3, Status_OrderID: 2}
 
-
-   MemberGuest := entity.Member{FirstName: "Guest", LastName: "User",PhoneNumber: "0"}
-
    GenderMale := entity.Gender{Name: "ชาย"}
    GenderFemale := entity.Gender{Name: "หญิง"}
    GenderOther := entity.Gender{Name: "อื่นๆ"}
@@ -160,9 +157,6 @@ func SetupDatabase() {
 
    db.FirstOrCreate(&status1, &entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"})
    db.FirstOrCreate(&status2, &entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"})
-
-
-   db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User", PhoneNumber: "0"})
 
    db.FirstOrCreate(&RankBronze, &entity.Rank{Name: "Bronze", Discount: 0.03, PointToUpgrade: 20})
    db.FirstOrCreate(&RankSilver, &entity.Rank{Name: "Silver", Discount: 0.065, PointToUpgrade: 40})

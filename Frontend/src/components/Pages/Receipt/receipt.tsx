@@ -235,7 +235,7 @@ function Receipt() {
   const columns: ColumnsType<ReceiptInterface> =[
     {
       key: 'date_time',
-      title: 'Date Time',
+      title: 'เวลา',
       // dataIndex: 'date',
       render: (record) => {
         const date = record.CreatedAt;
@@ -244,32 +244,32 @@ function Receipt() {
     },
     {
       key: 'id',
-      title: 'ID',
+      title: 'เลขบิล',
       dataIndex: 'ID',
     },
     {
       key: 'BookingID',
-      title: 'Booking',
+      title: 'เลขโต๊ะ',
       render: (record) => <>{record.Booking?.table?.table_name || "N/A"}</>,
     },
     {
       key: 'total_price',
-      title: 'Total Price',
+      title: 'ยอดสุทธิ',
       dataIndex: 'totalprice',
     },
     {
       key: 'CounponID',
-      title: 'Coupon',
+      title: 'คูปอง',
       render: (record) => <>{record.Coupon?.code || "ไม่มี"}</>,
     },
     {
       key: 'MemberID',
-      title: 'Member',
+      title: 'สมาชิก',
       render: (record) => <>{record.Member?.FirstName || "N/A"}</>,
     },
     {
       key: 'Employee',
-      title: 'Employee',
+      title: 'พนักงาน',
       // dataIndex: 'EmployeeID',
       render: (record) => <>{record.Employee?.FirstName || "N/A"}</>,
     },
@@ -277,22 +277,28 @@ function Receipt() {
 
   return (
     <Row gutter={[16, 16]}>
-      {/* Content Section */}
       <Col span={12}>
         <Card style={{ borderRadius: '20px', padding: '0px', width: '100%', height: '55vh' }}>
-          <h2 style={{ marginTop: '-3px' }}>Receipt History</h2>
-          <Table
-            dataSource={receipt}
-            columns={columns}
-            rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
-            pagination={{ pageSize: 3 }}
-          />
+          <h2 style={{ marginTop: '-3px' }}>ประวัติการชำระเงิน</h2>
+            {/* Content Section */}
+            {loading ? (
+              <Spin tip="Loading..." className="spinContainer" />
+            ) : receipt.length === 0 ? (
+              <Empty description="No receipt data" className="emptyState" />
+            ) : (
+              <Table
+                dataSource={receipt}
+                columns={columns}
+                rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
+                pagination={{ pageSize: 3 }}
+              />
+            )}
         </Card>
       </Col>
       {/* Button Section */}
       <Col span={12} >
               <Card style={{ borderRadius: '20px', width: '100%', height: 'auto' , marginBottom:'10px'}}>
-          <h2 style={{ marginTop: '-3px' }}>Daily List Summary</h2>
+          <h2 style={{ marginTop: '-3px' }}>สรุปรายการประจำวัน</h2>
           <Row
             style={{
               display: 'flex',

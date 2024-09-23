@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message, Card, Statistic } from "antd";
+import { List, Avatar, Row, Col, message, Card, Statistic } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import "./customer.css";
 import { GetBookingByID } from "../../../services/https";
@@ -12,6 +12,8 @@ function Customer() {
     const [loading, setLoading] = useState<boolean>(true);
     const [tableName, setTableName] = useState<string>("");
     const [packages, setPackages] = useState<string>("");
+    const [selectedCard, setSelectedCard] = useState<string | null>(null); // สถานะของปุ่มที่ถูกคลิก
+    const [filteredData, setFilteredData] = useState([]); // สถานะสำหรับข้อมูลที่กรองแล้ว
 
     const fetchBookingById = async () => {
         if (!id) {
@@ -20,14 +22,9 @@ function Customer() {
             return;
         }
 
-        console.log("Fetching booking for ID:", id); // Add this to check ID
-
         try {
             const res = await GetBookingByID(id);
-            console.log("Response received:", res); // Log the response
-
             if (res && res.data) {
-                console.log("Booking data:", res.data); // Log booking data
                 setBooking(res.data);
                 setTableName(res.data.table?.table_name ?? "N/A");
                 setPackages(res.data.package?.name ?? "N/A");
@@ -37,7 +34,6 @@ function Customer() {
         } catch (error) {
             const errorMessage =
                 (error as Error).message || "An unknown error occurred.";
-            console.error("Error fetching booking data:", error);
             message.error("Failed to fetch booking data: " + errorMessage);
         } finally {
             setLoading(false);
@@ -48,15 +44,60 @@ function Customer() {
         fetchBookingById();
     }, [id]);
 
-    if (loading) {
-        return <Spin size="large" />;
-    }
+    const data = [
+        {
+            productCode: 'M005',
+            title: 'เนื้อวัวพรีเมี่ยม',
+            price: '150.00 Baht',
+            image: 'https://path/to/beef1.png',
+            category: 'เนื้อ',
+        },
+        {
+            productCode: 'M006',
+            title: 'เนื้อหมูคุโรบูตะ',
+            price: '120.00 Baht',
+            image: 'https://path/to/pork1.png',
+            category: 'เนื้อ',
+        },
+        {
+            productCode: 'D001',
+            title: 'น้ำอัมพอนสี',
+            price: '69.00 Baht',
+            image: 'https://path/to/drink1.png',
+            category: 'น้ำดื่ม',
+        },
+        {
+            productCode: 'D002',
+            title: 'น้ำผลไม้รวม',
+            price: '55.00 Baht',
+            image: 'https://path/to/drink2.png',
+            category: 'น้ำดื่ม',
+        },
+        {
+            productCode: 'S001',
+            title: 'ไอศกรีมรวมมิตร',
+            price: '35.00 Baht',
+            image: 'https://path/to/icecream1.png',
+            category: 'ของหวาน',
+        },
+    ];
+
+    const filterByProductCode = (codePrefix: string) => {
+        return data.filter(item => item.productCode.startsWith(codePrefix));
+    };
+
+    // ฟังก์ชันจัดการการคลิกที่ Card เพื่อเปลี่ยนสีและกรองข้อมูล
+    const handleCardClick = (cardName: string, codePrefix: string) => {
+        setSelectedCard(cardName); // จัดการปุ่มที่ถูกคลิก
+        const filtered = filterByProductCode(codePrefix); // กรองข้อมูล
+        setFilteredData(filtered); // ตั้งค่าข้อมูลที่กรองแล้ว
+    };
 
     return (
         <div>
-            <Row>
-                <Col xs={2} span={6}>
-                    <Card className="card-white" style={{ marginTop: '7vh', zIndex: "2", marginLeft: '50%', maxHeight: '125px' }}>
+            <Row >
+                <Col xs={2}>
+                    <Card className="card-white"  style={{ marginTop: '7vh', zIndex: "2", marginLeft: '50%', maxHeight: '125px' }}>
                         <Statistic
                             value={booking?.ID}
                             prefix="หมายเลขออเดอร์ : "
@@ -75,35 +116,106 @@ function Customer() {
                     </Card>
                 </Col>
             </Row>
-            <Row>
-                <Card style={{ marginTop: '15px', overflowX: 'auto', maxHeight: '150px', maxWidth: '455px', marginLeft: '4%' }}>
-                    <div style={{ display: 'flex', whiteSpace: 'nowrap', justifyContent: 'space-between' }}>
-                        {/* แสดงเนื้อถ้าไม่ใช่หมูหรือทะเล */}
+            <Row gutter={[0, 0]}>
+                <Card size="small" style={{ marginTop: '15px', overflowX: 'auto', maxHeight: '150px', maxWidth: '455px', marginLeft: '4%' }}>
+                    <div style={{ display: 'flex', whiteSpace: 'nowrap' }}>
                         {packages !== "หมู,ไก่" && packages !== "ทะเล" && (
-                            <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
-                                <Card style={{ textAlign: 'center', width: '100px' }}>เนื้อ</Card>
+                            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Card
+                                    onClick={() => handleCardClick('เนื้อ', 'M')}
+                                    style={{
+                                        textAlign: 'center',
+                                        width: '100px',
+                                        backgroundColor: selectedCard === 'เนื้อ' ? 'lightgray' : 'white'
+                                    }}
+                                >
+                                    เนื้อ
+                                </Card>
                             </Col>
                         )}
-                        {/* แสดงซีฟู้ดถ้าไม่ใช่แพ็คเกจหมู */}
                         {packages !== "หมู,ไก่" && (
-                            <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
-                                <Card style={{ textAlign: 'center', width: '100px' }}>ซีฟู้ด</Card>
+                            <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                                <Card
+                                    onClick={() => handleCardClick('ซีฟู้ด', 'D')}
+                                    style={{
+                                        textAlign: 'center',
+                                        width: '100px',
+                                        backgroundColor: selectedCard === 'ซีฟู้ด' ? 'lightgray' : 'white'
+                                    }}
+                                >
+                                    ซีฟู้ด
+                                </Card>
                             </Col>
                         )}
-                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
-                            <Card style={{ textAlign: 'center', width: '100px' }}>หมู</Card>
+                        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                            <Card
+                                onClick={() => handleCardClick('หมู', 'M')}
+                                style={{
+                                    textAlign: 'center',
+                                    width: '100px',
+                                    backgroundColor: selectedCard === 'หมู' ? 'lightgray' : 'white'
+                                }}
+                            >
+                                หมู
+                            </Card>
                         </Col>
-                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
-                            <Card style={{ textAlign: 'center', width: '100px' }}>ไก่</Card>
+                        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                            <Card
+                                onClick={() => handleCardClick('ไก่', 'M')}
+                                style={{
+                                    textAlign: 'center',
+                                    width: '100px',
+                                    backgroundColor: selectedCard === 'ไก่' ? 'lightgray' : 'white'
+                                }}
+                            >
+                                ไก่
+                            </Card>
                         </Col>
-                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
-                            <Card style={{ textAlign: 'center', width: '100px' }}>ผัก</Card>
+                        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                            <Card
+                                onClick={() => handleCardClick('ผัก', 'M')}
+                                style={{
+                                    textAlign: 'center',
+                                    width: '100px',
+                                    backgroundColor: selectedCard === 'ผัก' ? 'lightgray' : 'white'
+                                }}
+                            >
+                                ผัก
+                            </Card>
                         </Col>
-                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
-                            <Card style={{ textAlign: 'center', width: '100px' }}>ของหวาน</Card>
+                        <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                            <Card
+                                onClick={() => handleCardClick('ของหวาน', 'S')}
+                                style={{
+                                    textAlign: 'center',
+                                    width: '100px',
+                                    backgroundColor: selectedCard === 'ของหวาน' ? 'lightgray' : 'white'
+                                }}
+                            >
+                                ของหวาน
+                            </Card>
                         </Col>
                     </div>
                 </Card>
+            </Row>
+            <Row>
+                <Col xs={24}>
+                    <Card style={{ margin: '20px' }}>
+                        <List
+                            itemLayout="horizontal"
+                            dataSource={filteredData}
+                            renderItem={(item) => (
+                                <List.Item>
+                                    <List.Item.Meta
+                                        avatar={<Avatar src={item.image} shape="square" size={64} />}
+                                        title={<a href="#">{item.title}</a>}
+                                        description={item.price}
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </Card>
+                </Col>
             </Row>
         </div>
     );

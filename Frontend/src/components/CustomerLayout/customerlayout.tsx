@@ -35,7 +35,7 @@ const CustomerLayout: React.FC = () => {
                         <div style={{ padding: 24, minHeight: "93%" }}>
                             <Routes>
                                 <Route path="/customer" element={<Customer />} />
-                                <Route path="/customer/booking/:id" element={<Customer />} />
+                                <Route path="/customer/:id" element={<Customer />} />
                             </Routes>
                         </div>
                     </Content>

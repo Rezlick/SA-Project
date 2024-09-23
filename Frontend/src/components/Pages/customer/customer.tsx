@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message, Card, Statistic, Form } from "antd";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Table, Row, Col, Spin, Button, message, Card, Statistic } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
 import "./customer.css";
 import { GetBookingByID } from "../../../services/https";
 import { BookingInterface } from "../../../interfaces/Booking";

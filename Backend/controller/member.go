@@ -258,6 +258,23 @@ func GetMemberCountForDay(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"memberCount": count})
 }
 
+func GetMemberCountForToday(c *gin.Context) {
+    var count int64
+
+    db := config.DB()
+
+    // Select members created on the specified day
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%D', created_at) = strftime('%Y-%m-%D', 'now') AND deleted_at IS NULL"
+    result := db.Raw(query).Scan(&count)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"memberCount": count})
+}
+
 func CheckMember(c *gin.Context){
 	var member entity.Member
 	var rank entity.Rank

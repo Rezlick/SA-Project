@@ -22,4 +22,7 @@ type Employee struct{
 	Members			[]Member	`gorm:"foreignKey: employee_id"`
 	Receipt			[]Receipt	`gorm:"foreignKey: employee_id"`
 	Order			[]Order		`gorm:"foreignKey: EmployeeID"`
+	Product		[]Product	 `gorm:"foreignKey:EmployeeID"`
+	
+	Stock []Stock `gorm:"foreignKey:EmployeeID"`
 }

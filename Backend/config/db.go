@@ -5,6 +5,7 @@ import (
    "github.com/SA_Project/entity"
    "gorm.io/driver/sqlite"
    "gorm.io/gorm"
+   "time"
 )
 
 var db *gorm.DB
@@ -40,7 +41,12 @@ func SetupDatabase() {
       &entity.Status_Order{},
       &entity.Order{},
       &entity.Order_Product{},
+      
+      
+      &entity.Category{},
       &entity.Product{},
+      &entity.Supplier{},
+      &entity.Stock{},
 	)
 
    orderproduct1 := entity.Order_Product{Quantity: 3, OrderID:1, ProductID: 1}
@@ -51,16 +57,38 @@ func SetupDatabase() {
    orderproduct6 := entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 2}
    orderproduct7 := entity.Order_Product{Quantity: 1, OrderID: 3, ProductID: 3}
 
-   product1 := entity.Product{Product_code_id: "A001", Product_name: "เนื้อวัว", Category_id: "เนื้อ", EmployeeID: 1}
-   product2 := entity.Product{Product_code_id: "A002", Product_name: "เนื้อหมู", Category_id: "เนื้อ", EmployeeID: 1}
-   product3 := entity.Product{Product_code_id: "C001", Product_name: "น้ำโค้ก", Category_id: "น้ำ", EmployeeID: 1}
+   categories := []entity.Category{
+		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ (Meats)"},
+		{Category_Code_id: "V", CategoryName: "ผัก (Vegetables)"},
+		{Category_Code_id: "S", CategoryName: "อาหารทะเล (Seafood)"},
+		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง (Noodles and Dough)"},
+		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม (Condiments and sauce)"},
+		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน (Beverages and Desserts)"},
+	}
+   suppliers := []entity.Supplier{
+		{SupplierName: "Supplier A", Phone: "012-345-6789", Email: "contact@suppliera.com", Address: "มทส"},
+		{SupplierName: "Supplier B", Phone: "987-654-3210", Email: "contact@supplierb.com", Address: "มทส"},
+		{SupplierName: "Supplier C", Phone: "000-111-2222", Email: "contact@supplierc.com", Address: "มทส"},
+		{SupplierName: "Supplier D", Phone: "333-444-5555", Email: "contact@supplierd.com", Address: "มทส"},
+		{SupplierName: "Supplier E", Phone: "666-777-8888", Email: "contact@suppliere.com", Address: "มทส"},
+		{SupplierName: "Supplier F", Phone: "999-000-1111", Email: "contact@supplierf.com", Address: "มทส"},
+	}
+   products:=[]entity.Product{
+		{Product_Code_ID: "B001",ProductName:"น้ำโค๊ก",CategoryID:6,EmployeeID: 1},
+		{Product_Code_ID: "B002",ProductName:"น้ำหวาน",CategoryID: 6,EmployeeID: 1},
+      {Product_Code_ID: "M001",ProductName:"หมู",CategoryID: 6,EmployeeID: 1},
+      {Product_Code_ID: "M002",ProductName:"ไก่",CategoryID: 6,EmployeeID: 1},
+	}
+
+   StocksMap :=[]entity.Stock{
+      {ProductID:1,Quantity:30,Price:25,DateIn:parseDate("2024-08-22 14:00"),ExpirationDate:parseDate("2025-08-22 14:00"),  SupplierID:5,EmployeeID:1},
+		{ProductID:2,Quantity:100,Price:150,DateIn:parseDate("2024-08-22 14:00"),ExpirationDate:parseDate("2025-08-22 14:00"),SupplierID:1,EmployeeID:1,},
+	}
+
 
    order1 := entity.Order{BookingID: 1, Status_OrderID: 2}
    order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
    order3 := entity.Order{BookingID: 3, Status_OrderID: 2}
-
-
-   MemberGuest := entity.Member{FirstName: "Guest", LastName: "User",PhoneNumber: "0"}
 
    GenderMale := entity.Gender{Name: "ชาย"}
    GenderFemale := entity.Gender{Name: "หญิง"}
@@ -113,11 +141,22 @@ func SetupDatabase() {
    CapacitySix := entity.TableCapacity{MinCustomer: 5, MaxCustomer: 6}
    CapacityEight := entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8}
 
+   for _, category := range categories {
+		db.FirstOrCreate(&category, &entity.Category{Category_Code_id: category.Category_Code_id})
+	}
+   for _, supplier := range suppliers {
+		db.FirstOrCreate(&supplier, &entity.Supplier{SupplierName: supplier.SupplierName})
+	}
+   for _, product := range products {
+		db.FirstOrCreate(&product, entity.Product{Product_Code_ID: product.Product_Code_ID})
+	}
+   for _, stock := range StocksMap {
+		db.FirstOrCreate(&stock, entity.Stock{ProductID: stock.ProductID, SupplierID: stock.SupplierID, DateIn: stock.DateIn})
+	}
+
+
    db.FirstOrCreate(&status1, &entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"})
    db.FirstOrCreate(&status2, &entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"})
-
-
-   db.FirstOrCreate(&MemberGuest, &entity.Member{FirstName: "Guest", LastName: "User", PhoneNumber: "0"})
 
    db.FirstOrCreate(&RankBronze, &entity.Rank{Name: "Bronze", Discount: 0.03, PointToUpgrade: 20})
    db.FirstOrCreate(&RankSilver, &entity.Rank{Name: "Silver", Discount: 0.065, PointToUpgrade: 40})
@@ -179,9 +218,7 @@ func SetupDatabase() {
    db.FirstOrCreate(&orderproduct6, &entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 2})
    db.FirstOrCreate(&orderproduct7, &entity.Order_Product{Quantity: 1, OrderID: 3, ProductID: 3})
 
-   db.FirstOrCreate(&product1, &entity.Product{Product_code_id: "A001", Product_name: "เนื้อวัว", Category_id: "เนื้อ", EmployeeID: 1})
-   db.FirstOrCreate(&product2, &entity.Product{Product_code_id: "A002", Product_name: "เนื้อหมู", Category_id: "เนื้อ", EmployeeID: 1})
-   db.FirstOrCreate(&product3, &entity.Product{Product_code_id: "C001", Product_name: "น้ำโค้ก", Category_id: "น้ำ", EmployeeID: 1})
+
 
    hashedPassword, _ := HashPassword("12345")
 
@@ -198,4 +235,8 @@ func SetupDatabase() {
    db.FirstOrCreate(employee, &entity.Employee{
       Email: "testadmin@shabubuu.com",
    })
+}
+func parseDate(dateStr string) time.Time {
+	t, _ := time.Parse("2006-01-02 15:04", dateStr)
+	return t
 }

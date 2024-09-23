@@ -2,7 +2,7 @@ import { useState , useEffect } from "react";
 
 import { Link , useNavigate } from 'react-router-dom';
 
-import { message , Card , Row , Col , Form , Input , Button } from "antd";
+import { message , Card , Row , Col , Form , Input , Button , Checkbox  } from "antd";
 
 import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking} from "../../../../services/https";
 
@@ -19,17 +19,30 @@ function Pay() {
     const [form] = Form.useForm();
     const [coupon, setCoupon] = useState("");
     const [phone, setPhone] = useState("");
-    const [FirstName, setFirstName] = useState("");
-    const [RankName, setRankName] = useState("");
+    const [FirstName, setFirstName] = useState("Guest");
+    const [RankName, setRankName] = useState("ไม่มี");
     const [Point, setPoint] = useState<number>(0);
-    const [NetTotaol, setNetTotal] = useState<number>(0);
     const [MemberID, setMemberID] = useState<number>(0);
-    const [RDiscount, setRDiscount] = useState<number>(0);
     const [CouponDiscount, setCouponDiscount] = useState<number>(0);
     const [CouponID, setCouponID] = useState<number>(0);
-    const [cooldown, setCooldown] = useState(false);  // สถานะ cooldown
-    const [isSubmitting, setIsSubmitting] = useState(false); // Track button state
+    const [cooldown, setCooldown] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [Table,SetTable] = useState("");
+    const [Booking,SetBooking] = useState("");
+    const [Package,SetPackage] = useState("");
+    const [NumberCustomer,SetNumberCustomer] = useState("");
+    const [checked, setChecked] = useState(false);
+    const [TotalPrice, setTotalPrice] = useState<number>(0);
+    const [TotalDiscount, setTotalDiscount] = useState<number>(0);
+    const [NetTotal, setNetTotal] = useState<number>(0);
+    const [RateDiscount, setRateDiscount] = useState<number>(0);
+    const [RankDiscount, setRankDiscount] = useState<number>(0);
+    
+    const EmployeeID = localStorage.getItem("employeeID") ;
+
+    const check = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
+        setChecked(e.target.checked);
+      };
 
     const getIDBooking = async () =>{
         const res = await CheckBooking(tableName);
@@ -43,12 +56,9 @@ function Pay() {
         if (res.status === 200) {
           setPoint(res.data.package.point)
           SetTable(res.data.table.table_name)
-          form.setFieldsValue({
-            Table: "Table : " + res.data.table.table_name,
-            Booking: "หมายเลขออเดอร์ : " + res.data.ID,
-            Package: "Package : " + res.data.package.name,
-            NumberOfCustomer: "จำนวนลูกค้า : " + res.data.number_of_customer + " ท่าน"
-          });
+          SetBooking(res.data.ID)
+          SetPackage(res.data.package.name)
+          SetNumberCustomer(res.data.number_of_customer)
         } else {
           message.open({
             type: "error",
@@ -76,25 +86,29 @@ function Pay() {
     const CheckPhone = async () => {
         const res = await CheckMembers(phone);
         if (res.data.isValid) {
-            message.success("Member ถูกต้อง");
+            message.success("\"สมาชิก\" ถูกต้อง");
             setMemberID(res.data.MemberID)
             setFirstName(res.data.FirstName)
             setRankName(res.data.Rank)
-            setRDiscount(res.data.Discount)
+            setRateDiscount(res.data.Discount)
           } else {
-            message.error("Member ไม่ถูกต้อง ");
-
+            message.error("ไม่มี \"สมาชิก\" อยู่ในระบบ");
+            setFirstName("Guest")
+            setRankName("None")
+            setRateDiscount(0)
           }
     }
 
     const calculator = async (id: string) => {
         let res = await GetBookingByID(id);
-        const TotalPrice = res.data.package.price * res.data.number_of_customer
-        const RankDiscount = Math.round(TotalPrice * RDiscount)
         const CDiscount = CouponDiscount
-        const TotalDiscount = Math.round(RankDiscount + CDiscount)
-        const NetTotal = TotalPrice - TotalDiscount
-        setNetTotal(NetTotal)
+        const totalprice = res.data.package.price * res.data.number_of_customer
+        const RankDiscount = Math.round(TotalPrice * RateDiscount)
+        const totaldiscount = Math.round(RankDiscount + CDiscount)
+        setRankDiscount(RankDiscount)
+        setTotalPrice(totalprice)
+        setTotalDiscount(totaldiscount)
+        setNetTotal(totalprice-totaldiscount)
         form.setFieldsValue({
             RankDiscount: RankDiscount,
             NetTotal: NetTotal,
@@ -109,7 +123,7 @@ function Pay() {
         const RName = RankName
         form.setFieldsValue({
             FirstName: "Member : "+FName,
-            RankName: "Rank : "+RName,
+            RankName: "Rank  : "+RName,
         })
     }
    
@@ -141,11 +155,11 @@ function Pay() {
             setIsSubmitting(true)
             const receiptData: ReceiptInterface = {
                 BookingID: Number(BookID), // สมมุติว่าคุณมีการกำหนด BookingID ไว้
-                totalprice: NetTotaol,
+                totalprice: NetTotal,
                 totaldiscount: values.totaldiscount,
                 CouponID: CouponID, // ใช้ค่า CouponID ที่ตรวจสอบแล้วจาก Coupon
                 MemberID: MemberID, // ดึงข้อมูล MemberID จากผลลัพธ์การเรียก Booking
-                EmployeeID: 1, // คุณอาจต้องกำหนดค่า EmployeeID ที่เข้าระบบอยู่
+                EmployeeID: Number(EmployeeID), // คุณอาจต้องกำหนดค่า EmployeeID ที่เข้าระบบอยู่
             };
     
             // บันทึกข้อมูลลงในฐานข้อมูลผ่าน API
@@ -210,25 +224,32 @@ function Pay() {
     return (
         <>
         <Row >
-            <Col>
+            <Col xs={24} sm={24} md={16} lg={12} xl={24}>
                 <Card style={{
-                    width: '1000px',
-                    margin: '30px auto',
+                    width: 'auto',
                     padding: '15px',
                     borderRadius: '30px',
                 }}>
                     {/* ปุ่มกลับ */}
-                    <div style={{ marginBottom: '20px',marginTop:'-20px' }}>
+                    <Row style={{marginBottom:"20px"}}>
                         <Link to="/receipt">
-                            <button className="button">
+                            <Button className="button">
                                 กลับ
-                            </button>
+                            </Button>
                         </Link>
-                    </div>
+                        <div className="checkbox-container">
+                            <Checkbox className="checkbox-payment" checked={checked} onChange={check}>
+                                Member
+                            </Checkbox>
+                        </div>
+                    </Row>
 
                     <Form
                         name="read-only"
-                        labelCol={{style: { display: "flex", justifyContent: "center" }}}
+                        labelCol={{style: {
+                            display: "flex",
+                            justifyContent: "center",
+                        }}}
                         form={form}
                         className="custom-form"
                         onFinish={onFinish}
@@ -240,21 +261,62 @@ function Pay() {
                         }}>
                             <Row gutter={[8,0]}> 
                                     <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Card className="card-payment">{Table}</Card>
-                                        {/* <Form.Item
-                                            name="Table"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item> */}
+                                        <Card className="card-payment">{"หมายเลขโต๊ะ : "}{Table}</Card>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={10}>
+                                        <Card className="card-payment">{"หมายเลขออเดอร์ : "}{Booking}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={8}>
+                                        <Card className="card-payment">{"แพ็คเกจ : "}{Package}</Card>
+                                    </Col>
+                                    { checked && (<Col xs={24} sm={24} md={16} lg={12} xl={7}>
                                         <Form.Item
-                                            name="Booking"
+                                            label="Phone"
+                                            name="input_phone"
+                                            >
+                                        <Input 
+                                            className="centered-input" 
+                                            maxLength={10}
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            onPressEnter={handleEnterPressPhone}
+                                            onKeyPress={(event) => {
+                                                const inputValue = (event.target as HTMLInputElement).value; // แคสต์เป็น HTMLInputElement
+                                                if (!/[0-9]/.test(event.key)) {
+                                                  event.preventDefault();
+                                                }
+                                                if (inputValue.length === 0 && event.key !== '0') {
+                                                  event.preventDefault();
+                                                }
+                                              }}
+                                            style={{ border: "1px solid #ff8001" }}
+                                            />
+                                        </Form.Item>
+                                    </Col>)}
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
+                                        <Card className="card-payment">{"สมาชิก : "}{FirstName}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
+                                        <Card className="card-payment">{"ระดับสมาชิก : "}{RankName}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 5 : 8}>
+                                        <Card className="card-payment">{"จำนวนลูกค้า : "}{NumberCustomer}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
+                                            <Form.Item
+                                                name="soup"
+                                                >
+                                            <Input 
+                                            readOnly className="centered-input"
+                                            onPressEnter={(e) => {
+                                                e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
+                                            }}
+                                            />
+                                            </Form.Item>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
+                                        <Form.Item
+                                            name="soup"
                                             >
                                         <Input 
                                         readOnly className="centered-input"
@@ -264,9 +326,21 @@ function Pay() {
                                         />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={8}>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                         <Form.Item
-                                            name="Package"
+                                            name="soup"
+                                            >
+                                        <Input 
+                                        readOnly className="centered-input"
+                                        onPressEnter={(e) => {
+                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
+                                        }}
+                                        />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
+                                        <Form.Item
+                                            name="soup"
                                             >
                                         <Input 
                                         readOnly className="centered-input"
@@ -277,115 +351,6 @@ function Pay() {
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={7}>
-                                        <Form.Item
-                                            label="Phone"
-                                            name="input_phone"
-                                            // rules={[
-                                            //     {
-                                            //         required: true,
-                                            //     },
-                                            // ]}
-                                            help={<div style={{ textAlign: 'center' }}>ถ้า Guest ให้ใส่เบอร์ 0</div>}
-                                            >
-                                        <Input 
-                                            className="centered-input" 
-                                            maxLength={10}
-                                            value={phone}
-                                            onChange={(e) => setPhone(e.target.value)}
-                                            onPressEnter={handleEnterPressPhone}
-                                            onKeyPress={(e) => {
-                                                if (!/[0-9]/.test(e.key)) {
-                                                    e.preventDefault(); // ป้องกันไม่ให้ป้อนอักขระที่ไม่ใช่ตัวเลข
-                                                }
-                                            }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
-                                            name="FirstName"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={5}>
-                                        <Form.Item
-                                            name="RankName"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
-                                            name="NumberOfCustomer"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
-                                            name="soup"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
-                                            name="soup"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
-                                            name="soup"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
-                                            name="soup"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                         <Form.Item
                                             label="Coupon"
                                             name="input_coupon"
@@ -396,78 +361,24 @@ function Pay() {
                                             value={coupon}
                                             onChange={(e) => setCoupon(e.target.value)}
                                             onPressEnter={handleEnterPressCoupon}
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={9}>
-                                        <Form.Item
-                                            label="ส่วนลด Coupon"
-                                            name={"CDiscount"}
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        addonAfter="฿"
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={9}>
-                                        <Form.Item
-                                            label="ส่วนลดบัตรสมาชิก"
-                                            name="RankDiscount"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        addonAfter="฿"
-                                        />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={7}>
-                                        <Form.Item
-                                            label="รวมเป็นเงิน"
-                                            name="totalprice"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        addonAfter="฿"
+                                            style={{ border: "1px solid #ff8001" }}
                                         />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={8}>
-                                        <Form.Item
-                                            label="ส่วนลดทั้งหมด"
-                                            name="totaldiscount"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        addonAfter="฿"
-                                        />
-                                        </Form.Item>
+                                        <Card className="card-payment">{"ส่วนลดคูปอง : "}{CouponDiscount}{" บาท"}</Card>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={9}>
-                                        <Form.Item
-                                            label="ยอดสุทธิ"
-                                            name="NetTotal"
-                                            >
-                                        <Input 
-                                        readOnly className="centered-input"
-                                        onPressEnter={(e) => {
-                                            e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
-                                        }}
-                                        addonAfter="฿"
-                                        />
-                                        </Form.Item>
+                                        <Card className="card-payment">{"ส่วนบัตรสมาชิก : "}{RankDiscount}{" บาท"}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={7}>
+                                        <Card className="card-payment">{"รวมเป็นเงิน : "}{TotalPrice}{" บาท"}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={8}>
+                                        <Card className="card-payment">{"ส่วนลดทั้งหมด : "}{TotalDiscount}{" บาท"}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={9}>
+                                        <Card className="card-payment">{"ยอดสุทธิ : "}{NetTotal}{" บาท"}</Card>
                                     </Col>
                             </Row>
                         </Card>

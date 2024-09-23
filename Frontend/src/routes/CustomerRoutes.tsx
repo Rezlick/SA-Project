@@ -8,11 +8,11 @@ const CustomerPage = Loadable(lazy(() => import("../components/Pages/customer/cu
 
 const CustomerRoutes = (): RouteObject => {
   return {
-    path: "/customer", // เส้นทางหลักของลูกค้า
+    path: "/customer/booking/:id", // เส้นทางหลักของลูกค้า
     element: <CustomerLayout />, // Layout หลักที่ใช้สำหรับหน้าลูกค้า
     children: [
-      {
-        path: "/customer", // เส้นทางลูกแบบไม่มี path เพิ่มเติม, จะแสดงเป็นหน้าหลักที่ /customer/booking/:id
+      {           
+        path: "/customer/booking/:id", // เส้นทางลูกแบบไม่มี path เพิ่มเติม, จะแสดงเป็นหน้าหลักที่ /customer/booking/:id
         element: <CustomerPage />, // หน้าหลักของลูกค้า (Booking page หรือหน้าอื่นๆ)
       },
     ],

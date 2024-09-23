@@ -44,5 +44,6 @@
     width: 62vh;
     border: 2px solid #FF7D29;; /* Light, warm orange border */
     background-color:#ffca89;
+    z-index: 1;
 }
 

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Row, Col, Spin, Button, message, Card, Statistic, Form } from "antd";
-import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import Background from "../../../assets/background_customer.webp"
 import "./customer.css"
-import logo from "../../../assets/logo.png"
 import { GetBookingByID } from "../../../services/https";
 import { BookingInterface } from "../../../interfaces/Booking";
 
@@ -39,48 +36,41 @@ function Customer() {
         }
     };
 
-
     useEffect(() => {
         fetchBookingById();
     }, [id]);
 
+    console.log("tableName =",tableName);
+    console.log("booking?.ID =",booking?.ID);
+    console.log("packages =",packages);
     return (
         <>
-            <img className="img-background" src={Background} alt="Background" />
-            <div className="customer-page">
-                <Card className="card" style={{ justifyContent: 'center', justifyItems: 'center' }}>
+            <div>
+                <Card className="card">
                     <Row>
-                        <img className="logo" src={logo} alt="Logo" />
-                    </Row>
-                    <Row>
-                        <Card className="card-white">
-                            <Col xs={24}>
-                                <Card style={{ marginTop: '45px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                                    <Statistic
-                                        value={booking?.ID}
-                                        prefix="หมายเลขออเดอร์ : "
-                                        valueStyle={{ fontSize: '16px' }}
-                                    />
-                                    <Statistic
-                                        value={tableName}
-                                        prefix="หมายเลขโต๊ะ : "
-                                        valueStyle={{ fontSize: '16px' }}
-                                    />
-                                    <Statistic
-                                        value={packages}
-                                        prefix="แพ็คเกจอาหาร : "
-                                        valueStyle={{ fontSize: '16px' }}
-                                    />
-                                </Card>
-                            </Col>
-                            <Row>
-                                <Card  style={{ marginTop: '15px'}}>
-                                    
-                                </Card>
-                            </Row>
+                        <Card className="card-white" style={{ marginTop: '45px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' , zIndex: "2"}}>
+                            <Statistic
+                                value={booking?.ID}
+                                prefix="หมายเลขออเดอร์ : "
+                                valueStyle={{ fontSize: '16px' }}
+                            />
+                            <Statistic
+                                value={tableName}
+                                prefix="หมายเลขโต๊ะ : "
+                                valueStyle={{ fontSize: '16px' }}
+                            />
+                            <Statistic
+                                value={packages}
+                                prefix="แพ็คเกจอาหาร : "
+                                valueStyle={{ fontSize: '16px' }}
+                            />
                         </Card>
                     </Row>
+                    <Row>
+                        <Card style={{ marginTop: '15px' }}>
 
+                        </Card>
+                    </Row>
                 </Card>
             </div>
         </>

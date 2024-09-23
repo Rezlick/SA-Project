@@ -203,7 +203,7 @@ function ITSider() {
               </Menu.Item>
 
               <Menu.Item key="stock" onClick={() => setCurrentPage("stock")}>
-                <Link to="/">
+                <Link to="/ManageStock">
                   <AppstoreOutlined />
                   <span>จัดการข้อมูลสินค้า</span>
                 </Link>

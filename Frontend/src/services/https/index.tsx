@@ -9,6 +9,7 @@ import { OrderInterface } from "../../interfaces/Order";
 import { ReceiptInterface } from "../../interfaces/Receipt";
 
 import axios from "axios";
+import { StockInterface } from "../../interfaces/Stock";
 
 const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
@@ -157,6 +158,13 @@ async function GetMemberCountForMonth(month: string, year: string) {
 async function GetMemberCountForDay(date: string) {
   return await axios
     .get(`${apiUrl}/memberCountForDay?day=${date}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetMemberCountForToday() {
+  return await axios
+    .get(`${apiUrl}/memberCountForToday`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -373,6 +381,46 @@ async function GetProductsByID(id: string | undefined) {
     .catch((e) => e.response);
 }
 
+//ของเต้
+// ฟังก์ชันสำหรับดึงข้อมูล Stock ตาม categoryId
+async function GetStock(categoryId: number) {
+  return await axios
+    .get(`${apiUrl}/Stock/${categoryId}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+// ฟังก์ชันสำหรับดึงข้อมูล Supplier
+async function GetDataSupplier() {
+  return await axios
+    .get(`${apiUrl}/Supplier`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+// ฟังก์ชันสำหรับเพิ่มข้อมูล Stock
+async function AddStock(newStock: StockInterface) {
+  return await axios
+    .post(`${apiUrl}/AddStock`, newStock, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+// ฟังก์ชันสำหรับอัปเดต Stock
+async function UpdateStock(updateStock: StockInterface) {
+  return await axios
+    .put(`${apiUrl}/UpdateStock`, updateStock, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+// ฟังก์ชันสำหรับดึงข้อมูลชื่อ Supplier
+async function GetSupplierName() {
+  return await axios
+    .get(`${apiUrl}/SupplierName`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
 
 export {
   SignIn,
@@ -422,4 +470,10 @@ export {
   GetProductsByID,
   CheckPhone,
   CheckEmail,
+  GetDataSupplier,
+  GetStock,
+  AddStock,
+  UpdateStock,
+  GetSupplierName,
+  GetMemberCountForToday,
 };

@@ -158,7 +158,7 @@ func GetMemberCountForCurrentMonth(c *gin.Context) {
         `SELECT COUNT(id) 
         FROM members 
         WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')
-        AND first_name != 'Guest'`).Scan(&count)
+        AND deleted_at IS NULL`).Scan(&count)
     
     if result.Error != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
@@ -222,7 +222,7 @@ func GetMemberCountForMonth(c *gin.Context) {
     db := config.DB()
     
     // Select members created in the specified month and year
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m', created_at) = ? AND first_name != 'Guest'"
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m', created_at) = ? AND deleted_at IS NULL"
     result := db.Raw(query, year+"-"+month).Scan(&count)
 
     if result.Error != nil {
@@ -247,8 +247,25 @@ func GetMemberCountForDay(c *gin.Context) {
     db := config.DB()
 
     // Select members created on the specified day
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = ? AND first_name != 'Guest'"
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = ? AND deleted_at IS NULL"
     result := db.Raw(query, day).Scan(&count)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"memberCount": count})
+}
+
+func GetMemberCountForToday(c *gin.Context) {
+    var count int64
+
+    db := config.DB()
+
+    // Select members created on the specified day
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND deleted_at IS NULL"
+    result := db.Raw(query).Scan(&count)
 
     if result.Error != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
@@ -272,35 +289,21 @@ func CheckMember(c *gin.Context){
 		return
 	}
 
-    if member.ID == 1 {
-        rank.Name = "None"
-        rank.Discount = 0
-        c.JSON(http.StatusOK, gin.H{
-            "isValid": true,
-            "message": "Member is valid",
-            "MemberID": member.ID,
-            "FirstName": member.FirstName,
-            "Rank": rank.Name,
-            "Discount": rank.Discount,
-        })
-        return
-    } else {
-        rankResult := db.Where("id = ?", member.RankID).First(&rank)
+    rankResult := db.Where("id = ?", member.RankID).First(&rank)
         
-        if rankResult.Error != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Member found, but unable to find rank: " + rankResult.Error.Error()})
-            return
-        }
-        c.JSON(http.StatusOK, gin.H{
-            "isValid": true,
-            "message": "Member is valid",
-            "MemberID": member.ID,
-            "FirstName": member.FirstName,
-            "Rank": rank.Name,
-            "Discount": rank.Discount,
-        })
+    if rankResult.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Member found, but unable to find rank: " + rankResult.Error.Error()})
+        return
     }
-    
+    c.JSON(http.StatusOK, gin.H{
+        "isValid": true,
+        "message": "Member is valid",
+        "MemberID": member.ID,
+        "FirstName": member.FirstName,
+        "Rank": rank.Name,
+        "Discount": rank.Discount,
+    })
+
 }
 
 func CheckPhone(c *gin.Context) {

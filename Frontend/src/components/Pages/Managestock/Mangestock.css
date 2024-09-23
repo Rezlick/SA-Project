@@ -1,0 +1,122 @@
+.header {
+    background: linear-gradient(135deg, #deaa22, #f2e895); /* Gradient สีฟ้า */
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header-title {
+      margin: 0;
+      font-size: 24px;
+    }
+    
+    .autocomplete {
+      width: 300px;
+    }
+    
+    .content {
+      padding-top: 20px;
+    }
+    
+    .content-row {
+      display: flex;
+      height: 100%;
+      
+    }
+    .left-column {
+      height: 680px;
+      overflow: hidden; /* Ensure no overflow from the column itself */
+      display: flex;
+      flex-direction: column; /* Stack children vertically */
+      background-color: #f9f9f9; /* Background color to avoid dark overlap */
+      
+    }
+    
+  
+    
+    .category-title {
+      border: 1px solid #000;
+      text-align: center;
+      margin: 0;
+      padding: 10px;
+      background-color: #ffffff; /* Background color for the title */
+    }
+    
+    .category-list {
+      overflow-y: auto; /* Enable scrolling for the list of category cards */
+      flex: 1; /* Take up the remaining space */
+      padding: 1px;
+    }
+  
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      height: 680px; /* กำหนดความสูงให้ตรงกับ left-column */
+      background-color: #f9f9f9;
+      transition: all 0.3s ease; /* เพิ่มการเปลี่ยนแปลงแบบนุ่มนวล */
+    }
+  
+    
+    .supplier-title {
+      border: 1px solid #000;
+      text-align: center;
+      margin: 0;
+      padding: 10px;
+      background-color: #ffffff;
+    }
+    
+    .supplier-content {
+      overflow: hidden;
+      border: 1px solid #854d1b;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .supplier-content:hover {
+      background: radial-gradient(circle, rgba(173, 216, 230, 0.3) 0%, rgba(173, 216, 230, 0) 100%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+  
+  
+    
+    .supplier {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      margin: 10px;
+    }
+    
+    .supplier-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    
+    .supplier-info {
+      text-align: center;
+    }
+    
+    .supplier-info-text {
+      color: #666666;
+      font-size: 20px;
+    }
+    
+    .button-link {
+      width: 150px;
+      height: 50px;
+      font-size: 16px;
+      border-radius: 25px;
+  }

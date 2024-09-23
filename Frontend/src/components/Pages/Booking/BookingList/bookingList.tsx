@@ -185,6 +185,21 @@ function TableList() {
       render: (record) => <>{record.employee?.FirstName ?? "N/A"}</>,
     },
     {
+      title: "QrCode",
+      key: "qrcode",
+      render: (_, record) => (
+        <div>
+          <Button
+            type="link"
+            icon={<QrcodeOutlined />}
+            danger
+            onClick={() => handleQrCodeClick(record.ID ?? 0)}
+            className="table-list-delete-button"
+          />
+        </div>
+      ),
+    },
+    {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
@@ -200,21 +215,6 @@ function TableList() {
             icon={<DeleteOutlined />}
             danger
             onClick={() => handleDelete(record.ID ?? 0)}
-            className="table-list-delete-button"
-          />
-        </div>
-      ),
-    },
-    {
-      title: "QrCode",
-      key: "qrcode",
-      render: (_, record) => (
-        <div>
-          <Button
-            type="link"
-            icon={<QrcodeOutlined />}
-            danger
-            onClick={() => handleQrCodeClick(record.ID ?? 0)}
             className="table-list-delete-button"
           />
         </div>

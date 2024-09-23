@@ -154,7 +154,7 @@ function MemberCreate() {
                   maxLength={10}
                   onChange={(event) => setPhoneNumber(event.target.value)}
                   onKeyPress={(event) => {
-                    const inputValue = event.target.value;
+                    const inputValue = (event.target as HTMLInputElement).value;
                     if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
                     }

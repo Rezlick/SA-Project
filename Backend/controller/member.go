@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "time"
     "gorm.io/gorm"
     "net/http"
     "github.com/gin-gonic/gin"
@@ -113,10 +114,38 @@ func DeleteMember(c *gin.Context) {
     id := c.Param("id")
 
 	db := config.DB()
-	if tx := db.Exec("DELETE FROM members WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
-		return
-	}
+
+    var member entity.Member
+    if err := db.First(&member, id).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Member not found"})
+        return
+    }
+
+    tx := db.Begin()
+    if tx.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to start transaction"})
+        return
+    }
+
+    defer func() {
+        if r := recover(); r != nil {
+            tx.Rollback()
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Transaction failed: "})
+        }
+    }()
+
+    // Soft delete member
+    if err := tx.Model(&member).Update("deleted_at", time.Now()).Error; err != nil {
+        tx.Rollback()
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if err := tx.Commit().Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to commit transaction"})
+        return
+    }
+
 	c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
 }
 
@@ -303,3 +332,4 @@ func CheckPhone(c *gin.Context) {
 		})
 	}
 }
+

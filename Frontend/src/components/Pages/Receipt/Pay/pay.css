@@ -112,3 +112,63 @@
   font-size: 18px; /* ปรับขนาดตัวอักษร */
   text-align: center; /* จัดตำแหน่งตรงกลาง */
 }
+
+.card-payment {
+  height: 35px;
+  padding: 0;
+  margin-bottom: 25px;
+
+  display: flex;  
+  justify-content: center; 
+  align-items: center; 
+
+  border: 1px solid #ff8001;
+
+  font-size: 18px;
+}
+
+/* ปรับขนาดของ Checkbox */
+.checkbox-payment .ant-checkbox-inner {
+  width: 22px;
+  height: 22px;
+}
+
+/* ปรับขนาดของเครื่องหมายถูก */
+.checkbox-payment .ant-checkbox-inner::after {
+  width: 10px;
+  height: 14px;
+}
+
+/* เปลี่ยนสีขอบเมื่อ hover */
+.checkbox-payment .ant-checkbox:hover .ant-checkbox-inner {
+  border-color: #ff8001; /* เปลี่ยนสีขอบเป็นสีดำเมื่อ hover */
+}
+
+/* เปลี่ยนสีขอบและพื้นหลังเมื่อ Checkbox ถูกเลือก (checked) */
+.checkbox-payment .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #ff8001; /* เปลี่ยนสีพื้นหลังเป็นสีดำเมื่อถูกเลือก */
+  border-color: #ff8001; /* เปลี่ยนสีขอบเป็นสีดำเมื่อถูกเลือก */
+}
+
+/* เปลี่ยนสีของเครื่องหมายถูก (checkmark) */
+.checkbox-payment .ant-checkbox-checked .ant-checkbox-inner::after {
+  border-color: #ffffff; /* เปลี่ยนสีของเครื่องหมายถูกเป็นสีขาว */
+}
+
+
+/* ป้องกันไม่ให้มีสีฟ้าเมื่อ Checkbox ถูก hover หลังจากการติ๊กเลือก */
+.checkbox-payment .ant-checkbox-checked:hover .ant-checkbox-inner {
+  border-color: #ff8001 !important; /* ใช้ !important เพื่อบังคับสีหลังจากถูกเลือก */
+  background-color: #ff8001 !important; /* ใช้ !important เพื่อบังคับพื้นหลังหลังจากถูกเลือก */
+}
+
+
+.checkbox-payment {
+  display: flex;
+  justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
+  align-items: center;     /* จัดให้อยู่ตรงกลางในแนวตั้ง (ถ้ากำหนดความสูงให้กับ container) */
+  margin-left: 20px;       /* กำหนด margin ซ้ายตามที่ต้องการ */
+  border: 2px solid #ff8001;
+  padding: 8px;
+  border-radius: 6px;
+}

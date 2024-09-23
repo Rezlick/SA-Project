@@ -63,6 +63,13 @@ async function DeleteEmployeeByID(id: string | undefined) {
     .catch((e) => e.response);
 }
 
+async function CheckEmail(email: string) {
+  return await axios
+  .post(`${apiUrl}/checkEmail/${email}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
 async function CreateMember(data: MemberInterface) {
   return await axios
     .post(`${apiUrl}/member`, data, requestOptions)
@@ -414,4 +421,5 @@ export {
   GetOrderProductsByOrderID,
   GetProductsByID,
   CheckPhone,
+  CheckEmail,
 };

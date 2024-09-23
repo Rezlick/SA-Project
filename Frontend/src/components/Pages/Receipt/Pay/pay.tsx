@@ -29,6 +29,7 @@ function Pay() {
     const [CouponID, setCouponID] = useState<number>(0);
     const [cooldown, setCooldown] = useState(false);  // สถานะ cooldown
     const [isSubmitting, setIsSubmitting] = useState(false); // Track button state
+    const [Table,SetTable] = useState("");
 
     const getIDBooking = async () =>{
         const res = await CheckBooking(tableName);
@@ -41,6 +42,7 @@ function Pay() {
         let res = await GetBookingByID(id);
         if (res.status === 200) {
           setPoint(res.data.package.point)
+          SetTable(res.data.table.table_name)
           form.setFieldsValue({
             Table: "Table : " + res.data.table.table_name,
             Booking: "หมายเลขออเดอร์ : " + res.data.ID,
@@ -238,7 +240,8 @@ function Pay() {
                         }}>
                             <Row gutter={[8,0]}> 
                                     <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                        <Form.Item
+                                        <Card className="card-payment">{Table}</Card>
+                                        {/* <Form.Item
                                             name="Table"
                                             >
                                         <Input 
@@ -247,7 +250,7 @@ function Pay() {
                                             e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
                                         }}
                                         />
-                                        </Form.Item>
+                                        </Form.Item> */}
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={10}>
                                         <Form.Item
@@ -277,11 +280,11 @@ function Pay() {
                                         <Form.Item
                                             label="Phone"
                                             name="input_phone"
-                                            rules={[
-                                                {
-                                                    required: true,
-                                                },
-                                            ]}
+                                            // rules={[
+                                            //     {
+                                            //         required: true,
+                                            //     },
+                                            // ]}
                                             help={<div style={{ textAlign: 'center' }}>ถ้า Guest ให้ใส่เบอร์ 0</div>}
                                             >
                                         <Input 

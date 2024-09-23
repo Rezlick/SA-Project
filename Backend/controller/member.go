@@ -264,7 +264,7 @@ func GetMemberCountForToday(c *gin.Context) {
     db := config.DB()
 
     // Select members created on the specified day
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%D', created_at) = strftime('%Y-%m-%D', 'now') AND deleted_at IS NULL"
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND deleted_at IS NULL"
     result := db.Raw(query).Scan(&count)
 
     if result.Error != nil {

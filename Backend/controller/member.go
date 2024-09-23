@@ -158,7 +158,7 @@ func GetMemberCountForCurrentMonth(c *gin.Context) {
         `SELECT COUNT(id) 
         FROM members 
         WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')
-        AND first_name != 'Guest'`).Scan(&count)
+        AND deleted_at IS NULL`).Scan(&count)
     
     if result.Error != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
@@ -222,7 +222,7 @@ func GetMemberCountForMonth(c *gin.Context) {
     db := config.DB()
     
     // Select members created in the specified month and year
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m', created_at) = ? AND first_name != 'Guest'"
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m', created_at) = ? AND deleted_at IS NULL"
     result := db.Raw(query, year+"-"+month).Scan(&count)
 
     if result.Error != nil {
@@ -247,7 +247,7 @@ func GetMemberCountForDay(c *gin.Context) {
     db := config.DB()
 
     // Select members created on the specified day
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = ? AND first_name != 'Guest'"
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = ? AND deleted_at IS NULL"
     result := db.Raw(query, day).Scan(&count)
 
     if result.Error != nil {

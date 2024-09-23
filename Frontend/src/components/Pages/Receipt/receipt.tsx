@@ -1,5 +1,3 @@
-import { Link  } from 'react-router-dom';
-import { useNavigate } from "react-router-dom"; 
 import { Card, Table, Col, Row, Statistic, Button , message , Spin , Empty , Badge, } from 'antd';
 import { WalletOutlined, FileSyncOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { ReceiptInterface } from "../../../interfaces/Receipt";
@@ -157,80 +155,6 @@ function Receipt() {
     FetchTotalPrice();
   }, []);
 
-  // const paths = [
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay"
-  // ];
-
-  // const buttonLabels = [
-  //   "Table : F1",
-  //   "Table : F2",
-  //   "Table : F3",
-  //   "Table : F4",
-  //   "Table : F5",
-  //   "Table : S1",
-  //   "Table : S2",
-  //   "Table : S3",
-  //   "Table : S4",
-  //   "Table : E1",
-  //   "Table : E2",
-  //   "Table : E3"
-  // ];
-
-  // const tableseat = [
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 5 - 6",
-  //   ": 5 - 6",
-  //   ": 5 - 6",
-  //   ": 5 - 6",
-  //   ": 7 - 8",
-  //   ": 7 - 8",
-  //   ": 7 - 8"
-  // ];
-
-  // const buttons = paths.map((path, index) => (
-  //   <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ marginBottom: '16px' }}>
-  //     <Link to={path}>
-  //       <Button
-  //         // className="custom-button"
-  //         style={{
-  //           width: '100%',
-  //           height: '90px',
-  //           display: 'flex',
-  //           flexDirection: 'column',
-  //           alignItems: 'center',
-  //           justifyContent: 'center',
-  //           borderRadius: '10px',
-  //           boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-  //           padding: '10px',
-  //           border: '1px solid #d9d9d9'
-  //         }}
-  //       >
-  //         <Statistic
-  //           title={buttonLabels[index]}
-  //           value={tableseat[index]}
-  //           prefix={<UserOutlined />}
-  //           valueStyle={{ fontSize: '16px' }}
-  //         />
-  //       </Button>
-  //     </Link>
-  //   </Col>
-  // ));
-
   const columns: ColumnsType<ReceiptInterface> =[
     {
       key: 'date_time',
@@ -357,11 +281,6 @@ function Receipt() {
           </Row>
         </Card>
         <Card style={{ borderRadius: '20px', height: 'auto' }}>
-          {/* <Card style={{ backgroundColor: "#F5F5F5", height: '100%' , borderRadius:'20px' }}>
-            <Row gutter={[16, 16]}>
-              {buttons}
-            </Row>
-          </Card> */}
           <Col xs={24}>
             <Card className="card">
               {loading ? (

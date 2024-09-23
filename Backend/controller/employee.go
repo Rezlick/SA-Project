@@ -7,6 +7,7 @@ import (
 	"github.com/SA_Project/config"
 	"github.com/SA_Project/entity"
 	"github.com/gin-gonic/gin"
+    "gorm.io/gorm"
 )
 
 func CreateEmployee(c *gin.Context) {
@@ -205,4 +206,34 @@ func ChangePassword(c *gin.Context) {
 
     // Respond with success message
     c.JSON(http.StatusOK, gin.H{"message": "เปลี่ยนรหัสผ่านสำเร็จ"})
+}
+
+func CheckEmail(c *gin.Context) {
+	var employee entity.Employee
+	Email := c.Param("email")
+
+	db := config.DB()
+
+	// Perform the database query
+	result := db.Where("email = ?", Email).First(&employee)
+
+	// Check if an error occurred
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		// Return error response if the query failed (excluding "record not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	// Check if the phone number exists
+	if result.RowsAffected > 0 {
+		// Phone number exists in the database
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": false, // Indicating that the phone number is already in use
+		})
+	} else {
+		// Phone number does not exist, it is valid for new registration
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": true, // Indicating that the phone number can be used
+		})
+	}
 }

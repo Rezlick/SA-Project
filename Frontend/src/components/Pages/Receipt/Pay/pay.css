@@ -124,7 +124,21 @@
 
   border: 1px solid #ff8001;
 
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.card-promtpay {
+  height: 35px;
+  padding: 0;
+  margin-bottom: 5px;
+
+  display: flex;  
+  justify-content: center; 
+  align-items: center; 
+
+  border: 2px solid #02387e;
+
+  font-size: 16px;
 }
 
 /* ปรับขนาดของ Checkbox */

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Space,
   Button,
@@ -15,7 +15,7 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 
 import { EmployeeInterface } from "../../../../interfaces/Employee";
-import { CreateEmployee, GetPositions, GetGenders } from "../../../../services/https";
+import { CreateEmployee, GetPositions, GetGenders, CheckEmail } from "../../../../services/https";
 import { useNavigate, Link } from "react-router-dom";
 import { GenderInterface } from "../../../../interfaces/Gender";
 import { PositionInterface } from "../../../../interfaces/Position";
@@ -30,6 +30,7 @@ function EmployeeCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [positions, setPositions] = useState<PositionInterface[]>([]);
   const [genders, setGenders] = useState<GenderInterface[]>([]);
+  const [email, setEmail] = useState("");
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
@@ -55,6 +56,11 @@ function EmployeeCreate() {
   };
 
   const onFinish = async (values: EmployeeInterface) => {
+    const emailIsValid = await checkEmail(email || "");
+    if (!emailIsValid) {
+      setIsSubmitting(false);
+      return; // Stop the form submission if the email is invalid
+    }
     if (isSubmitting) return;
       setIsSubmitting(true);
     values.Profile = fileList[0].thumbUrl;
@@ -108,6 +114,27 @@ function EmployeeCreate() {
     }
   };
 
+  const checkEmail = async (email: string) => {
+    try {
+      const res = await CheckEmail(email);
+  
+      if (res.status === 200) {
+        if (res.data.isValid) {
+          return true; 
+        } else {
+          messageApi.error("อีเมลนี้มีอยู่ในระบบแล้ว");
+          return false;
+        }
+      } else {
+        messageApi.error(res.data.error || "ไม่สามารถตรวจสอบอีเมลได้");
+        return false;
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการตรวจสอบอีเมล");
+      return false;
+    }
+  };
+
   useEffect(() => {
     getGenders();
     getPositions();
@@ -120,7 +147,7 @@ function EmployeeCreate() {
         <h2>ลงทะเบียนพนักงาน</h2>
         <Divider />
         <Form name="basic" layout="vertical" onFinish={onFinish} autoComplete="off">
-          <Row gutter={[16, 16]}>
+          <Row gutter={[16, 0]}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item
                 label="รูปประจำตัว"
@@ -187,7 +214,7 @@ function EmployeeCreate() {
                   },
                 ]}
               >
-                <Input/>
+                <Input onChange={(event) => setEmail(event.target.value)}/>
               </Form.Item>
             </Col>
 

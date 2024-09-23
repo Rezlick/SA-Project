@@ -24,7 +24,6 @@ function Receipt() {
   const getReceipts = async () => {
     try {
       const res = await GetReceipts(); // Fetch data from the API
-
       if (res.status === 200) {
         setReceipt(res.data); // Set the data from the API response
       } else {
@@ -265,7 +264,7 @@ function Receipt() {
     {
       key: 'MemberID',
       title: 'สมาชิก',
-      render: (record) => <>{record.Member?.FirstName || "N/A"}</>,
+      render: (record) => <>{record.Member?.FirstName || "Guest"}</>,
     },
     {
       key: 'Employee',

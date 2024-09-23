@@ -4,54 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GetBooking, DeleteBookingByID } from "../../../../services/https";
 import { BookingInterface } from "../../../../interfaces/Booking";
-import { TableInterface } from "../../../../interfaces/Table";
-import { PackageInterface } from "../../../../interfaces/Package";
 import { EditOutlined, DeleteOutlined, QrcodeOutlined } from "@ant-design/icons";
-import { GetTables, GetPackages } from "../../../../services/https";
 
 function TableList() {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState<BookingInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<string>("");
-  const [qrCodeUrl , setQrCodeUrl] = useState<string>("");
-  const [ bookingid, setBookingID] = useState<number>(0);
-  const [ tableName, setTablename] = useState<TableInterface[]>([]);
-  const [ packageName, setPackageName ] = useState<PackageInterface[]>([]);
-
-  const fetchQrcode = async (id: number) => {
-    setQrCodeUrl( `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-      window.location.origin + `/customer/booking${id}`
-    )}&choe=UTF-8`)
-  }
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [tablesRes, packRes] = await Promise.all([
-        GetTables(),
-        GetPackages(),
-      ]);
-
-      if (tablesRes.status === 200) {
-        setTablename(tablesRes.data.table_name);
-      } else {
-        message.error(tablesRes.data.error || "Unable to fetch tables");
-      }
-
-      if (packRes.status === 200) {
-        setPackageName(packRes.data.name);
-      } else {
-        message.error(packRes.data.error || "Unable to fetch tables");
-      }
-
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      message.error("Error fetching data from the server");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [qrCodeLoaded, setQrCodeLoaded] = useState(false);
 
   const fetchBookingData = async () => {
     setLoading(true);
@@ -59,8 +19,6 @@ function TableList() {
       const res = await GetBooking();
       if (res.status === 200) {
         setBookingData(res.data);
-        setBookingID(res.data.ID);
-
       } else {
         message.error(res.data.error || "Unable to fetch data");
       }
@@ -73,15 +31,13 @@ function TableList() {
 
   useEffect(() => {
     fetchBookingData();
-    fetchData();
-    fetchQrcode(bookingid);
 
     const interval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString());
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [bookingid]);
+  }, []);
 
   const handleButtonClick = () => {
     navigate("/booking");
@@ -109,21 +65,25 @@ function TableList() {
   };
 
   const handleQrCodeClick = (id: number) => {
+    setLoading(true); // เริ่มสถานะการโหลด
+
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+      window.location.origin + `/customer/${id}`
+    )}&choe=UTF-8`;
+
     Modal.info({
       title: `QR Code for Booking ${id}`,
       content: (
-        <div
-          style={{
-            marginTop: "10px",
-            marginLeft: "-2px",
-            flexDirection: 'column',
-            minHeight: '200px',         // เพิ่มความสูงให้มากพอสำหรับการจัดวางกลาง
-          }}
-        >
+        <div style={{ marginTop: "10px", textAlign: "center" }}>
+          {loading && <Spin size="large" />} {/* แสดง Spin ระหว่างโหลด */}
           <img
             src={qrCodeUrl}
             alt={`QR Code for booking ${id}`}
-            style={{ width: '300px', height: '300px' }}
+            style={{ width: '300px', height: '300px', display: qrCodeLoaded ? 'block' : 'none' }}
+            onLoad={() => {
+              setLoading(false); // เมื่อ QR code โหลดเสร็จแล้ว
+              setQrCodeLoaded(true); // ตั้งค่าให้ QR code แสดง
+            }}
           />
         </div>
       ),
@@ -135,7 +95,7 @@ function TableList() {
             style={{ marginRight: 8 }}
             onClick={() => {
               Modal.destroyAll();
-              navigate(`/customer/booking/${id}`);
+              navigate(`/customer/${id}`); // ส่ง booking_id ไปยังหน้าลูกค้า
             }}
           >
             ไปยังหน้าสั่งอาหาร
@@ -147,7 +107,7 @@ function TableList() {
       ),
     });
   };
-  
+
   const columns: ColumnsType<BookingInterface> = [
     {
       title: "ID",
@@ -185,8 +145,8 @@ function TableList() {
       render: (record) => <>{record.employee?.FirstName ?? "N/A"}</>,
     },
     {
-      title: "QrCode",
-      key: "qrcode",
+      title: "Actions",
+      key: "actions",
       render: (_, record) => (
         <div>
           <Button
@@ -196,14 +156,6 @@ function TableList() {
             onClick={() => handleQrCodeClick(record.ID ?? 0)}
             className="table-list-delete-button"
           />
-        </div>
-      ),
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (_, record) => (
-        <div>
           <Button
             type="link"
             icon={<EditOutlined />}

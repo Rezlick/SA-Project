@@ -2,6 +2,8 @@ import { useState , useEffect } from "react";
 
 import { Link , useNavigate } from 'react-router-dom';
 
+import { QrcodeOutlined } from "@ant-design/icons";
+
 import { message , Card , Row , Col , Form , Input , Button , Checkbox  } from "antd";
 
 import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking} from "../../../../services/https";
@@ -289,7 +291,7 @@ function Pay() {
                                                   event.preventDefault();
                                                 }
                                               }}
-                                            style={{ border: "1px solid #ff8001" }}
+                                            style={{ border: "1px solid #ff8001" , marginBottom:"0px"}}
                                             />
                                         </Form.Item>
                                     </Col>)}
@@ -303,7 +305,8 @@ function Pay() {
                                         <Card className="card-payment">{"จำนวนลูกค้า : "}{NumberCustomer}</Card>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={6}>
-                                            <Form.Item
+                                        <Card className="card-payment">Soup</Card>
+                                            {/* <Form.Item
                                                 name="soup"
                                                 >
                                             <Input 
@@ -312,7 +315,7 @@ function Pay() {
                                                 e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
                                             }}
                                             />
-                                            </Form.Item>
+                                            </Form.Item> */}
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                         <Form.Item
@@ -398,7 +401,7 @@ function Pay() {
                     </Form>
                         {/* ปุ่มแสดง QR และยืนยันการชำระเงิน */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-                            <Button className="qr-button" onClick={handleQR}>
+                            <Button icon={<QrcodeOutlined />} className="qr-button" onClick={handleQR}>
                                 แสดง QR
                             </Button>
                             <Button disabled={isSubmitting}  className="payment-button" onClick={handleConfirmPayment}>

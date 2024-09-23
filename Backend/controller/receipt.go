@@ -6,22 +6,52 @@ import (
 	"github.com/SA_Project/entity"
 	"github.com/gin-gonic/gin"
 	"fmt"
+    "time"
 )
 
-func GetReceipts(c *gin.Context){
+// func GetReceipts(c *gin.Context){
+// 	var receipts []entity.Receipt
+// 	db := config.DB()
+	
+// 	results := db.Preload("Member").
+// 	Preload("Employee").
+// 	Preload("Coupon").
+// 	Preload("Booking").
+// 	Preload("Booking.Table").
+// 	Find(&receipts)
+// 	if results.Error != nil {
+//         c.JSON(http.StatusInternalServerError, gin.H{"error": results.Error.Error()})
+//         return
+//     }
+// 	c.JSON(http.StatusOK, &receipts)
+// }
+
+func GetReceipts(c *gin.Context) {
 	var receipts []entity.Receipt
 	db := config.DB()
-	
+
+	// โหลด TimeZone ของประเทศไทย
+	location, err := time.LoadLocation("Asia/Bangkok")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error loading location"})
+		return
+	}
+
+	// ดึงวันที่ปัจจุบันตามเขตเวลาไทย
+	today := time.Now().In(location)
+
 	results := db.Preload("Member").
-	Preload("Employee").
-	Preload("Coupon").
-	Preload("Booking").
-	Preload("Booking.Table").
-	Find(&receipts)
+		Preload("Employee").
+		Preload("Coupon").
+		Preload("Booking").
+		Preload("Booking.Table").
+		Where("DATE(created_at) = ?", today.Format("2006-01-02")). // เปรียบเทียบเฉพาะวันที่
+		Find(&receipts)
+
 	if results.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": results.Error.Error()})
-        return
-    }
+		c.JSON(http.StatusInternalServerError, gin.H{"error": results.Error.Error()})
+		return
+	}
 	c.JSON(http.StatusOK, &receipts)
 }
 

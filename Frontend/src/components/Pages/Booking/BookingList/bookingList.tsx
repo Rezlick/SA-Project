@@ -1,4 +1,4 @@
-import { Col, Row, Button, Table, message, Modal, Spin } from "antd";
+import { Col, Row, Button, Table, message, Modal } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -150,8 +150,8 @@ function TableList() {
       render: (record) => <>{record.employee?.FirstName ?? "N/A"}</>,
     },
     {
-      title: "Actions",
-      key: "actions",
+      title: "QrCode",
+      key: "qrcode",
       render: (_, record) => (
         <div>
           <Button
@@ -161,6 +161,14 @@ function TableList() {
             onClick={() => handleQrCodeClick(record.ID ?? 0)}
             className="table-list-delete-button"
           />
+        </div>
+      ),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <div>
           <Button
             type="link"
             icon={<EditOutlined />}

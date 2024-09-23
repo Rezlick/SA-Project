@@ -1,0 +1,42 @@
+.category-card{
+    border: 1px solid #854d1b;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px; /* เพิ่มมุมโค้งให้กับการ์ด */
+    transition: all 0.3s ease; /* เพิ่มการเปลี่ยนแปลงแบบนุ่มนวล */
+}
+
+.category-card:hover {
+    background-color: rgba(173, 216, 230, 0.3); /* สีฟ้าจางๆ เมื่อเมาส์ชี้ */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเมื่อโฮเวอร์ */
+    transform: translateY(-5px); /* ยกการ์ดขึ้นเมื่อโฮเวอร์ */
+}
+
+.card-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0 20px;
+}
+
+.img-titie {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เงา */
+}
+
+.h1-description {
+    margin: 0;
+    color: #666666;
+    padding-top: 20px;
+    font-size: 20px;
+}
+.button-link {
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 25px;
+}

@@ -103,7 +103,6 @@ function CreateBookingTable() {
       message.success("Table status updated successfully!");
     } catch (error) {
       message.error("Failed to update table status.");
-      console.error("Error updating table status:", error);
     }
   };
 
@@ -177,7 +176,6 @@ function CreateBookingTable() {
           navigate("/booking/booking_list");
         } catch (error) {
           message.error("Booking failed! Please try again.");
-          console.error("Booking error:", error);
         }
       },
     });
@@ -185,7 +183,6 @@ function CreateBookingTable() {
 
   const onFinishFailed = (errorInfo: any) => {
     message.error("Please correct the errors in the form.");
-    console.error("Form submission error:", errorInfo);
   };
 
   const handleBackButtonClick = () => {

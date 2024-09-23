@@ -9,6 +9,7 @@ import { OrderInterface } from "../../interfaces/Order";
 import { ReceiptInterface } from "../../interfaces/Receipt";
 
 import axios from "axios";
+import { StockInterface } from "../../interfaces/Stock";
 
 const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
@@ -413,10 +414,6 @@ async function GetSupplierName() {
     .then((res) => res)
     .catch((e) => e.response);
 }
-
-
-
-
 
 export {
   SignIn,

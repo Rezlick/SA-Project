@@ -112,3 +112,13 @@
   font-size: 18px; /* ปรับขนาดตัวอักษร */
   text-align: center; /* จัดตำแหน่งตรงกลาง */
 }
+
+.card-payment {
+  height: 35px;
+  padding: 0;
+  margin-bottom: 25px;
+
+  display: flex;         /* ใช้ Flexbox เพื่อจัดตำแหน่งเนื้อหา */
+  justify-content: center;  /* จัดให้อยู่ตรงกลางในแนวนอน */
+  align-items: center; 
+}

@@ -1,16 +1,17 @@
-import { Col, Row, Button, Table, message, Modal } from "antd";
+import { Col, Row, Button, Table, message, Modal, Spin } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GetBooking, DeleteBookingByID } from "../../../../services/https";
 import { BookingInterface } from "../../../../interfaces/Booking";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, QrcodeOutlined } from "@ant-design/icons";
 
 function TableList() {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState<BookingInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<string>("");
+  const [qrCodeLoaded, setQrCodeLoaded] = useState(false);
 
   const fetchBookingData = async () => {
     setLoading(true);
@@ -63,6 +64,50 @@ function TableList() {
     });
   };
 
+  const handleQrCodeClick = (id: number) => {
+    setLoading(true); // เริ่มสถานะการโหลด
+
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+      window.location.origin + `/customer/booking/${id}`
+    )}&choe=UTF-8`;
+
+    Modal.info({
+      title: `QR Code for Booking ${id}`,
+      content: (
+        <div style={{ marginTop: "10px", textAlign: "center" }}>
+          {loading && <Spin size="large" />} {/* แสดง Spin ระหว่างโหลด */}
+          <img
+            src={qrCodeUrl}
+            alt={`QR Code for booking ${id}`}
+            style={{ width: '300px', height: '300px', display: qrCodeLoaded ? 'block' : 'none' }}
+            onLoad={() => {
+              setLoading(false); // เมื่อ QR code โหลดเสร็จแล้ว
+              setQrCodeLoaded(true); // ตั้งค่าให้ QR code แสดง
+            }}
+          />
+        </div>
+      ),
+      footer: (
+        <div style={{ textAlign: 'right', marginTop: "20px" }}>
+          <Button
+            key="open"
+            type="primary"
+            style={{ marginRight: 8 }}
+            onClick={() => {
+              Modal.destroyAll();
+              navigate(`/customer/booking/${id}`);
+            }}
+          >
+            ไปยังหน้าสั่งอาหาร
+          </Button>
+          <Button key="ok" onClick={() => Modal.destroyAll()}>
+            OK
+          </Button>
+        </div>
+      ),
+    });
+  };
+
   const columns: ColumnsType<BookingInterface> = [
     {
       title: "ID",
@@ -104,6 +149,13 @@ function TableList() {
       key: "actions",
       render: (_, record) => (
         <div>
+          <Button
+            type="link"
+            icon={<QrcodeOutlined />}
+            danger
+            onClick={() => handleQrCodeClick(record.ID ?? 0)}
+            className="table-list-delete-button"
+          />
           <Button
             type="link"
             icon={<EditOutlined />}

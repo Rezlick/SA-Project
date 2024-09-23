@@ -11,7 +11,14 @@ function TableList() {
   const [bookingData, setBookingData] = useState<BookingInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<string>("");
-  const [qrCodeLoaded, setQrCodeLoaded] = useState(false);
+  const [qrCodeUrl , setQrCodeUrl] = useState<string>("");
+  const [ bookingid, setBookingID] = useState<number>(0);
+
+  const fetchQrcode = async (id: number) => {
+    setQrCodeUrl( `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+      window.location.origin + `/customer/${id}`
+    )}&choe=UTF-8`)
+  }
 
   const fetchBookingData = async () => {
     setLoading(true);
@@ -19,6 +26,7 @@ function TableList() {
       const res = await GetBooking();
       if (res.status === 200) {
         setBookingData(res.data);
+        setBookingID(res.data.ID);
       } else {
         message.error(res.data.error || "Unable to fetch data");
       }
@@ -31,13 +39,14 @@ function TableList() {
 
   useEffect(() => {
     fetchBookingData();
+    fetchQrcode(bookingid);
 
     const interval = setInterval(() => {
       setCurrentTime(new Date().toLocaleTimeString());
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [bookingid]);
 
   const handleButtonClick = () => {
     navigate("/booking");
@@ -65,25 +74,21 @@ function TableList() {
   };
 
   const handleQrCodeClick = (id: number) => {
-    setLoading(true); // เริ่มสถานะการโหลด
-
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-      window.location.origin + `/customer/${id}`
-    )}&choe=UTF-8`;
-
     Modal.info({
       title: `QR Code for Booking ${id}`,
       content: (
-        <div style={{ marginTop: "10px", textAlign: "center" }}>
-          {loading && <Spin size="large" />} {/* แสดง Spin ระหว่างโหลด */}
+        <div
+          style={{
+            marginTop: "10px",
+            marginLeft: "-2px",
+            flexDirection: 'column',
+            minHeight: '200px',        
+          }}
+        >
           <img
             src={qrCodeUrl}
             alt={`QR Code for booking ${id}`}
-            style={{ width: '300px', height: '300px', display: qrCodeLoaded ? 'block' : 'none' }}
-            onLoad={() => {
-              setLoading(false); // เมื่อ QR code โหลดเสร็จแล้ว
-              setQrCodeLoaded(true); // ตั้งค่าให้ QR code แสดง
-            }}
+            style={{ width: '300px', height: '300px' }}
           />
         </div>
       ),
@@ -95,7 +100,7 @@ function TableList() {
             style={{ marginRight: 8 }}
             onClick={() => {
               Modal.destroyAll();
-              navigate(`/customer/${id}`); // ส่ง booking_id ไปยังหน้าลูกค้า
+              navigate(`/customer/${id}`);
             }}
           >
             ไปยังหน้าสั่งอาหาร

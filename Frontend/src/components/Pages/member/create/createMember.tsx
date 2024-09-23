@@ -49,7 +49,6 @@ function MemberCreate() {
           setPhoneNumberInvalid(false); // Phone number is valid
           return true;
         } else {
-          form.setFieldsValue({ PhoneNumber: '' });
           messageApi.error("เบอร์โทรศัพท์นี้มีอยู่ในระบบแล้ว");
           setPhoneNumberInvalid(true); // Set invalid flag if phone number is in use
           return false;
@@ -100,7 +99,7 @@ function MemberCreate() {
         content: res.data.error,
       });
     }
-    setIsSubmitting(false);
+    setIsSubmitting(true);
   };
 
   return (

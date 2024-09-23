@@ -32,7 +32,6 @@ function EmployeeCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [positions, setPositions] = useState<PositionInterface[]>([]);
   const [genders, setGenders] = useState<GenderInterface[]>([]);
-  const [email, setEmail] = useState("");
   const [emailInvalid, setEmailInvalid] = useState(false); 
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -63,8 +62,6 @@ function EmployeeCreate() {
 
     const emailIsValid = await checkEmail(values.Email || "");
     if (!emailIsValid) {
-      form.setFieldsValue({ Email: '' });
-      setEmailInvalid(true); // Set emailInvalid to true if email is invalid
       setIsSubmitting(false);
       return;
     }
@@ -93,7 +90,7 @@ function EmployeeCreate() {
         type: "error",
         content: res.data.error,
       });
-      setIsSubmitting(false); // Enable the button again in case of failure
+      setIsSubmitting(true);
     }
   };
 
@@ -138,8 +135,8 @@ function EmployeeCreate() {
           setEmailInvalid(false); // Reset invalid flag when email is valid
           return true;
         } else {
-          form.setFieldsValue({ Email: '' });
           messageApi.error("อีเมลนี้มีอยู่ในระบบแล้ว");
+          setEmailInvalid(true)
           return false;
         }
       } else {
@@ -159,7 +156,7 @@ function EmployeeCreate() {
 
   // Handle change in email field to reset emailInvalid flag
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    form.setFieldsValue({ Email: e.target.value });
     setEmailInvalid(false); // Reset emailInvalid flag when email changes
   };
 
@@ -243,7 +240,7 @@ function EmployeeCreate() {
                   },
                 ]}
               >
-                <Input onChange={handleEmailChange} />
+                <Input type="email" onChange={handleEmailChange} />
               </Form.Item>
             </Col>
 
@@ -322,7 +319,7 @@ function EmployeeCreate() {
                     htmlType="submit" 
                     style={{backgroundColor:"#FF7D29"}} 
                     loading={isSubmitting}
-                    disabled={isSubmitting}>
+                    disabled={isSubmitting || emailInvalid || fileList.length === 0}>
                     ยืนยัน
                   </Button>
                 </Space>

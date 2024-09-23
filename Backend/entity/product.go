@@ -21,6 +21,6 @@ type Product struct {
 	Stock           []Stock  `gorm:"foreignKey:ProductID"`
 
 
-	Order_Product 		[]Order_Product `gorm:"foreignKey:product_id"`
+	Order_Product 		[]Order_Product `gorm:"foreignKey:Product_Code_ID"`
 
 }

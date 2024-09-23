@@ -1,5 +1,3 @@
-import { Link  } from 'react-router-dom';
-import { useNavigate } from "react-router-dom"; 
 import { Card, Table, Col, Row, Statistic, Button , message , Spin , Empty , Badge, } from 'antd';
 import { WalletOutlined, FileSyncOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { ReceiptInterface } from "../../../interfaces/Receipt";
@@ -24,7 +22,6 @@ function Receipt() {
   const getReceipts = async () => {
     try {
       const res = await GetReceipts(); // Fetch data from the API
-
       if (res.status === 200) {
         setReceipt(res.data); // Set the data from the API response
       } else {
@@ -158,84 +155,10 @@ function Receipt() {
     FetchTotalPrice();
   }, []);
 
-  // const paths = [
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay",
-  //   "/receipt/pay"
-  // ];
-
-  // const buttonLabels = [
-  //   "Table : F1",
-  //   "Table : F2",
-  //   "Table : F3",
-  //   "Table : F4",
-  //   "Table : F5",
-  //   "Table : S1",
-  //   "Table : S2",
-  //   "Table : S3",
-  //   "Table : S4",
-  //   "Table : E1",
-  //   "Table : E2",
-  //   "Table : E3"
-  // ];
-
-  // const tableseat = [
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 1 - 4",
-  //   ": 5 - 6",
-  //   ": 5 - 6",
-  //   ": 5 - 6",
-  //   ": 5 - 6",
-  //   ": 7 - 8",
-  //   ": 7 - 8",
-  //   ": 7 - 8"
-  // ];
-
-  // const buttons = paths.map((path, index) => (
-  //   <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ marginBottom: '16px' }}>
-  //     <Link to={path}>
-  //       <Button
-  //         // className="custom-button"
-  //         style={{
-  //           width: '100%',
-  //           height: '90px',
-  //           display: 'flex',
-  //           flexDirection: 'column',
-  //           alignItems: 'center',
-  //           justifyContent: 'center',
-  //           borderRadius: '10px',
-  //           boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-  //           padding: '10px',
-  //           border: '1px solid #d9d9d9'
-  //         }}
-  //       >
-  //         <Statistic
-  //           title={buttonLabels[index]}
-  //           value={tableseat[index]}
-  //           prefix={<UserOutlined />}
-  //           valueStyle={{ fontSize: '16px' }}
-  //         />
-  //       </Button>
-  //     </Link>
-  //   </Col>
-  // ));
-
   const columns: ColumnsType<ReceiptInterface> =[
     {
       key: 'date_time',
-      title: 'Date Time',
+      title: 'เวลา',
       // dataIndex: 'date',
       render: (record) => {
         const date = record.CreatedAt;
@@ -244,32 +167,32 @@ function Receipt() {
     },
     {
       key: 'id',
-      title: 'ID',
+      title: 'เลขบิล',
       dataIndex: 'ID',
     },
     {
       key: 'BookingID',
-      title: 'Booking',
+      title: 'เลขโต๊ะ',
       render: (record) => <>{record.Booking?.table?.table_name || "N/A"}</>,
     },
     {
       key: 'total_price',
-      title: 'Total Price',
+      title: 'ยอดสุทธิ',
       dataIndex: 'totalprice',
     },
     {
       key: 'CounponID',
-      title: 'Coupon',
+      title: 'คูปอง',
       render: (record) => <>{record.Coupon?.code || "ไม่มี"}</>,
     },
     {
       key: 'MemberID',
-      title: 'Member',
-      render: (record) => <>{record.Member?.FirstName || "N/A"}</>,
+      title: 'สมาชิก',
+      render: (record) => <>{record.Member?.FirstName || "Guest"}</>,
     },
     {
       key: 'Employee',
-      title: 'Employee',
+      title: 'พนักงาน',
       // dataIndex: 'EmployeeID',
       render: (record) => <>{record.Employee?.FirstName || "N/A"}</>,
     },
@@ -277,22 +200,28 @@ function Receipt() {
 
   return (
     <Row gutter={[16, 16]}>
-      {/* Content Section */}
       <Col span={12}>
         <Card style={{ borderRadius: '20px', padding: '0px', width: '100%', height: '55vh' }}>
-          <h2 style={{ marginTop: '-3px' }}>Receipt History</h2>
-          <Table
-            dataSource={receipt}
-            columns={columns}
-            rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
-            pagination={{ pageSize: 3 }}
-          />
+          <h2 style={{ marginTop: '-3px' }}>ประวัติการชำระเงิน</h2>
+            {/* Content Section */}
+            {loading ? (
+              <Spin tip="Loading..." className="spinContainer" />
+            ) : receipt.length === 0 ? (
+              <Empty description="No receipt data" className="emptyState" />
+            ) : (
+              <Table
+                dataSource={receipt}
+                columns={columns}
+                rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
+                pagination={{ pageSize: 3 }}
+              />
+            )}
         </Card>
       </Col>
       {/* Button Section */}
       <Col span={12} >
               <Card style={{ borderRadius: '20px', width: '100%', height: 'auto' , marginBottom:'10px'}}>
-          <h2 style={{ marginTop: '-3px' }}>Daily List Summary</h2>
+          <h2 style={{ marginTop: '-3px' }}>สรุปรายการประจำวัน</h2>
           <Row
             style={{
               display: 'flex',
@@ -352,11 +281,6 @@ function Receipt() {
           </Row>
         </Card>
         <Card style={{ borderRadius: '20px', height: 'auto' }}>
-          {/* <Card style={{ backgroundColor: "#F5F5F5", height: '100%' , borderRadius:'20px' }}>
-            <Row gutter={[16, 16]}>
-              {buttons}
-            </Row>
-          </Card> */}
           <Col xs={24}>
             <Card className="card">
               {loading ? (

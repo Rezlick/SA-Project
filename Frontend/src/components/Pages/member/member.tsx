@@ -32,7 +32,7 @@ export default function Member() {
     {
       title: "ระดับสมาชิก",
       key: "Rank",
-      render: (record) => <>{record.Rank?.Name || "N/A"}</>,
+      render: (record) => <>{record.Rank?.Name || "ไม่มี"}</>,
     },
     {
       title: "แต้มสมาชิก",
@@ -40,7 +40,7 @@ export default function Member() {
       width: "25%",
       render: (record) => {
         const currentPoints = record.Point || 0;
-        const currentRank = record.Rank?.Name || "N/A";
+        const currentRank = record.Rank?.Name || "ไม่มี";
         let maxPoints = record.Rank?.PointToUpgrade || 0;
     
         // Don't show maxPoints if the rank is "Gold"
@@ -51,7 +51,7 @@ export default function Member() {
             <Progress
               strokeColor="#FF7D29"
               percent={percentage}
-              format={() => (currentRank === "Gold" || currentRank === "N/A") ? `${currentPoints}` : `${currentPoints}/${maxPoints}`}
+              format={() => (currentRank === "Gold" || currentRank === "ไม่มี") ? `${currentPoints}` : `${currentPoints}/${maxPoints}`}
               size={[300, 20]}
             />
           </div>
@@ -62,7 +62,7 @@ export default function Member() {
     {
       title: "สมัครโดย",
       key: "Employee",
-      render: (record) => <>{record.Employee?.FirstName || "N/A"}</>,
+      render: (record) => <>{record.Employee?.FirstName || "ไม่มี"}</>,
     },
     {
       title: "",

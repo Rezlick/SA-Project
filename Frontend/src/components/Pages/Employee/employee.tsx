@@ -165,6 +165,7 @@ function Employee() {
         onCancel={() => setIsModalVisible(false)}
         okText="ลบ"
         cancelText="ยกเลิก"
+        okType="danger"
       >
         <p>คุณแน่ใจหรือว่าต้องการลบข้อมูลนี้?</p>
       </Modal>

@@ -27,17 +27,20 @@ type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function EmployeeCreate() {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+
   const [messageApi, contextHolder] = message.useMessage();
   const [positions, setPositions] = useState<PositionInterface[]>([]);
   const [genders, setGenders] = useState<GenderInterface[]>([]);
   const [email, setEmail] = useState("");
+  const [emailInvalid, setEmailInvalid] = useState(false); 
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+    setFileList(newFileList.slice(-1));
   };
 
   const onPreview = async (file: UploadFile) => {
@@ -56,14 +59,25 @@ function EmployeeCreate() {
   };
 
   const onFinish = async (values: EmployeeInterface) => {
-    const emailIsValid = await checkEmail(email || "");
+    setIsSubmitting(true); // Start submitting process
+
+    const emailIsValid = await checkEmail(values.Email || "");
     if (!emailIsValid) {
+      form.setFieldsValue({ Email: '' });
+      setEmailInvalid(true); // Set emailInvalid to true if email is invalid
       setIsSubmitting(false);
-      return; // Stop the form submission if the email is invalid
+      return;
     }
-    if (isSubmitting) return;
-      setIsSubmitting(true);
-    values.Profile = fileList[0].thumbUrl;
+
+    if (fileList.length === 0) {
+      message.error("กรุณาใส่รูปโปรไฟล์!");
+      setIsSubmitting(false); // Re-enable button
+      return;
+    }
+
+    // Continue submission if email is valid
+    values.Profile = fileList[0]?.thumbUrl || "";
+
     const res = await CreateEmployee(values);
 
     if (res.status === 201) {
@@ -79,6 +93,7 @@ function EmployeeCreate() {
         type: "error",
         content: res.data.error,
       });
+      setIsSubmitting(false); // Enable the button again in case of failure
     }
   };
 
@@ -117,11 +132,13 @@ function EmployeeCreate() {
   const checkEmail = async (email: string) => {
     try {
       const res = await CheckEmail(email);
-  
+
       if (res.status === 200) {
         if (res.data.isValid) {
-          return true; 
+          setEmailInvalid(false); // Reset invalid flag when email is valid
+          return true;
         } else {
+          form.setFieldsValue({ Email: '' });
           messageApi.error("อีเมลนี้มีอยู่ในระบบแล้ว");
           return false;
         }
@@ -140,15 +157,27 @@ function EmployeeCreate() {
     getPositions();
   }, []);
 
+  // Handle change in email field to reset emailInvalid flag
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailInvalid(false); // Reset emailInvalid flag when email changes
+  };
+
   return (
     <div>
       {contextHolder}
       <Card>
         <h2>ลงทะเบียนพนักงาน</h2>
         <Divider />
-        <Form name="basic" layout="vertical" onFinish={onFinish} autoComplete="off">
+        <Form
+          name="basic"
+          layout="vertical"
+          onFinish={onFinish}
+          autoComplete="off"
+          form={form}
+        >
           <Row gutter={[16, 0]}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item
                 label="รูปประจำตัว"
                 name="Profile"
@@ -214,7 +243,7 @@ function EmployeeCreate() {
                   },
                 ]}
               >
-                <Input onChange={(event) => setEmail(event.target.value)}/>
+                <Input onChange={handleEmailChange} />
               </Form.Item>
             </Col>
 
@@ -249,7 +278,7 @@ function EmployeeCreate() {
                   style={{ width: "100%" }}
                   options={genders.map((gender) => ({
                     value: gender.ID,
-                    label: gender.Name, 
+                    label: gender.Name,
                   }))}
                 />
               </Form.Item>

@@ -21,13 +21,14 @@ function MemberCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [ranks, setRanks] = useState<RankInterface[]>([]);
   const employeeID = localStorage.getItem("employeeID");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form] = Form.useForm();
+
+  const [phoneNumberInvalid, setPhoneNumberInvalid] = useState(false);
 
   const getRanks = async () => {
     try {
       const res = await GetRanks();
-
       if (res.status === 200) {
         setRanks(res.data);
       } else {
@@ -40,15 +41,17 @@ function MemberCreate() {
     }
   };
 
-  const checkPhone = async (number: string) => {
+  const checkPhone = async (phoneNumber: string) => {
     try {
-      const res = await CheckPhone(number);
-  
+      const res = await CheckPhone(phoneNumber);
       if (res.status === 200) {
         if (res.data.isValid) {
-          return true; // Phone number is valid
+          setPhoneNumberInvalid(false); // Phone number is valid
+          return true;
         } else {
+          form.setFieldsValue({ PhoneNumber: '' });
           messageApi.error("เบอร์โทรศัพท์นี้มีอยู่ในระบบแล้ว");
+          setPhoneNumberInvalid(true); // Set invalid flag if phone number is in use
           return false;
         }
       } else {
@@ -60,21 +63,25 @@ function MemberCreate() {
       return false;
     }
   };
-  
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    form.setFieldsValue({ PhoneNumber: e.target.value });
+    setPhoneNumberInvalid(false); // Reset invalid flag when phone changes
+  };
 
   useEffect(() => {
     getRanks();
   }, []);
 
   const onFinish = async (values: MemberInterface) => {
-    // Check if the phone number is already used
-    const phoneIsValid = await checkPhone(phoneNumber || "");
+    setIsSubmitting(true); // Start submitting process
+
+    const phoneIsValid = await checkPhone(values.PhoneNumber || "");
+    
     if (!phoneIsValid) {
       setIsSubmitting(false);
-      return; // Stop the form submission if the phone number is invalid
+      return; // Exit if phone number is invalid
     }
-    if (isSubmitting) return;
-      setIsSubmitting(true);
 
     values.EmployeeID = parseInt(employeeID || '', 10);
     const res = await CreateMember(values);
@@ -108,12 +115,7 @@ function MemberCreate() {
               <Form.Item
                 label="ชื่อจริง"
                 name="FirstName"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกชื่อ!",
-                  },
-                ]}
+                rules={[{ required: true, message: "กรุณากรอกชื่อ!" }]}
               >
                 <Input />
               </Form.Item>
@@ -123,12 +125,7 @@ function MemberCreate() {
               <Form.Item
                 label="นามสกุล"
                 name="LastName"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกนามสกุล!",
-                  },
-                ]}
+                rules={[{ required: true, message: "กรุณากรอกนามสกุล!" }]}
               >
                 <Input />
               </Form.Item>
@@ -139,22 +136,16 @@ function MemberCreate() {
                 label="เบอร์โทรศัพท์"
                 name="PhoneNumber"
                 rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกเบอร์โทรศัพท์ที่ขึ้นต้นด้วย 0 !",
-                  },
-                  {
-                    len: 10,
-                    message: "เบอร์โทรศัพท์ต้องมีความยาว 10 ตัวเลข",
-                  },
+                  { required: true, message: "กรุณากรอกเบอร์โทรศัพท์ที่ขึ้นต้นด้วย 0 !" },
+                  { len: 10, message: "เบอร์โทรศัพท์ต้องมีความยาว 10 ตัวเลข" },
                 ]}
               >
                 <Input
                   minLength={10}
                   maxLength={10}
-                  onChange={(event) => setPhoneNumber(event.target.value)}
+                  onChange={handlePhoneChange}
                   onKeyPress={(event) => {
-                    const inputValue = event.target.value;
+                    const inputValue = (event.target as HTMLInputElement).value;
                     if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
                     }
@@ -170,12 +161,7 @@ function MemberCreate() {
               <Form.Item
                 label="ระดับสมาชิก"
                 name="RankID"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณาเลือกระดับสมาชิก!",
-                  },
-                ]}
+                rules={[{ required: true, message: "กรุณาเลือกระดับสมาชิก!" }]}
               >
                 <Select
                   placeholder="เลือกระดับสมาชิก"
@@ -204,7 +190,7 @@ function MemberCreate() {
                     htmlType="submit"
                     style={{ backgroundColor: "#FF7D29" }}
                     loading={isSubmitting}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || phoneNumberInvalid} // Disable if submitting or phone is invalid
                   >
                     ยืนยัน
                   </Button>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button, Col, Row, Modal, message, Form, Card, Statistic } from "antd";
+import { useState, useEffect } from "react";
+import { Table, Button, Col, Row, Modal, message, Form, Card, Statistic, Divider } from "antd";
 import { DatabaseOutlined, ContainerOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams, Link } from "react-router-dom";
@@ -135,48 +135,59 @@ function OrderDetail() {
         <>
             <Form form={form} onFinish={onFinish}>
                 <Row>
-                    <Col style={{ marginTop: "-20px" }}>
-                        <h2>รายละเอียดออเดอร์</h2>
+                    <Col span={24} style={{ marginTop: "-20px" }}>
+                        <Card>
+                            <h2>รายละเอียดออเดอร์</h2>
+                            <Row>
+                                <Col span={5}>
+                                    <Card
+                                        style={{
+                                            boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
+                                            borderRadius: '20px',
+                                        }}>
+                                        <Statistic
+                                            // title="หมายเลขออเดอร์"
+                                            value={"หมายเลขออเดอร์: " +(order?.ID)}
+                                            valueStyle={{ color: "black" }}
+                                            suffix={
+                                                <span style={{ marginLeft: '5px' }}>
+                                                  <ContainerOutlined />
+                                                </span>
+                                              }
+                                            
+                                        />
+                                    </Card>
+                                </Col>
+                                <Col span={5}>
+                                    <Card
+                                        style={{
+                                            boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
+                                            borderRadius: '20px',
+                                            marginLeft: '20px'
+                                        }}>
+                                        <Statistic
+                                            // title="หมายเลขโต๊ะ"
+                                            value={"เลขโต๊ะ: " + (tableName)}
+                                            valueStyle={{ color: "black" }}
+                                            suffix={
+                                                <span style={{ marginLeft: '5px' }}>
+                                                  <DatabaseOutlined />
+                                                </span>
+                                              }
+                                        />
+                                    </Card>
+                                </Col>
+                            </Row>
+
+                        </Card>
+
                     </Col>
 
                 </Row>
-                <Row>
-                    <Col>
-                        <Card
-                            style={{
-                                boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
-                                borderRadius: '20px',
-                                width: '150px'
-                            }}>
-                            <Statistic
-                                title="ออเดอร์ที่"
-                                value={order?.ID}
-                                valueStyle={{ color: "black" }}
-                                prefix={<ContainerOutlined />}
-                            />
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card
-                            style={{
-                                boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
-                                borderRadius: '20px',
-                                width: '150px',
-                                marginLeft: '20px'
-                            }}>
-                            <Statistic
-                                title="หมายเลขโต๊ะ"
-                                value={tableName}
-                                valueStyle={{ color: "black" }}
-                                prefix={<DatabaseOutlined />}
-                            />
-                        </Card>
-                    </Col>
-
-                </Row>
+                <Divider />
                 <Row>
                     <Col span={24} style={{ marginTop: "20px" }}>
-                        <Table dataSource={orderproduct} columns={column} pagination={{ pageSize: 6 }} />
+                        <Table dataSource={orderproduct} columns={column} pagination={{ pageSize: 5 }} />
                     </Col>
                 </Row>
 

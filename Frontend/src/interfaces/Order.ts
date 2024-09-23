@@ -1,5 +1,5 @@
 export interface OrderInterface {
-    ID?: number;
+    ID?: number,
     BookingID?: number;
     StatusOrderID?: number;
     EmployeeID?: number;

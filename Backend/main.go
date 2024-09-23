@@ -33,6 +33,7 @@ func main() {
         r.GET("/employee/:id", controller.GetEmployeeByID)
         r.PATCH("/employee/:id", controller.UpdateEmployee)
         r.DELETE("/employee/:id", controller.DeleteEmployee)
+        r.POST("/checkEmail/:email", controller.CheckEmail)
 
         // Member Routes
         r.POST("/member", controller.CreateMember)

@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "time"
 	"net/http"
     "golang.org/x/crypto/bcrypt"
 	"github.com/SA_Project/config"
@@ -113,14 +114,42 @@ func UpdateEmployee(c *gin.Context) {
 }
 
 func DeleteEmployee(c *gin.Context) {
-   id := c.Param("id")
+    id := c.Param("id")
 
-   db := config.DB()
-   if tx := db.Exec("DELETE FROM employees WHERE id = ?", id); tx.RowsAffected == 0 {
-       c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
-       return
-   }
-   c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
+	db := config.DB()
+
+    var employee entity.Employee
+    if err := db.First(&employee, id).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Member not found"})
+        return
+    }
+
+    tx := db.Begin()
+    if tx.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to start transaction"})
+        return
+    }
+
+    defer func() {
+        if r := recover(); r != nil {
+            tx.Rollback()
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Transaction failed: "})
+        }
+    }()
+
+    // Soft delete member
+    if err := tx.Model(&employee).Update("deleted_at", time.Now()).Error; err != nil {
+        tx.Rollback()
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if err := tx.Commit().Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to commit transaction"})
+        return
+    }
+
+	c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
 }
 
 func ChangePassword(c *gin.Context) {

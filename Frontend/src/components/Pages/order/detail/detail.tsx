@@ -15,6 +15,7 @@ function OrderDetail() {
     const [statusorder, setStatusOrder] = useState<number>();
     const [tableName, setTableName] = useState<string>("");
     const [order, setOrderByID] = useState<OrderInterface[]>([]);
+    const [productcode, setProductCode] = useState<string>("");
     const [form] = Form.useForm(); // Ant Design form
     const { id } = useParams<{ id: string }>(); // Check if `id` is valid
     const employeeID = localStorage.getItem("employeeID") || "No ID found";
@@ -87,6 +88,8 @@ function OrderDetail() {
             }, 2000);
         }
     };
+    console.log("awdvwa = ", orderproduct);
+    
 
     useEffect(() => {
         fetchOrderById()
@@ -115,13 +118,13 @@ function OrderDetail() {
             title: "ประเภทสินค้า",
             key: "category_id",
             align: "center",
-            render: (record: any) => <>{record.Products?.Category_id || "N/A"}</>,
+            render: (record: any) => <>{record.Products?.Category?.category_name || "N/A"}</>,
         },
         {
             title: "ชื่ออาหาร",
             key: "product_id",
             align: "center",
-            render: (record: any) => <>{record.Products?.Product_name || "N/A"}</>,
+            render: (record: any) => <>{record.Products?.product_name || "N/A"}</>,
         },
         {
             title: "จำนวน",
@@ -147,7 +150,7 @@ function OrderDetail() {
                                         }}>
                                         <Statistic
                                             // title="หมายเลขออเดอร์"
-                                            value={"หมายเลขออเดอร์: " +(order?.ID)}
+                                            value={"เลขออเดอร์: " +(order?.ID)}
                                             valueStyle={{ color: "black" }}
                                             suffix={
                                                 <span style={{ marginLeft: '5px' }}>

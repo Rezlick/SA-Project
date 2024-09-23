@@ -272,35 +272,21 @@ func CheckMember(c *gin.Context){
 		return
 	}
 
-    if member.ID == 1 {
-        rank.Name = "None"
-        rank.Discount = 0
-        c.JSON(http.StatusOK, gin.H{
-            "isValid": true,
-            "message": "Member is valid",
-            "MemberID": member.ID,
-            "FirstName": member.FirstName,
-            "Rank": rank.Name,
-            "Discount": rank.Discount,
-        })
-        return
-    } else {
-        rankResult := db.Where("id = ?", member.RankID).First(&rank)
+    rankResult := db.Where("id = ?", member.RankID).First(&rank)
         
-        if rankResult.Error != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Member found, but unable to find rank: " + rankResult.Error.Error()})
-            return
-        }
-        c.JSON(http.StatusOK, gin.H{
-            "isValid": true,
-            "message": "Member is valid",
-            "MemberID": member.ID,
-            "FirstName": member.FirstName,
-            "Rank": rank.Name,
-            "Discount": rank.Discount,
-        })
+    if rankResult.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Member found, but unable to find rank: " + rankResult.Error.Error()})
+        return
     }
-    
+    c.JSON(http.StatusOK, gin.H{
+        "isValid": true,
+        "message": "Member is valid",
+        "MemberID": member.ID,
+        "FirstName": member.FirstName,
+        "Rank": rank.Name,
+        "Discount": rank.Discount,
+    })
+
 }
 
 func CheckPhone(c *gin.Context) {

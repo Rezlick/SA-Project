@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { MemberInterface } from "../../../../interfaces/Member";
 import { RankInterface } from "../../../../interfaces/Rank";
-import { CreateMember, GetRanks } from "../../../../services/https";
+import { CheckPhone, CreateMember, GetRanks } from "../../../../services/https";
 import { useNavigate, Link } from "react-router-dom";
 
 function MemberCreate() {
@@ -21,15 +21,15 @@ function MemberCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [ranks, setRanks] = useState<RankInterface[]>([]);
   const employeeID = localStorage.getItem("employeeID");
-
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getRanks = async () => {
     try {
-      const res = await GetRanks(); // Fetch data from the API
+      const res = await GetRanks();
 
       if (res.status === 200) {
-        setRanks(res.data); // Set the data from the API response
+        setRanks(res.data);
       } else {
         setRanks([]);
         messageApi.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
@@ -40,15 +40,45 @@ function MemberCreate() {
     }
   };
 
+  const checkPhone = async (number: string) => {
+    try {
+      const res = await CheckPhone(number);
+  
+      if (res.status === 200) {
+        if (res.data.isValid) {
+          return true; // Phone number is valid
+        } else {
+          messageApi.error("เบอร์โทรศัพท์นี้มีอยู่ในระบบแล้ว");
+          return false;
+        }
+      } else {
+        messageApi.error(res.data.error || "ไม่สามารถตรวจสอบเบอร์โทรศัพท์ได้");
+        return false;
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการตรวจสอบเบอร์โทรศัพท์");
+      return false;
+    }
+  };
+  
+
   useEffect(() => {
     getRanks();
   }, []);
 
   const onFinish = async (values: MemberInterface) => {
+    // Check if the phone number is already used
+    const phoneIsValid = await checkPhone(phoneNumber || "");
+    if (!phoneIsValid) {
+      setIsSubmitting(false);
+      return; // Stop the form submission if the phone number is invalid
+    }
     if (isSubmitting) return;
       setIsSubmitting(true);
+
     values.EmployeeID = parseInt(employeeID || '', 10);
     const res = await CreateMember(values);
+
     if (res.status === 201) {
       messageApi.open({
         type: "success",
@@ -63,6 +93,7 @@ function MemberCreate() {
         content: res.data.error,
       });
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -112,22 +143,23 @@ function MemberCreate() {
                     required: true,
                     message: "กรุณากรอกเบอร์โทรศัพท์ที่ขึ้นต้นด้วย 0 !",
                   },
+                  {
+                    len: 10,
+                    message: "เบอร์โทรศัพท์ต้องมีความยาว 10 ตัวเลข",
+                  },
                 ]}
               >
-                <Input 
-                  minLength={10} 
-                  maxLength={10} 
+                <Input
+                  minLength={10}
+                  maxLength={10}
+                  onChange={(event) => setPhoneNumber(event.target.value)}
                   onKeyPress={(event) => {
                     const inputValue = event.target.value;
-                    
-                    // Allow only digits
                     if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
                     }
-                    
-                    // Prevent input if the first character isn't 0
                     if (inputValue.length === 0 && event.key !== '0') {
-                      event.preventDefault(); // Block the input if the first digit isn't 0
+                      event.preventDefault();
                     }
                   }}
                 />
@@ -155,8 +187,6 @@ function MemberCreate() {
                 />
               </Form.Item>
             </Col>
-
-            
           </Row>
 
           <Row justify="center">
@@ -169,10 +199,10 @@ function MemberCreate() {
                     </Button>
                   </Link>
 
-                  <Button 
-                    type="primary" 
-                    htmlType="submit" 
-                    style={{backgroundColor:"#FF7D29"}} 
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ backgroundColor: "#FF7D29" }}
                     loading={isSubmitting}
                     disabled={isSubmitting}
                   >

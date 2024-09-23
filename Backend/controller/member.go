@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "gorm.io/gorm"
     "net/http"
     "github.com/gin-gonic/gin"
     "github.com/SA_Project/config"
@@ -231,7 +232,7 @@ func GetMemberCountForDay(c *gin.Context) {
 func CheckMember(c *gin.Context){
 	var member entity.Member
 	var rank entity.Rank
-	MPhone := c.Param("phonenumber")
+	MPhone := c.Param("PhoneNumber")
 
 	db := config.DB()
 
@@ -243,7 +244,7 @@ func CheckMember(c *gin.Context){
 	}
 
     if member.ID == 1 {
-        rank.Name = "Non"
+        rank.Name = "None"
         rank.Discount = 0
         c.JSON(http.StatusOK, gin.H{
             "isValid": true,
@@ -271,4 +272,34 @@ func CheckMember(c *gin.Context){
         })
     }
     
+}
+
+func CheckPhone(c *gin.Context) {
+	var member entity.Member
+	Phone := c.Param("phoneNumber")
+
+	db := config.DB()
+
+	// Perform the database query
+	result := db.Where("phone_number = ?", Phone).First(&member)
+
+	// Check if an error occurred
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		// Return error response if the query failed (excluding "record not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	// Check if the phone number exists
+	if result.RowsAffected > 0 {
+		// Phone number exists in the database
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": false, // Indicating that the phone number is already in use
+		})
+	} else {
+		// Phone number does not exist, it is valid for new registration
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": true, // Indicating that the phone number can be used
+		})
+	}
 }

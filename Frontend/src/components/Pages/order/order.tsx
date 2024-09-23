@@ -1,50 +1,34 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Table, Row, Col, Spin, Button, message } from "antd";
 import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useNavigate, Link } from "react-router-dom";
-import { GetStatusOrders, GetOrders } from "../../../services/https";
+import { Link } from "react-router-dom";
+import { GetOrders } from "../../../services/https";
 import type { ColumnsType } from "antd/es/table";
 import { OrderInterface } from "../../../interfaces/Order";
-import { StatusOrderInterface } from "../../../interfaces/StatusOrder";
 
 function Order() {
-  const [statusorder, setStatusOrders] = useState<StatusOrderInterface[]>([]);
   const [order, setOrders] = useState<OrderInterface[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const getOrders = async () => {
+  const fetchOrderData = async () => {
+    setLoading(true);
     try {
-      const res = await GetOrders(); // ดึงข้อมูลจาก API
+      const res = await GetOrders();
       if (res.status === 200) {
-        setOrders(res.data); // เซ็ตข้อมูลที่ได้จาก API
+        setOrders(res.data);
       } else {
-        setOrders([]);
-        message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+        message.error(res.data.error || "Unable to fetch data");
       }
     } catch (error) {
-      setOrders([]);
-      message.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+      message.error("Error fetching data");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getStatusOrders = async () => {
-    try {
-      const res = await GetStatusOrders(); // ดึงข้อมูลสถานะจาก API
-      if (res.status === 200) {
-        console.log("API Response:", res.data); // ตรวจสอบข้อมูลที่ได้จาก API
-        setStatusOrders(res.data.StatusName); // เซ็ตข้อมูลจาก API
-      } else {
-        setStatusOrders([]);
-        message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
-      }
-    } catch (error) {
-      setStatusOrders([]);
-      message.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
-    }
-  };
 
   useEffect(() => {
-    getStatusOrders();
-    getOrders();
+    fetchOrderData();
   }, []);
 
   const columns: ColumnsType<OrderInterface> = [
@@ -95,15 +79,13 @@ function Order() {
       title: "จัดการ",
       key: "action",
       align: "center",
-      render: (text, record) => (
+      render: (record) => (
         <Link to={`/order/detail/${record.ID}`}>
           <Button type="primary">ดูรายละเอียด</Button>
         </Link>
       ),
     },
   ];
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -113,7 +95,7 @@ function Order() {
         </Col>
       </Row>
 
-      <Table dataSource={order} columns={columns} pagination={{ pageSize: 6 }} />
+      <Table dataSource={order} columns={columns} pagination={{ pageSize: 5 }} loading={loading} />
     </>
   );
 }

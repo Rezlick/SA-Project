@@ -8,7 +8,7 @@ type Member struct{
 	gorm.Model
 	FirstName		string			
 	LastName		string			
-	PhoneNumber		string      `json:"phonenumber"`
+	PhoneNumber		string      
 	Point 			int	
 
 	// FK from Rank

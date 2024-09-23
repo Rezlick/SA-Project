@@ -19,13 +19,13 @@ function Customer() {
             setLoading(false);
             return;
         }
-    
+
         console.log("Fetching booking for ID:", id); // Add this to check ID
-    
+
         try {
             const res = await GetBookingByID(id);
             console.log("Response received:", res); // Log the response
-    
+
             if (res && res.data) {
                 console.log("Booking data:", res.data); // Log booking data
                 setBooking(res.data);
@@ -43,7 +43,6 @@ function Customer() {
             setLoading(false);
         }
     };
-    
 
     useEffect(() => {
         fetchBookingById();
@@ -53,11 +52,11 @@ function Customer() {
         return <Spin size="large" />;
     }
 
-
     return (
         <div>
-                <Row>
-                    <Card className="card-white" style={{ marginTop: '45px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', zIndex: "2" }}>
+            <Row>
+                <Col xs={2} span={6}>
+                    <Card className="card-white" style={{ marginTop: '7vh', zIndex: "2", marginLeft: '50%', maxHeight: '125px' }}>
                         <Statistic
                             value={booking?.ID}
                             prefix="หมายเลขออเดอร์ : "
@@ -74,12 +73,38 @@ function Customer() {
                             valueStyle={{ fontSize: '16px' }}
                         />
                     </Card>
-                </Row>
-                <Row>
-                    <Card style={{ marginTop: '15px' }}>
-                        {/* Additional content can go here */}
-                    </Card>
-                </Row>
+                </Col>
+            </Row>
+            <Row>
+                <Card style={{ marginTop: '15px', overflowX: 'auto', maxHeight: '150px', maxWidth: '455px', marginLeft: '4%' }}>
+                    <div style={{ display: 'flex', whiteSpace: 'nowrap', justifyContent: 'space-between' }}>
+                        {/* แสดงเนื้อถ้าไม่ใช่หมูหรือทะเล */}
+                        {packages !== "หมู,ไก่" && packages !== "ทะเล" && (
+                            <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
+                                <Card style={{ textAlign: 'center', width: '100px' }}>เนื้อ</Card>
+                            </Col>
+                        )}
+                        {/* แสดงซีฟู้ดถ้าไม่ใช่แพ็คเกจหมู */}
+                        {packages !== "หมู,ไก่" && (
+                            <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
+                                <Card style={{ textAlign: 'center', width: '100px' }}>ซีฟู้ด</Card>
+                            </Col>
+                        )}
+                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
+                            <Card style={{ textAlign: 'center', width: '100px' }}>หมู</Card>
+                        </Col>
+                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
+                            <Card style={{ textAlign: 'center', width: '100px' }}>ไก่</Card>
+                        </Col>
+                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
+                            <Card style={{ textAlign: 'center', width: '100px' }}>ผัก</Card>
+                        </Col>
+                        <Col style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth:'120px', marginRight: '4px' }}>
+                            <Card style={{ textAlign: 'center', width: '100px' }}>ของหวาน</Card>
+                        </Col>
+                    </div>
+                </Card>
+            </Row>
         </div>
     );
 }

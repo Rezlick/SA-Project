@@ -1,4 +1,4 @@
-import { ShoppingCartOutlined, DashOutlined, HomeOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, DashOutlined, HomeOutlined, SearchOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 
 function CustomerSider() {
@@ -16,7 +16,7 @@ function CustomerSider() {
             >
                 <FloatButton icon={<HomeOutlined />}/>
                 <FloatButton icon={<ShoppingCartOutlined />} />
-                <FloatButton icon={<ShoppingCartOutlined />} />
+                <FloatButton icon={<SearchOutlined />} />
             </FloatButton.Group>
         </footer>
     );

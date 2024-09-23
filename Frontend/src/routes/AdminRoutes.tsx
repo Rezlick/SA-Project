@@ -29,6 +29,23 @@ const EditBookingTable = Loadable(lazy(() => import("../components/Pages/Booking
 const Order = Loadable(lazy(() => import("../components/Pages/order/order")));
 const OrderDetail = Loadable(lazy(() => import("../components/Pages/order/detail/detail")));
 
+
+
+const ManageStock  = Loadable(lazy(() => import("../components/Pages/Managestock/Managestock")))
+const StockBeveragesAndDesserts = Loadable(lazy(() => import("../components/Pages/Managestock/stock-data/StockBeveragesAndDesserts")))
+const StockVegetable = Loadable(lazy(() => import("../components/Pages/Managestock/stock-data/StockVegetable")))
+const StockMeat = Loadable(lazy(() => import("../components/Pages/Managestock/stock-data/StockMeat")))
+const StockCondimentsAndSauce = Loadable(lazy(() => import("../components/Pages/Managestock/stock-data/StockCondimentsAndSauce")))
+const StockNoodlesAndDough = Loadable(lazy(() => import("../components/Pages/Managestock/stock-data/StockNoodlesAndDough")))
+const StockSeafood = Loadable(lazy(() => import("../components/Pages/Managestock/stock-data/StockSeafood")))
+const Supplier = Loadable(lazy(() => import("../components/Pages/Managestock/Supplier/Suppliper")))
+const EditStock = Loadable(lazy(() => import("../components/Pages/Managestock/Category/StockCategory/edit/index")))
+
+
+
+
+
+
 const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
   const dashboardRoute = {
     path: "/dashboard",
@@ -49,6 +66,7 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       element: <EditEmployee />,
     },
   ];
+
 
   const memberRoutes = [
     {
@@ -92,6 +110,80 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       path: "/order/detail/:id",
       element: <OrderDetail />
     }
+  ]
+  const ManageStocks =[
+    {
+      path: "", 
+      element: <ManageStock />,
+    }
+    ,
+    {
+      path: "Meat", 
+      element: <StockMeat />,
+      children: [
+        {
+          path: "EditStock",
+          element: <EditStock />,
+        },
+      ],
+    },
+    {
+      path: "Vegetable", 
+      element: <StockVegetable />,
+      children: [
+        {
+          path: "EditStock",
+          element: <EditStock />,
+        },
+      ],
+    },
+    {
+      path: "CondimentsAndSauce", 
+      element: <StockCondimentsAndSauce />,
+      children: [
+        {
+          path: "EditStock",
+          element: <EditStock />,
+        },
+      ],
+    },
+    {
+      path: "NoodlesAndDough", 
+      element: <StockNoodlesAndDough />,
+      children: [
+        {
+          path: "EditStock",
+          element: <EditStock />,
+        },
+      ],
+    },
+    {
+      path: "Seafood", 
+      element: <StockSeafood />,
+      children: [
+        {
+          path: "EditStock",
+          element: <EditStock />,
+        },
+      ],
+    },
+    {
+      path: "BeveragesAndDesserts", 
+      element: <StockBeveragesAndDesserts />,
+      children: [
+        {
+          path: "EditStock",
+          element: <EditStock />,
+        },
+      ],
+    }
+    ,
+    {
+      path: "Supplier", 
+      element: <Supplier />,
+    },
+
+
   ]
 
   return {
@@ -137,6 +229,11 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       {
         path: "/order",
         children: orderRoutes,
+      },
+
+      {
+        path: "/ManageStock",
+        children: ManageStocks,
       },
 
       // Employee routes, accessible only to IT role

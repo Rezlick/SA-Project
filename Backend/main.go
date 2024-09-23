@@ -56,6 +56,7 @@ func main() {
         // MemberCount Routes
         r.GET("/memberCountForCurrentMonth", controller.GetMemberCountForCurrentMonth)
         r.GET("/memberCountForDay", controller.GetMemberCountForDay)
+        r.GET("/memberCountForToday", controller.GetMemberCountForToday)
         r.GET("/memberCountForMonth", controller.GetMemberCountForMonth)
 
         // Receipt s

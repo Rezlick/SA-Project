@@ -15,12 +15,12 @@ const CustomerLayout: React.FC = () => {
     return (
         <>
             {contextHolder}
-            <Layout style={{ minHeight: "100vh" }}>
-                <Layout style={{ backgroundColor: "#FEFFD2", minHeight: "100vh" }}>
+            <Layout style={{ maxHeight: "100%" }}>
+                <Layout style={{ backgroundColor: "#FEFFD2", maxHeight: "100%" }}>
                     <Content>
-                        <div>
+                        <div style={{ position: "relative" }}>
                             <img
-                                style={{ zIndex: 0, maxHeight: "100vh", minWidth: "100%" }}
+                                style={{ zIndex: 1, maxHeight: "700px", minWidth: "100%" }}
                                 src={Background}
                                 alt="Background"
                             />
@@ -28,7 +28,13 @@ const CustomerLayout: React.FC = () => {
                                 className="logo"
                                 src={logo}
                                 alt="Logo"
-                                style={{ zIndex: 1, marginTop: "-760px" }}
+                                style={{
+                                    zIndex: 2, // เพิ่มค่า z-index ให้มากกว่า Card
+                                    position: "absolute",
+                                    top: "20px", // ปรับตำแหน่งจากด้านบน
+                                    width: '100px',
+                                    height: '100px'
+                                }}
                             />
                         </div>
                         <Card
@@ -40,10 +46,10 @@ const CustomerLayout: React.FC = () => {
                                 height: '85vh',
                                 overflow: 'auto',
                                 display: 'flex',
-                                marginLeft: '25px',
-                                marginTop: '-60px',
-                                zIndex: 1,
-                                overflowY: 'auto',
+                                marginLeft: '4vh',
+                                marginTop: '-93vh',
+                                zIndex: 1, // z-index น้อยกว่า logo
+                                overflowY: 'scroll',
                             }}
                         >
                             <div>

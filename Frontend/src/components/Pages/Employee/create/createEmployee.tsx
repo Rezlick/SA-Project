@@ -33,7 +33,6 @@ function EmployeeCreate() {
   const [positions, setPositions] = useState<PositionInterface[]>([]);
   const [genders, setGenders] = useState<GenderInterface[]>([]);
   const [emailInvalid, setEmailInvalid] = useState(false); 
-  const [profileUploaded, setprofileUploaded] = useState(false); 
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 

@@ -98,6 +98,14 @@ func main() {
         r.GET("/order/detail/:id", controller.GetOrderProductsByOrderID)
         r.GET("/product/:id", controller.GetProductsByID)
 
+        //ManageStock
+        r.GET("/Stock/:category_id", controller.GetStock)
+	   r.GET("/SupplierName", controller.GetNameSupplier)
+		r.GET("/Supplier", controller.GetdataAllSupplier)
+		r.POST("/AddStock", controller.AddStockHandler)
+		r.PUT("/UpdateStock", controller.UpdateStock)
+        r.GET("/GetApiOrder/:product_code_id",controller.GetProductsByID)
+
 }
 
     r.GET("/", func(c *gin.Context) {

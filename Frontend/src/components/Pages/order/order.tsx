@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message } from "antd";
+import { Table, Row, Col, Spin, Button, message, Divider } from "antd";
 import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetOrders } from "../../../services/https";
 import type { ColumnsType } from "antd/es/table";
 import { OrderInterface } from "../../../interfaces/Order";
+import dayjs from "dayjs";
 
 function Order() {
   const [order, setOrders] = useState<OrderInterface[]>([]);
@@ -39,6 +40,14 @@ function Order() {
       align: "center",
     },
     {
+      title: 'เวลาที่สั่ง',
+      key: 'date_time',
+      render: (record) => {
+        const date = record.CreatedAt;
+        return <p>{dayjs(date).format("HH:mm : DD MMM YYYY")}</p>;
+      },
+    },
+    {
       title: "หมายเลขโต๊ะ",
       key: "table_type",
       align: "center",
@@ -59,7 +68,7 @@ function Order() {
               </div>
             ) : (
               <Spin
-                indicator={<LoadingOutlined style={{ fontSize: '20px' } } />}
+                indicator={<LoadingOutlined style={{ fontSize: '20px' }} />}
                 tip="รอเสิร์ฟ..."
               >
                 <div style={{ height: 40 }}></div>
@@ -90,12 +99,16 @@ function Order() {
   return (
     <>
       <Row>
-        <Col style={{ marginTop: "-20px" }}>
-          <h2>การเสิร์ฟออเดอร์</h2>
+        <Col span={12} style={{ marginTop: "-10px", marginBottom: "-5px"}}>
+          <h2>รายการออเดอร์</h2>
         </Col>
       </Row>
-
-      <Table dataSource={order} columns={columns} pagination={{ pageSize: 5 }} loading={loading} />
+      <Divider/>
+      <Row>
+        <Col span={24} style={{ marginTop: "15px"}}>
+          <Table dataSource={order} columns={columns} pagination={{ pageSize: 5 }} loading={loading} />
+        </Col>
+      </Row>
     </>
   );
 }

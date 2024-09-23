@@ -6,6 +6,8 @@ import { message , Card , Row , Col , Form , Input , Button , Checkbox  } from "
 
 import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking} from "../../../../services/https";
 
+import  PromtPay  from "../../../../assets/PromptPay-logo.png"
+
 import './pay.css';
 import { ReceiptInterface } from "../../../../interfaces/Receipt";
 
@@ -39,7 +41,7 @@ function Pay() {
     const [RankDiscount, setRankDiscount] = useState<number>(0);
     
     const EmployeeID = localStorage.getItem("employeeID") ;
-
+    
     const check = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setChecked(e.target.checked);
       };
@@ -94,7 +96,7 @@ function Pay() {
           } else {
             message.error("ไม่มี \"สมาชิก\" อยู่ในระบบ");
             setFirstName("Guest")
-            setRankName("None")
+            setRankName("ไม่มี")
             setRateDiscount(0)
           }
     }
@@ -224,11 +226,9 @@ function Pay() {
     return (
         <>
         <Row >
-            <Col xs={24} sm={24} md={16} lg={12} xl={24}>
+            <Col xs={24} sm={24} md={16} lg={12} xl={showQR ? 18 : 24}>
                 <Card style={{
-                    width: 'auto',
-                    padding: '15px',
-                    borderRadius: '30px',
+                    borderRadius: '10px',
                 }}>
                     {/* ปุ่มกลับ */}
                     <Row style={{marginBottom:"20px"}}>
@@ -269,7 +269,7 @@ function Pay() {
                                     <Col xs={24} sm={24} md={16} lg={12} xl={8}>
                                         <Card className="card-payment">{"แพ็คเกจ : "}{Package}</Card>
                                     </Col>
-                                    { checked && (<Col xs={24} sm={24} md={16} lg={12} xl={7}>
+                                    { checked && (<Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                         <Form.Item
                                             label="Phone"
                                             name="input_phone"
@@ -299,7 +299,7 @@ function Pay() {
                                     <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
                                         <Card className="card-payment">{"ระดับสมาชิก : "}{RankName}</Card>
                                     </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 5 : 8}>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
                                         <Card className="card-payment">{"จำนวนลูกค้า : "}{NumberCustomer}</Card>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={6}>
@@ -398,11 +398,9 @@ function Pay() {
                     </Form>
                         {/* ปุ่มแสดง QR และยืนยันการชำระเงิน */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-                                {/* <Link to="/receipt/pay/qr"> */}
-                                    <Button className="qr-button" onClick={handleQR}>
-                                        แสดง QR
-                                    </Button>
-                                {/* </Link> */}
+                            <Button className="qr-button" onClick={handleQR}>
+                                แสดง QR
+                            </Button>
                             <Button disabled={isSubmitting}  className="payment-button" onClick={handleConfirmPayment}>
                                 ยืนยัน (การชำระเงิน)
                             </Button>
@@ -410,23 +408,32 @@ function Pay() {
 
                 </Card>
             </Col>    
-            <Col>
-                {showQR && (
-                    <Card style={{
-                        padding: '25px',
-                        margin: '40px auto',
-                        borderRadius: '30px',
+            {showQR && (<Col xs={24} sm={24} md={16} lg={12} xl={6}>
+                <Card
+                    style={{
+                        borderRadius: '10px',
                         justifyContent: 'center',
                         alignItems: 'center',
                         display: 'flex',
-                    }}>
-                        <h1 style={{marginTop:'-3px' , justifyContent:'center' , display:'flex' }}>QR สำหรับชำระเงิน </h1>
-                        <Card>
-                        <img src={"https://promptpay.io/0612169735/5"} style={{ width: '400px', height: '400px', borderRadius: '10px' }}/>
-                        </Card>
-                    </Card>
-                )}
-            </Col>
+                        flexDirection: 'column', // จัดแนวให้เป็นแนวตั้งเพื่อให้ img อยู่บนล่างกัน
+                        textAlign: 'center', // จัดข้อความ (และ img) ให้อยู่ตรงกลางแนวนอน
+                    }}
+                    >
+                    <img
+                        src={PromtPay}
+                        style={{ width: '200px', height: '70px' }} // เพิ่ม margin เพื่อเว้นระยะระหว่าง img สองตัว
+                    />
+                    <img
+                        src={`https://promptpay.io/0648312668/${NetTotal}`}
+                        style={{ width: '250px', height: '250px' }}
+                    />
+                    <Col xs={24} sm={24} md={16} lg={12} xl={24}>
+                        <Card className="card-promtpay">ชื่อบัญชี : นาย ธนวิทย์</Card>
+                        <Card className="card-promtpay">เบอร์ : 064 831 2668</Card>
+                        <Card className="card-promtpay">{"ยอดรวม : "}{NetTotal}{" บาท"}</Card>
+                    </Col>
+                </Card>
+            </Col>)}
         </Row>
         </>
     );

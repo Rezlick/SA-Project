@@ -38,7 +38,27 @@ func SetupDatabase() {
       &entity.TableStatus{},
       &entity.Package{},
       &entity.Status_Order{},
+      &entity.Order{},
+      &entity.Order_Product{},
+      &entity.Product{},
 	)
+
+   orderproduct1 := entity.Order_Product{Quantity: 3, OrderID:1, ProductID: 1}
+   orderproduct2 := entity.Order_Product{Quantity: 5, OrderID:1, ProductID: 2}
+   orderproduct3 := entity.Order_Product{Quantity: 1, OrderID:1, ProductID: 3}
+   orderproduct4 := entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 1}
+   orderproduct5 := entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 3}
+   orderproduct6 := entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 2}
+   orderproduct7 := entity.Order_Product{Quantity: 1, OrderID: 3, ProductID: 3}
+
+   product1 := entity.Product{Product_code_id: "A001", Product_name: "เนื้อวัว", Category_id: "เนื้อ", EmployeeID: 1}
+   product2 := entity.Product{Product_code_id: "A002", Product_name: "เนื้อหมู", Category_id: "เนื้อ", EmployeeID: 1}
+   product3 := entity.Product{Product_code_id: "C001", Product_name: "น้ำโค้ก", Category_id: "น้ำ", EmployeeID: 1}
+
+   order1 := entity.Order{BookingID: 1, Status_OrderID: 2}
+   order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
+   order3 := entity.Order{BookingID: 3, Status_OrderID: 2}
+
 
    MemberGuest := entity.Member{FirstName: "Guest", LastName: "User",PhoneNumber: "0"}
 
@@ -146,6 +166,22 @@ func SetupDatabase() {
 
    db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
    db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
+
+   db.FirstOrCreate(&order1, &entity.Order{BookingID: 1, Status_OrderID: 2})
+   db.FirstOrCreate(&order2, &entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1})
+   db.FirstOrCreate(&order3, &entity.Order{BookingID: 3, Status_OrderID: 2})
+
+   db.FirstOrCreate(&orderproduct1, &entity.Order_Product{Quantity: 3, OrderID:1, ProductID: 1})
+   db.FirstOrCreate(&orderproduct2, &entity.Order_Product{Quantity: 5, OrderID:1, ProductID: 2})
+   db.FirstOrCreate(&orderproduct3, &entity.Order_Product{Quantity: 1, OrderID:1, ProductID: 3})
+   db.FirstOrCreate(&orderproduct4, &entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 1})
+   db.FirstOrCreate(&orderproduct5, &entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 3})
+   db.FirstOrCreate(&orderproduct6, &entity.Order_Product{Quantity: 1, OrderID:2, ProductID: 2})
+   db.FirstOrCreate(&orderproduct7, &entity.Order_Product{Quantity: 1, OrderID: 3, ProductID: 3})
+
+   db.FirstOrCreate(&product1, &entity.Product{Product_code_id: "A001", Product_name: "เนื้อวัว", Category_id: "เนื้อ", EmployeeID: 1})
+   db.FirstOrCreate(&product2, &entity.Product{Product_code_id: "A002", Product_name: "เนื้อหมู", Category_id: "เนื้อ", EmployeeID: 1})
+   db.FirstOrCreate(&product3, &entity.Product{Product_code_id: "C001", Product_name: "น้ำโค้ก", Category_id: "น้ำ", EmployeeID: 1})
 
    hashedPassword, _ := HashPassword("12345")
 

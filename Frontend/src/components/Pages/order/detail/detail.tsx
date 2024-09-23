@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button, Col, Row, Modal, message, Form, Card, Statistic } from "antd";
+import { useState, useEffect } from "react";
+import { Table, Button, Col, Row, Modal, message, Form, Card, Statistic, Divider } from "antd";
 import { DatabaseOutlined, ContainerOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { OrderProductInterface } from "../../../../interfaces/OrderProduct";
 import { GetOrderProductsByOrderID } from "../../../../services/https";
 import { OrderInterface } from "../../../../interfaces/Order";
-import { ProductInterface } from "../../../../interfaces/Product";
-import { GetProductsByID, UpdateOrder, GetOrderByID } from "../../../../services/https";
+import { UpdateOrder, GetOrderByID } from "../../../../services/https";
 
 function OrderDetail() {
     const navigate = useNavigate();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [orderproduct, setOrderProductByOrderID] = useState<OrderProductInterface[]>([]);
-    const [product, setProductsByID] = useState<ProductInterface[]>([]);
+    const [statusorder, setStatusOrder] = useState<number>();
+    const [tableName, setTableName] = useState<string>("");
     const [order, setOrderByID] = useState<OrderInterface[]>([]);
     const [form] = Form.useForm(); // Ant Design form
     const { id } = useParams<{ id: string }>(); // Check if `id` is valid
     const employeeID = localStorage.getItem("employeeID") || "No ID found";
     const [isSubmitting, setIsSubmitting] = useState(false); // Track button state
 
-    console.log("employee ID =", employeeID);
 
     const onFinish = async (values: OrderInterface) => {
         values.EmployeeID = Number(employeeID);
@@ -51,35 +50,26 @@ function OrderDetail() {
         }
     };
 
-    const getOrderByID = async (id: string) => {
-        let res = await GetOrderByID(id);
-        if (res.status === 200) {
-            form.setFieldsValue({
-                StatusOrderID: res.data.StatusOrderID,
-                BookingID: res.data.BookingID,
-            });
-            setOrderByID(res.data);
-        } else {
-            message.error("ไม่พบข้อมูล");
-            setTimeout(() => {
-                navigate("/order");
-            }, 2000);
+    const fetchOrderById = async () => {
+        if (!id) {
+            message.error("Invalid Order ID!");
+            return;
         }
-    };
 
-    const getProductByID = async (id: string) => {
-        let res = await GetProductsByID(id);
-        if (res.status === 200) {
-            form.setFieldsValue({
-                ProductName: res.data.ProductName,
-                CategoryID: res.data.CategoryID,
-            });
-            setProductsByID(res.data);
-        } else {
-            message.error("ไม่พบข้อมูล");
-            setTimeout(() => {
-                navigate("/order");
-            }, 2000);
+        try {
+            const res = await GetOrderByID(id);
+            if (res && res.data) {
+                setOrderByID(res.data);
+                setStatusOrder(res.data.Status_Order?.ID ?? "N/A");
+                setTableName(res.data.Booking?.table?.table_name ?? "N/A");
+            } else {
+                throw new Error("Failed to fetch Order data.");
+            }
+        } catch (error) {
+            const errorMessage =
+                (error as Error).message || "An unknown error occurred.";
+            console.error("Error fetching Order data:", error);
+            message.error("Failed to fetch Order data: " + errorMessage);
         }
     };
 
@@ -99,12 +89,11 @@ function OrderDetail() {
     };
 
     useEffect(() => {
+        fetchOrderById()
         if (id) {
             getOrderProductByOrderID(id);
-            getProductByID(id);
-            getOrderByID(id);
         }
-    }, [id, order.Status_Order?.ID]);
+    }, [id, statusorder]);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -136,7 +125,7 @@ function OrderDetail() {
         },
         {
             title: "จำนวน",
-            dataIndex: "quantity",
+            dataIndex: "Quantity",
             key: "quantity",
             align: "center",
         },
@@ -146,48 +135,59 @@ function OrderDetail() {
         <>
             <Form form={form} onFinish={onFinish}>
                 <Row>
-                    <Col style={{ marginTop: "-20px" }}>
-                        <h2>รายละเอียดออเดอร์</h2>
+                    <Col span={24} style={{ marginTop: "-20px" }}>
+                        <Card>
+                            <h2>รายละเอียดออเดอร์</h2>
+                            <Row>
+                                <Col span={5}>
+                                    <Card
+                                        style={{
+                                            boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
+                                            borderRadius: '20px',
+                                        }}>
+                                        <Statistic
+                                            // title="หมายเลขออเดอร์"
+                                            value={"หมายเลขออเดอร์: " +(order?.ID)}
+                                            valueStyle={{ color: "black" }}
+                                            suffix={
+                                                <span style={{ marginLeft: '5px' }}>
+                                                  <ContainerOutlined />
+                                                </span>
+                                              }
+                                            
+                                        />
+                                    </Card>
+                                </Col>
+                                <Col span={5}>
+                                    <Card
+                                        style={{
+                                            boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
+                                            borderRadius: '20px',
+                                            marginLeft: '20px'
+                                        }}>
+                                        <Statistic
+                                            // title="หมายเลขโต๊ะ"
+                                            value={"เลขโต๊ะ: " + (tableName)}
+                                            valueStyle={{ color: "black" }}
+                                            suffix={
+                                                <span style={{ marginLeft: '5px' }}>
+                                                  <DatabaseOutlined />
+                                                </span>
+                                              }
+                                        />
+                                    </Card>
+                                </Col>
+                            </Row>
+
+                        </Card>
+
                     </Col>
 
                 </Row>
-                <Row>
-                    <Col>
-                        <Card
-                            style={{
-                                boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
-                                borderRadius: '20px',
-                                width: '150px'
-                            }}>
-                            <Statistic
-                                title="ออเดอร์ที่"
-                                value={id}
-                                valueStyle={{ color: "black" }}
-                                prefix={<ContainerOutlined />}
-                            />
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card
-                            style={{
-                                boxShadow: "rgba(100, 100, 111, 0) 0px 7px 29px 0px",
-                                borderRadius: '20px',
-                                width: '150px',
-                                marginLeft: '20px'
-                            }}>
-                            <Statistic
-                                title="หมายเลขโต๊ะ"
-                                value={order.Booking?.table?.table_name}
-                                valueStyle={{ color: "black" }}
-                                prefix={<DatabaseOutlined />}
-                            />
-                        </Card>
-                    </Col>
-
-                </Row>
+                <Divider />
                 <Row>
                     <Col span={24} style={{ marginTop: "20px" }}>
-                        <Table dataSource={orderproduct} columns={column} pagination={{ pageSize: 6 }} />
+                        <Table dataSource={orderproduct} columns={column} pagination={{ pageSize: 5 }} />
                     </Col>
                 </Row>
 
@@ -203,13 +203,13 @@ function OrderDetail() {
                             type="primary"
                             size="large"
                             style={{
-                                backgroundColor: order.Status_Order?.ID === 1 ? 'rgba(255, 255, 255, 0.8)' : '#4CAF50',
-                                borderColor: order.Status_Order?.ID === 1 ? 'rgba(204, 204, 204, 0.8)' : '#4CAF50',
-                                color: order.Status_Order?.ID === 1 ? 'rgba(0, 0, 0, 0.5)' : '#FFFFFF',
-                                opacity: order.Status_Order?.ID === 1 ? 0.5 : 1,
+                                backgroundColor: statusorder === 1 ? 'rgba(255, 255, 255, 0.8)' : '#4CAF50',
+                                borderColor: statusorder === 1 ? 'rgba(204, 204, 204, 0.8)' : '#4CAF50',
+                                color: statusorder === 1 ? 'rgba(0, 0, 0, 0.5)' : '#FFFFFF',
+                                opacity: statusorder === 1 ? 0.5 : 1,
                             }}
                             onClick={showModal}
-                            disabled={order.Status_Order?.ID === 1} // Disable the button if Status_order?.ID is 1
+                            disabled={statusorder === 1} // Disable the button if Status_order?.ID is 1
                         >
                             ยืนยันการเสิร์ฟอาหาร
                         </Button>
@@ -217,31 +217,14 @@ function OrderDetail() {
                 </Row>
 
                 <Modal
-                    title={<span style={{ fontSize: '24px' }}>ยืนยันการเสิร์ฟ</span>}
-                    visible={isModalVisible}
+                    title="ยืนยันการเสิร์ฟอาหาร?"
+                    open={isModalVisible}
+                    onOk={() => form.submit()}
                     onCancel={handleCancel}
-                    footer={[
-                        <Button key="back" size="small" onClick={handleCancel} style={{ height: '40px', width: '80px', marginTop: '5px' }}>
-                            ยกเลิก
-                        </Button>,
-                        <Button
-                            key="submit"
-                            type="primary"
-                            size="small"
-                            style={{ height: '40px', width: '80px' }}
-                            onClick={() => form.submit()}  // Submit the form
-                            disabled={isSubmitting}  // Disable if it's submitting
-                        >
-                            ยืนยัน
-                        </Button>,
-                    ]}
-                    width={600} // Set custom width
-                    centered // Ensure it's centered
-                    style={{
-                        top: -30, // You can adjust the vertical positioning
-                    }}
-                >
-                    <p style={{ fontSize: '18px' }}>ยืนยันการเสิร์ฟอาหารหรือไม่?</p> {/* Adjust text size if needed */}
+                    okText="ยืนยัน"
+                    cancelText="ยกเลิก"
+                    okButtonProps={{ disabled: isSubmitting }}>
+                    <p>ยืนยันการเสิร์ฟใช่หรือไม่</p>
                 </Modal>
 
             </Form>

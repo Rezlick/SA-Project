@@ -33,14 +33,16 @@ func main() {
         r.GET("/employee/:id", controller.GetEmployeeByID)
         r.PATCH("/employee/:id", controller.UpdateEmployee)
         r.DELETE("/employee/:id", controller.DeleteEmployee)
+        r.POST("/checkEmail/:email", controller.CheckEmail)
 
         // Member Routes
         r.POST("/member", controller.CreateMember)
         r.GET("/members", controller.GetMembers)
-        r.POST("/api/check-member/:phonenumber", controller.CheckMember)
+        r.POST("/api/check-member/:PhoneNumber", controller.CheckMember)
         r.GET("/member/:id", controller.GetMemberByID)
         r.PATCH("/member/:id", controller.UpdateMember)
         r.DELETE("/member/:id", controller.DeleteMember)
+        r.POST("/checkPhone/:phoneNumber", controller.CheckPhone)
 
         // Gender Routes
         r.GET("/genders", controller.GetGenders)

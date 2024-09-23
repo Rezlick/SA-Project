@@ -63,6 +63,13 @@ async function DeleteEmployeeByID(id: string | undefined) {
     .catch((e) => e.response);
 }
 
+async function CheckEmail(email: string) {
+  return await axios
+  .post(`${apiUrl}/checkEmail/${email}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
 async function CreateMember(data: MemberInterface) {
   return await axios
     .post(`${apiUrl}/member`, data, requestOptions)
@@ -77,9 +84,16 @@ async function GetMembers() {
     .catch((e) => e.response);
 }
 
-async function CheckMembers(phonenumber: string) {
+async function CheckMembers(PhoneNumber: string) {
   return await axios
-  .post(`${apiUrl}/api/check-member/${phonenumber}`, requestOptions)
+  .post(`${apiUrl}/api/check-member/${PhoneNumber}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
+async function CheckPhone(phoneNumber: string) {
+  return await axios
+  .post(`${apiUrl}/checkPhone/${phoneNumber}`, requestOptions)
   .then((res) => res)
   .catch((e) => e.response);
 }
@@ -406,4 +420,6 @@ export {
   GetOrderProducts,
   GetOrderProductsByOrderID,
   GetProductsByID,
+  CheckPhone,
+  CheckEmail,
 };

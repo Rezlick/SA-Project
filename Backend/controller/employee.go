@@ -1,11 +1,13 @@
 package controller
 
 import (
+    "time"
 	"net/http"
     "golang.org/x/crypto/bcrypt"
 	"github.com/SA_Project/config"
 	"github.com/SA_Project/entity"
 	"github.com/gin-gonic/gin"
+    "gorm.io/gorm"
 )
 
 func CreateEmployee(c *gin.Context) {
@@ -113,14 +115,42 @@ func UpdateEmployee(c *gin.Context) {
 }
 
 func DeleteEmployee(c *gin.Context) {
-   id := c.Param("id")
+    id := c.Param("id")
 
-   db := config.DB()
-   if tx := db.Exec("DELETE FROM employees WHERE id = ?", id); tx.RowsAffected == 0 {
-       c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
-       return
-   }
-   c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
+	db := config.DB()
+
+    var employee entity.Employee
+    if err := db.First(&employee, id).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Member not found"})
+        return
+    }
+
+    tx := db.Begin()
+    if tx.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to start transaction"})
+        return
+    }
+
+    defer func() {
+        if r := recover(); r != nil {
+            tx.Rollback()
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Transaction failed: "})
+        }
+    }()
+
+    // Soft delete member
+    if err := tx.Model(&employee).Update("deleted_at", time.Now()).Error; err != nil {
+        tx.Rollback()
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if err := tx.Commit().Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to commit transaction"})
+        return
+    }
+
+	c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
 }
 
 func ChangePassword(c *gin.Context) {
@@ -176,4 +206,34 @@ func ChangePassword(c *gin.Context) {
 
     // Respond with success message
     c.JSON(http.StatusOK, gin.H{"message": "เปลี่ยนรหัสผ่านสำเร็จ"})
+}
+
+func CheckEmail(c *gin.Context) {
+	var employee entity.Employee
+	Email := c.Param("email")
+
+	db := config.DB()
+
+	// Perform the database query
+	result := db.Where("email = ?", Email).First(&employee)
+
+	// Check if an error occurred
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		// Return error response if the query failed (excluding "record not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	// Check if the phone number exists
+	if result.RowsAffected > 0 {
+		// Phone number exists in the database
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": false, // Indicating that the phone number is already in use
+		})
+	} else {
+		// Phone number does not exist, it is valid for new registration
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": true, // Indicating that the phone number can be used
+		})
+	}
 }

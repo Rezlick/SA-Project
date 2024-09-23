@@ -1,6 +1,8 @@
 package controller
 
 import (
+    "time"
+    "gorm.io/gorm"
     "net/http"
     "github.com/gin-gonic/gin"
     "github.com/SA_Project/config"
@@ -112,10 +114,38 @@ func DeleteMember(c *gin.Context) {
     id := c.Param("id")
 
 	db := config.DB()
-	if tx := db.Exec("DELETE FROM members WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
-		return
-	}
+
+    var member entity.Member
+    if err := db.First(&member, id).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Member not found"})
+        return
+    }
+
+    tx := db.Begin()
+    if tx.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to start transaction"})
+        return
+    }
+
+    defer func() {
+        if r := recover(); r != nil {
+            tx.Rollback()
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Transaction failed: "})
+        }
+    }()
+
+    // Soft delete member
+    if err := tx.Model(&member).Update("deleted_at", time.Now()).Error; err != nil {
+        tx.Rollback()
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if err := tx.Commit().Error; err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to commit transaction"})
+        return
+    }
+
 	c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
 }
 
@@ -231,7 +261,7 @@ func GetMemberCountForDay(c *gin.Context) {
 func CheckMember(c *gin.Context){
 	var member entity.Member
 	var rank entity.Rank
-	MPhone := c.Param("phonenumber")
+	MPhone := c.Param("PhoneNumber")
 
 	db := config.DB()
 
@@ -243,7 +273,7 @@ func CheckMember(c *gin.Context){
 	}
 
     if member.ID == 1 {
-        rank.Name = "Non"
+        rank.Name = "None"
         rank.Discount = 0
         c.JSON(http.StatusOK, gin.H{
             "isValid": true,
@@ -272,3 +302,34 @@ func CheckMember(c *gin.Context){
     }
     
 }
+
+func CheckPhone(c *gin.Context) {
+	var member entity.Member
+	Phone := c.Param("phoneNumber")
+
+	db := config.DB()
+
+	// Perform the database query
+	result := db.Where("phone_number = ?", Phone).First(&member)
+
+	// Check if an error occurred
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		// Return error response if the query failed (excluding "record not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+		return
+	}
+
+	// Check if the phone number exists
+	if result.RowsAffected > 0 {
+		// Phone number exists in the database
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": false, // Indicating that the phone number is already in use
+		})
+	} else {
+		// Phone number does not exist, it is valid for new registration
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": true, // Indicating that the phone number can be used
+		})
+	}
+}
+

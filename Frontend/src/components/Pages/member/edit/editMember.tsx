@@ -32,7 +32,7 @@ function MemberEdit() {
       form.setFieldsValue({
         FirstName: res.data.FirstName,
         LastName: res.data.LastName,
-        PhoneNumber: res.data.phonenumber,
+        PhoneNumber: res.data.PhoneNumber,
         RankID: res.data.RankID,
       });
     } else {

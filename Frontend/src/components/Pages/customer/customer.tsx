@@ -19,10 +19,15 @@ function Customer() {
             setLoading(false);
             return;
         }
-
+    
+        console.log("Fetching booking for ID:", id); // Add this to check ID
+    
         try {
             const res = await GetBookingByID(id);
+            console.log("Response received:", res); // Log the response
+    
             if (res && res.data) {
+                console.log("Booking data:", res.data); // Log booking data
                 setBooking(res.data);
                 setTableName(res.data.table?.table_name ?? "N/A");
                 setPackages(res.data.package?.name ?? "N/A");
@@ -38,6 +43,7 @@ function Customer() {
             setLoading(false);
         }
     };
+    
 
     useEffect(() => {
         fetchBookingById();
@@ -47,9 +53,9 @@ function Customer() {
         return <Spin size="large" />;
     }
 
+
     return (
         <div>
-            <Card className="card">
                 <Row>
                     <Card className="card-white" style={{ marginTop: '45px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', zIndex: "2" }}>
                         <Statistic
@@ -74,7 +80,6 @@ function Customer() {
                         {/* Additional content can go here */}
                     </Card>
                 </Row>
-            </Card>
         </div>
     );
 }

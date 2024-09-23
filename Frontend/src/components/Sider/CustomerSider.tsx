@@ -1,6 +1,5 @@
-import { CommentOutlined, CustomerServiceOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, DashOutlined, HomeOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
-import { useState } from "react";
 
 function CustomerSider() {
 
@@ -13,10 +12,11 @@ function CustomerSider() {
                 style={{
                     insetInlineEnd: 24,
                 }}
-                icon={<CustomerServiceOutlined />}
+                icon={<DashOutlined />}
             >
-                <FloatButton />
-                <FloatButton icon={<CommentOutlined />} />
+                <FloatButton icon={<HomeOutlined />}/>
+                <FloatButton icon={<ShoppingCartOutlined />} />
+                <FloatButton icon={<ShoppingCartOutlined />} />
             </FloatButton.Group>
         </footer>
     );

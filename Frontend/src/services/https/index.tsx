@@ -162,6 +162,13 @@ async function GetMemberCountForDay(date: string) {
     .catch((e) => e.response);
 }
 
+async function GetMemberCountForToday() {
+  return await axios
+    .get(`${apiUrl}/memberCountForToday`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 async function GetReceipts() {
   return await axios
   .get(`${apiUrl}/receipt`, requestOptions)
@@ -468,4 +475,5 @@ export {
   AddStock,
   UpdateStock,
   GetSupplierName,
+  GetMemberCountForToday,
 };

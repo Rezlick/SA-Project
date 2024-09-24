@@ -1,13 +1,13 @@
 import StockCategory from "../Category/StockCategory/StockCategory";
 import useStockData from "../../../..//Hook/useStockData";
-
 export default function StockSeafood() {
-  const SeafoodData = useStockData(3);
+  const id = 3;
+  const SeafoodData = useStockData(id);
   return (
     <StockCategory
-      categoryTitle="อาหารทะเล (Seafood)"
+      categoryTitle="อาหารทะเล"
       initialData={SeafoodData}
-      categoryID = {3}
+      categoryID = {id}
       path = {"Seafood"}
     />
   );

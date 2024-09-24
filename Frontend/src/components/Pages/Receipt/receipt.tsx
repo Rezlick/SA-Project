@@ -286,7 +286,7 @@ function Receipt() {
               {loading ? (
                 <Spin tip="Loading..." className="spinContainer" />
               ) : tables.length === 0 ? (
-                <Empty description="No tables available" className="emptyState" />
+                <Empty description="No booking data" className="emptyState" />
               ) : (
                 <Row gutter={[16, 8]} justify="center" align="middle">
                   {tables.map((table) => {

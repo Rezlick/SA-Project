@@ -176,6 +176,13 @@ async function GetMemberCountByReceiptToday() {
     .catch((e) => e.response);
 }
 
+async function GetNetIncomeForCurrentMonth() {
+  return await axios
+    .get(`${apiUrl}/getNetIncomeForCurrentMonth`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 // Receipt
 
 async function GetReceipts() {
@@ -508,4 +515,5 @@ export {
   GetMemberCountForToday,
   GetProductByCodeID,
   GetMemberCountByReceiptToday,
+  GetNetIncomeForCurrentMonth,
 };

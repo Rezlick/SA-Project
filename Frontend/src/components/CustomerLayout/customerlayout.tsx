@@ -16,12 +16,12 @@ const CustomerLayout: React.FC = () => {
     return (
         <>
             {contextHolder}
-            <Layout style={{ maxHeight: "100%" }}>
-                <Layout style={{ backgroundColor: "#FEFFD2", maxHeight: "100%" }}>
+            <Layout style={{ maxHeight: "100%", maxWidth:'100vh' }}>
+                <Layout style={{ backgroundColor: "#FEFFD2", maxHeight: "100%", maxWidth:'95vh'  }}>
                     <Content>
                         <div style={{ position: "relative" }}>
                             <img
-                                style={{ zIndex: 1, maxHeight: "700px", minWidth: "100%" }}
+                                style={{ zIndex: 1, maxHeight: "100vh", width: "590px", marginLeft:'-10px' }}
                                 src={Background}
                                 alt="Background"
                             />

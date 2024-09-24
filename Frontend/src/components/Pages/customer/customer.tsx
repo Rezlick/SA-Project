@@ -63,20 +63,22 @@ function Customer() {
     const fetchData = async (data) => {
         const updatedData = await Promise.all(
             data.map(async (item) => {
-                const productData = await fetchProductData(item.productCode);
+                const productData = await fetchProductData(item.productCode); // Fetch by productCode
                 if (productData) {
                     return {
-                        code_id: item.productCode,
+                        code_id: item.productCode, // This is the productCode you're mapping
                         product_name: productData.product_name || "ไม่มีชื่อสินค้า",
                         quantity: productData.quantity || 0,
                         category_name: productData.category_name || "ไม่มีหมวดหมู่",
+                        image: item.image // Ensure the image is correctly included
                     };
                 }
                 return item;
             })
         );
-        setProductData(updatedData);
+        setProductData(updatedData); // Map the updated product data
     };
+    
 
     const data = [
         { productCode: 'M005', image: SliceBeef, category: 'เนื้อ' },
@@ -99,20 +101,22 @@ function Customer() {
     };
 
     const handleAddToCart = () => {
+        if (!selectedItem) return; // Ensure an item is selected
         const data = {
-            productId: selectedItem.productCode,
+            productId: selectedItem.code_id, // Use the code_id as productCodeId
             productName: selectedItem.product_name,
             quantity: quantity,
         };
-
+    
         const existingCart = JSON.parse(localStorage.getItem('cartData')) || [];
         const updatedCart = [...existingCart, data];
-
+    
         localStorage.setItem('cartData', JSON.stringify(updatedCart));
         setCartData(updatedCart);
         console.log('ข้อมูลถูกเก็บในตะกร้า:', updatedCart);
         handleCancel();
     };
+    
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -134,19 +138,20 @@ function Customer() {
 
     const filterByCategoryAndPrefix = (category: string, codePrefix: string) => {
         return data
-            .filter(item => item.category === category && item.productCode.startsWith(codePrefix))
+            .filter(item => item.category === category && item.productCode.startsWith(codePrefix)) // Ensure proper filtering
             .map(item => {
-                const matchingProduct = productData.find(product => product.code_id === item.productCode);
+                const matchingProduct = productData.find(product => product.code_id === item.productCode); // Match by productCodeId
                 if (matchingProduct) {
                     return {
                         ...matchingProduct,
-                        quantity: matchingProduct.quantity * 10,
-                        image: item.image
+                        quantity: matchingProduct.quantity * 10, // Adjust quantity logic if needed
+                        image: item.image // Use the image from the data
                     };
                 }
                 return item;
             });
     };
+    
 
     const handleCardClick = (cardName: string, codePrefix: string) => {
         setSelectedCard(cardName);

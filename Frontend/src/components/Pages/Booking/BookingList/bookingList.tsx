@@ -191,7 +191,7 @@ function TableList() {
     <div className="table-list-container">
       <Row gutter={[16, 16]}>
         <Col xs={24}>
-          <h1 className="table-list-header">รายการจองโต๊ะ</h1>
+          <h1 className="heading-style">รายการจองโต๊ะ</h1>
         </Col>
 
         <Col xs={24}>
@@ -202,7 +202,7 @@ function TableList() {
           <Table
             dataSource={bookingData}
             columns={columns}
-            pagination={{ pageSize: 4 }}
+            pagination={{ pageSize: 8 }}
             bordered
             title={() => "Booking List"}
             loading={loading}
@@ -218,7 +218,7 @@ function TableList() {
               <Button
                 type="primary"
                 onClick={handleButtonClick}
-                className="table-list-back-button"
+                className="back-button-style"
               >
                 กลับ
               </Button>

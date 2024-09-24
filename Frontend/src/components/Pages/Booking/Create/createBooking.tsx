@@ -99,7 +99,6 @@ function CreateBookingTable() {
       if (response.status !== 200) {
         throw new Error("Failed to update table status.");
       }
-      message.success("Table status updated successfully!");
     } catch (error) {
       message.error("Failed to update table status.");
     }

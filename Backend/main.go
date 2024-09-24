@@ -62,6 +62,8 @@ func main() {
         r.GET("/getNetIncomeForCurrentMonth", controller.GetNetIncomeForCurrentMonth)
         r.GET("/dashboardDataForDay", controller.GetDashboardDataForDay)
         r.GET("/dashboardDataForMonth", controller.GetDashboardDataForMonth)
+        r.GET("/cashIncomeForCurrentMonth", controller.GetCashIncomeForCurrentMonth)
+        r.GET("/tranferIncomeForCurrentMonth", controller.GetTranferIncomeForCurrentMonth)
 
         // Receipt s
         r.GET("/receipt", controller.GetReceipts)

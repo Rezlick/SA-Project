@@ -11,6 +11,7 @@ import {
   message,
   Select,
   Upload,
+  Modal,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -38,24 +39,25 @@ function EmployeeEdit() {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
 
   const onPreview = async (file: UploadFile) => {
-    let src = file.url as string;
-    if (!src) {
-      src = await new Promise((resolve) => {
+    if (!file.url && !file.preview) {
+      file.preview = await new Promise((resolve) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj as FileType);
+        reader.readAsDataURL(file.originFileObj as Blob);
         reader.onload = () => resolve(reader.result as string);
       });
     }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
+    setPreviewImage(file.url || file.preview as string);
+    setPreviewVisible(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1));
   };
 
   const getUserById = async (id: string) => {
@@ -289,6 +291,15 @@ function EmployeeEdit() {
           </Row>
         </Form>
       </Card>
+
+      <Modal
+        visible={previewVisible}
+        title={previewTitle}
+        footer={null}
+        onCancel={() => setPreviewVisible(false)}
+      >
+        <img alt="profile" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
     </div>
   );
 }

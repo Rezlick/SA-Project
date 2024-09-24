@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"fmt"
     "time"
+    "gorm.io/gorm"
 )
 
 // func GetReceipts(c *gin.Context){
@@ -43,8 +44,9 @@ func GetReceipts(c *gin.Context) {
 	results := db.Preload("Member").
 		Preload("Employee").
 		Preload("Coupon").
-		Preload("Booking").
-		Preload("Booking.Table").
+		Preload("Booking", func(db *gorm.DB) *gorm.DB {
+            return db.Unscoped().Preload("Table")
+        }).
         Preload("TypePayment").
 		Where("DATE(created_at) = ?", today.Format("2006-01-02")). // เปรียบเทียบเฉพาะวันที่
 		Find(&receipts)
@@ -165,9 +167,9 @@ func DeleteBookingAfterPay(c *gin.Context) {
     // ส่ง Response กลับก่อนเพื่อแจ้งว่าลบสำเร็จ
     c.JSON(http.StatusOK, gin.H{"message": "Booking deleted and table status updated to 3 successfully"})
 
-    // ใช้ Goroutine เพื่อเปลี่ยนสถานะของโต๊ะกลับไปเป็น 1 หลังจากผ่านไป 5 วินาที
+    // ใช้ Goroutine เพื่อเปลี่ยนสถานะของโต๊ะกลับไปเป็น 1 หลังจากผ่านไป 20 วินาที
     go func() {
-        time.Sleep(5 * time.Second)
+        time.Sleep(60 * time.Second)
 
         // เปิดการเชื่อมต่อฐานข้อมูลใหม่
         db := config.DB()

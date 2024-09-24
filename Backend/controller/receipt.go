@@ -45,6 +45,7 @@ func GetReceipts(c *gin.Context) {
 		Preload("Coupon").
 		Preload("Booking").
 		Preload("Booking.Table").
+        Preload("TypePayment").
 		Where("DATE(created_at) = ?", today.Format("2006-01-02")). // เปรียบเทียบเฉพาะวันที่
 		Find(&receipts)
 

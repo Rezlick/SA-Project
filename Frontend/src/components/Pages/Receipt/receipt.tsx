@@ -202,7 +202,7 @@ function Receipt() {
     <Row gutter={[16, 16]}>
       <Col span={12}>
         <Card style={{ borderRadius: '20px', padding: '0px', width: '100%', height: '55vh' }}>
-          <h2 style={{ marginTop: '-3px' }}>ประวัติการชำระเงิน</h2>
+          <h2 style={{ marginTop: '-3px' }}>ประวัติการชำระเงินรายวัน</h2>
             {/* Content Section */}
             {loading ? (
               <Spin tip="Loading..." className="spinContainer" />
@@ -214,6 +214,7 @@ function Receipt() {
                 columns={columns}
                 rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
                 pagination={{ pageSize: 3 }}
+                className="Receipt-table"
               />
             )}
         </Card>

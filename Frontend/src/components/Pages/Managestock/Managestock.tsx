@@ -20,37 +20,37 @@ export default function ManageStock() {
   const categories = [
     {
       imgSrc: Meat,  
-      title: "เนื้อสัตว์ (Meats)",
+      title: "เนื้อสัตว์ ",
       description: "เช่นเนื้อหมู วัว ไก่ ปลา เป็นต้น",
       link: "/ManageStock/Meat",
     },
     {
       imgSrc: Vegetable,
-      title: "ผัก (Vegetables)",
+      title: "ผัก ",
       description: "เช่นผักบุ้ง ผักกาด เห็ด เป็นต้น",
       link: "/ManageStock/Vegetable",
     },
     {
       imgSrc: Seafood,
-      title: "อาหารทะเล (Seafood)",
+      title: "อาหารทะเล ",
       description: "เช่นหอยเชลล์ กุ้ง ปลาหมึก เป็นต้น",
       link: "/ManageStock/Seafood",
     },
     {
       imgSrc: NoodlesAndDough,
-      title: "เส้นและแป้ง (Noodles and Dough)",
+      title: "เส้นและแป้ง ",
       description: "เช่นวุ้นเส้น มาม่า เส้นหมี่ เกี้ยว เป็นต้น",
       link: "/ManageStock/NoodlesAndDough",
     },
     {
       imgSrc: Condiment,
-      title: "เครื่องปรุงรสและน้ำจิ้ม (Condiments and sauce)",
+      title: "เครื่องปรุงรสและน้ำจิ้ม ",
       description: "เช่นน้ำจิ้มสุกกี้ น้ำจิ้มแจ่ว น้ำมันงา เป็นต้น",
       link: "/ManageStock/CondimentsAndSauce",
     },
     {
       imgSrc: BeveragesAndDesserts,
-      title: "เครื่องดื่มและขนมหวาน (Beverages and Desserts)",
+      title: "เครื่องดื่มและขนมหวาน",
       description: "เช่นน้ำอัดลม น้ำพลั้น ไอศครีม เป็นต้น",
       link: "/ManageStock/BeveragesAndDesserts",
     },

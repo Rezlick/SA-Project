@@ -115,16 +115,3 @@ func GetMemberCountByReceiptToday(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"memberCount": count})
 }
-
-func GetNetIncomeForCurrentMonth(c *gin.Context) {
-	var income int64
-
-	db := config.DB()
-	results := db.Raw(`SELECT SUM(total_price) FROM receipts WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')`).Scan(&income)
-	if results.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
-		return
-	}
-    
-	c.JSON(http.StatusOK, gin.H{"netIncome": income})
-}

@@ -195,3 +195,11 @@
   padding: 8px;
   border-radius: 6px;
 }
+
+.custom-modal-payment .ant-modal-confirm-title {
+  font-size: 20px; /* ปรับขนาดฟอนต์ของ title */
+}
+
+.custom-modal-payment .ant-modal-confirm-content {
+  font-size: 18px; /* ปรับขนาดฟอนต์ของเนื้อหา */
+}

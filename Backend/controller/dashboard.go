@@ -29,7 +29,7 @@ func GetNetIncomeForCurrentMonth(c *gin.Context) {
 	var income int64
 	
 	db := config.DB()
-	results := db.Raw(`SELECT SUM(total_price) FROM receipts WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')`).Scan(&income)
+	results := db.Raw(`SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')`).Scan(&income)
 	if results.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
 		return

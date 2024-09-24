@@ -1,7 +1,7 @@
 import { useState , useEffect } from "react";
 import { Link , useNavigate } from 'react-router-dom';
 import { QrcodeOutlined } from "@ant-design/icons";
-import { message , Card , Row , Col , Form , Input , Button , Checkbox , Select } from "antd";
+import { message , Card , Row , Col , Form , Input , Button , Checkbox , Select , Modal } from "antd";
 import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking , GetTypePayment} from "../../../../services/https";
 import  PromtPay  from "../../../../assets/PromptPay-logo.png"
 import './pay.css';
@@ -14,7 +14,6 @@ function Pay() {
     const queryParams = new URLSearchParams(location.search);
     const tableName = queryParams.get("tableName") || "Unknown Table";
     const [BookID, setBookingID] = useState<string>("");
-    const [showPopup, setShowPopup] = useState(false);
     const [showQR, setShowQR ] = useState(false);
     const [form] = Form.useForm();
     const [coupon, setCoupon] = useState("");
@@ -140,12 +139,13 @@ function Pay() {
         const totaldiscount = Math.round(RankDiscount + CDiscount)
         const totalpackage = res.data.package.price * res.data.number_of_customer
         const totalprice = totalpackage + totalsoupprice
+        const nettotal = totalprice - totaldiscount
         setTotalPackagePrice(totalpackage)
         setTotalSoupPrice(totalsoupprice);
         setRankDiscount(RankDiscount)
         setTotalPrice(totalprice)
         setTotalDiscount(totaldiscount)
-        setNetTotal(totalprice-totaldiscount)
+        setNetTotal(nettotal-totaldiscount)
         form.setFieldsValue({
             RankDiscount: RankDiscount,
             NetTotal: NetTotal,
@@ -174,51 +174,51 @@ function Pay() {
             CheckMember();
         }
     }, [CouponDiscount,FirstName,BookID,Point]);
-    const handleConfirmPayment = () => {
-        setShowPopup(true);
-    };
-
-    const handleClosePopup = () => {
-        setShowPopup(false);
-    };
 
     const handleQR = () => {
         setShowQR(!showQR);
     };
 
     const onFinish = async () => {
-        try {
-            // สร้างข้อมูลใบเสร็จ
-            setIsSubmitting(true)
-            const receiptData: ReceiptInterface = {
-                BookingID: Number(BookID), // สมมุติว่าคุณมีการกำหนด BookingID ไว้
-                totalprice: NetTotal,
-                totaldiscount: TotalDiscount,
-                CouponID: CouponID, // ใช้ค่า CouponID ที่ตรวจสอบแล้วจาก Coupon
-                MemberID: MemberID, // ดึงข้อมูล MemberID จากผลลัพธ์การเรียก Booking
-                EmployeeID: Number(EmployeeID), // คุณอาจต้องกำหนดค่า EmployeeID ที่เข้าระบบอยู่
-                TypePaymentID: Type,
-            };
-    
-            // บันทึกข้อมูลลงในฐานข้อมูลผ่าน API
-            const res = await CreateReceipt(receiptData);
-    
-            if (res.status === 201) {
-                message.success("ชำระเงินสำเร็จ");
-                if(MemberID != 1){
-                    AddPointsToMember(String(MemberID),Point)
+        Modal.confirm({
+            title: "ยืนยันการชำระเงิน",
+            content: "แน่ใจใช่ไหม ที่ต้องการชำระเงิน",
+            centered: true,
+            className: "custom-modal-payment",
+            onOk: async () => {
+                try {
+                    // สร้างข้อมูลใบเสร็จ
+                    setIsSubmitting(true)
+                    const receiptData: ReceiptInterface = {
+                        BookingID: Number(BookID), // สมมุติว่าคุณมีการกำหนด BookingID ไว้
+                        totalprice: NetTotal,
+                        totaldiscount: TotalDiscount,
+                        CouponID: CouponID, // ใช้ค่า CouponID ที่ตรวจสอบแล้วจาก Coupon
+                        MemberID: MemberID, // ดึงข้อมูล MemberID จากผลลัพธ์การเรียก Booking
+                        EmployeeID: Number(EmployeeID), // คุณอาจต้องกำหนดค่า EmployeeID ที่เข้าระบบอยู่
+                        TypePaymentID: Type,
+                    };
+            
+                    // บันทึกข้อมูลลงในฐานข้อมูลผ่าน API
+                    const res = await CreateReceipt(receiptData);
+            
+                    if (res.status === 201) {
+                        message.success("ชำระเงินสำเร็จ");
+                        if(MemberID != 1){
+                            AddPointsToMember(String(MemberID),Point)
+                        }
+                        setTimeout(() => {
+                            navigate("/receipt");
+                        }, 2000);
+                    } else {
+                        message.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+                    }
+                } catch (error) {
+                    message.error("ไม่สามารถบันทึกข้อมูลได้");
                 }
-                setTimeout(() => {
-                    navigate("/receipt");
-                }, 2000);
-            } else {
-                message.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
             }
-        } catch (error) {
-            message.error("ไม่สามารถบันทึกข้อมูลได้");
-        }
-    
-        setShowPopup(false);
+        })
+        
     };
 
     const handleEnterPressCoupon = (e: { preventDefault: () => void; }) => {
@@ -277,6 +277,10 @@ function Pay() {
         }
         return null
     }
+
+    const onFinishFailed = () => {
+        message.error("กรุณาเลือก \" ช่องทางชำระเงิน \" ก่อนยืนยัน");
+    };
   
     return (
         <>
@@ -307,12 +311,13 @@ function Pay() {
                         }}}
                         form={form}
                         onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
                         {/* ส่วนหลักของข้อมูล */}
                         <Card style={{
                             borderRadius: '10px',
-                            marginBottom: '15px',
+                            marginBottom: '10px',
                         }}>
                             <Row gutter={[5,0]}> 
                                 <Col xs={24} sm={24} md={16} lg={12} xl={6}>
@@ -398,7 +403,7 @@ function Pay() {
                                 </Col>
                             </Row>
                         </Card>
-                        {showPopup && (<Card className="popup-overlay" style={{zIndex:1}}>
+                        {/* {showPopup && (<Card className="popup-overlay" style={{zIndex:1}}>
                                 <div className="popup">
                                     <h2>ยืนยันการชำระเงิน</h2>
                                     <div className="popup-buttons">
@@ -406,9 +411,9 @@ function Pay() {
                                         <Button className="cancel-button" onClick={handleClosePopup}>ยกเลิก</Button>
                                     </div>
                                 </div>
-                        </Card>)}
+                        </Card>)} */}
                         <Row justify="space-between" align="middle">
-                            <Col style={{ display: "flex", alignItems: "center" }}>
+                            <Col style={{ display: "flex", alignItems: "center" , marginBottom: "0px" }}>
                                 <Button icon={<QrcodeOutlined />} className="qr-button" onClick={handleQR}>
                                     แสดง QR
                                 </Button>
@@ -425,7 +430,7 @@ function Pay() {
                                             message: "กรุณาเลือกวิธีการงการชำระเงิน!",
                                         },
                                     ]}
-                                    style={{ marginBottom: "0px", alignItems: "center" }}
+                                    style={{   marginBottom: "0px",alignItems: "center" }}
                                     >
                                     <Select
                                         placeholder="กรุณาเลือกวิธีการชำระเงิน"
@@ -440,13 +445,12 @@ function Pay() {
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                                <Button disabled={isSubmitting} className="payment-button" onClick={handleConfirmPayment}>
+                            <Col style={{ marginBottom: "0px" , display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+                                <Button disabled={isSubmitting} type="primary" htmlType="submit" className="payment-button">
                                     ยืนยัน (การชำระเงิน)
                                 </Button>
                             </Col>
                         </Row>
-
                     </Form>
                 </Card>
             </Col>    

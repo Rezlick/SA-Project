@@ -4,12 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./customer.css";
 import { GetBookingByID } from "../../../services/https";
 import { BookingInterface } from "../../../interfaces/Booking";
+import SliceBeef from "../../../assets/imagesCustomer/Slicebeef.webp"
 
 function Customer() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [booking, setBooking] = useState<BookingInterface | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
     const [tableName, setTableName] = useState<string>("");
     const [packages, setPackages] = useState<string>("");
     const [selectedCard, setSelectedCard] = useState<string | null>(null); // สถานะของปุ่มที่ถูกคลิก
@@ -18,7 +18,6 @@ function Customer() {
     const fetchBookingById = async () => {
         if (!id) {
             message.error("Invalid booking ID!");
-            setLoading(false);
             return;
         }
 
@@ -35,8 +34,6 @@ function Customer() {
             const errorMessage =
                 (error as Error).message || "An unknown error occurred.";
             message.error("Failed to fetch booking data: " + errorMessage);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -47,36 +44,31 @@ function Customer() {
     const data = [
         {
             productCode: 'M005',
-            title: 'เนื้อวัวพรีเมี่ยม',
-            price: '150.00 Baht',
-            image: 'https://path/to/beef1.png',
+            title: 'เนื้อวัวสไลด์',
+            image: SliceBeef,
             category: 'เนื้อ',
         },
         {
             productCode: 'M006',
             title: 'เนื้อหมูคุโรบูตะ',
-            price: '120.00 Baht',
             image: 'https://path/to/pork1.png',
             category: 'เนื้อ',
         },
         {
             productCode: 'D001',
             title: 'น้ำอัมพอนสี',
-            price: '69.00 Baht',
             image: 'https://path/to/drink1.png',
             category: 'น้ำดื่ม',
         },
         {
             productCode: 'D002',
             title: 'น้ำผลไม้รวม',
-            price: '55.00 Baht',
             image: 'https://path/to/drink2.png',
             category: 'น้ำดื่ม',
         },
         {
             productCode: 'S001',
             title: 'ไอศกรีมรวมมิตร',
-            price: '35.00 Baht',
             image: 'https://path/to/icecream1.png',
             category: 'ของหวาน',
         },
@@ -207,9 +199,8 @@ function Customer() {
                             renderItem={(item) => (
                                 <List.Item>
                                     <List.Item.Meta
-                                        avatar={<Avatar src={item.image} shape="square" size={64} />}
+                                        avatar={<Avatar src={item.image} shape="square" size={100} />}
                                         title={<a href="#">{item.title}</a>}
-                                        description={item.price}
                                     />
                                 </List.Item>
                             )}

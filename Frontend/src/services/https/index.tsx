@@ -426,6 +426,13 @@ async function GetOrderByID(id: string | undefined) {
     .catch((e) => e.response);
 }
 
+async function GetOrderByBookingID(id: string | undefined) {
+  return await axios
+    .get(`${apiUrl}/orderbybooking/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 async function UpdateOrder(id: string | undefined, data: OrderInterface) {
   return await axios
     .patch(
@@ -557,6 +564,7 @@ export {
   CreateOrder,
   GetOrders,
   GetOrderByID,
+  GetOrderByBookingID,
   UpdateOrder,
   CreateOrderProducts,
   GetOrderProducts,

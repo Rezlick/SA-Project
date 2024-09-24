@@ -37,6 +37,32 @@ func GetNetIncomeForCurrentMonth(c *gin.Context) {
 		
 	c.JSON(http.StatusOK, gin.H{"netIncome": income})
 }
+
+func GetCashIncomeForCurrentMonth(c *gin.Context) {
+	var cashIncome int64
+	
+	db := config.DB()
+	results := db.Raw(`SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now') AND type_payment_id == 1`).Scan(&cashIncome)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+		
+	c.JSON(http.StatusOK, gin.H{"cashIncome": cashIncome})
+}
+
+func GetTranferIncomeForCurrentMonth(c *gin.Context) {
+	var tranferIncome int64
+	
+	db := config.DB()
+	results := db.Raw(`SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now') AND type_payment_id == 2`).Scan(&tranferIncome)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+		
+	c.JSON(http.StatusOK, gin.H{"tranferIncome": tranferIncome})
+}
 	
 func GetDashboardDataForMonth(c *gin.Context) {
 	var count int 

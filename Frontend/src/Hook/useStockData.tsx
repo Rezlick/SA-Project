@@ -31,8 +31,9 @@ export default function useStockData(categoryID: number) {
 }
 
 function transformStockData(data: any[]) {
-  return data.map((item: any) => ({
-    key: item.stock_id, // ใช้ stock_id เป็น key
+  return data.map((item: any, index: number) => ({
+    key: index + 1,
+    stock: item.stock_id, // ใช้ stock_id เป็น key
     code: item.product_code_id || '', // รหัสสินค้า
     name: item.product_name || '', // ชื่อสินค้า
     quantity: item.quantity ? String(item.quantity) : 'N/A', // จำนวนในสต็อก

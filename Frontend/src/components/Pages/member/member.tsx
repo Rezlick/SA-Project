@@ -203,7 +203,7 @@ export default function Member() {
         </Col>
 
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h2>สถิติ วันนี้</h2>
+          <h2>สถิติรายวัน</h2>
         </Col>
 
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -231,6 +231,9 @@ export default function Member() {
         </Col>
 
       </Row>
+      <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <h2>รายการสมาชิก</h2>
+        </Col>
 
       <Divider />
 

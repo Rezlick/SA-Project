@@ -1,10 +1,9 @@
 import { Col, Row, Card, Statistic, Table, message, Form, DatePicker, Radio } from "antd";
-import { AuditOutlined, UserOutlined, WalletOutlined, StockOutlined } from "@ant-design/icons";
+import { UserOutlined, WalletOutlined, StockOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMemberCountForCurrentMonth, GetDashboardDataForDay, GetNetIncomeForCurrentMonth, GetDashboardDataForMonth } from "../../../services/https";
+import { GetMemberCountForCurrentMonth, GetDashboardDataForDay, GetNetIncomeForCurrentMonth, GetDashboardDataForMonth, GetCashIncomeForCurrentMonth, GetTranferIncomeForCurrentMonth } from "../../../services/https";
 import { useEffect, useState } from "react";
 import moment from 'moment';
-
 // npm install moment
 
 interface DataType {
@@ -29,8 +28,12 @@ export default function Dashboard() {
   const [form] = Form.useForm();
 
   const [data, setData] = useState<DataType[]>([]);
+
   const [memberCountForCurrentMonth, setMemberCountForCurrentMonth] = useState<number>(0);
   const [netIncomeForCurrentMonth, setNetIncomeForCurrentMonth] = useState<number>(0);
+  const [cashIncomeForCurrentMonth, setCashIncomeForCurrentMonth] = useState<number>(0);
+  const [tranferIncomeForCurrentMonth, setTranferIncomeForCurrentMonth] = useState<number>(0);
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDayMode, setIsDayMode] = useState<boolean>(false);
 
@@ -56,6 +59,32 @@ export default function Dashboard() {
       const res = await GetNetIncomeForCurrentMonth();
       if (res.status === 200) {
         setNetIncomeForCurrentMonth(res.data.netIncome || 0);
+      } else {
+        message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      message.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
+  const getCashIncomeForCurrentMonth = async () => {
+    try {
+      const res = await GetCashIncomeForCurrentMonth();
+      if (res.status === 200) {
+        setCashIncomeForCurrentMonth(res.data.cashIncome || 0);
+      } else {
+        message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      message.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
+  const getTranferIncomeForCurrentMonth = async () => {
+    try {
+      const res = await GetTranferIncomeForCurrentMonth();
+      if (res.status === 200) {
+        setTranferIncomeForCurrentMonth(res.data.tranferIncome || 0);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -118,6 +147,8 @@ export default function Dashboard() {
   useEffect(() => {
     getMemberCountForCurrentMonth();
     getNetIncomeForCurrentMonth();
+    getTranferIncomeForCurrentMonth();
+    getCashIncomeForCurrentMonth();
   }, []);
 
   return (
@@ -132,19 +163,24 @@ export default function Dashboard() {
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <Card style={{ backgroundColor: "#F5F5F5" }}>
               <Row gutter={[16, 16]}>
-                <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                   <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                    <Statistic title="จำนวนลูกค้า" value={1800} prefix={<StockOutlined />} />
+                    <Statistic title="รายได้เงินสด" value={`${cashIncomeForCurrentMonth} ฿`} prefix={<StockOutlined />} />
+                  </Card>
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={6}>
+                  <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                    <Statistic title="รายได้เงินโอน" value={`${tranferIncomeForCurrentMonth} ฿`} prefix={<StockOutlined />} />
                   </Card>
                 </Col>
 
-                <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                   <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
                     <Statistic title="รายได้สุทธิ" value={`${netIncomeForCurrentMonth} ฿`} valueStyle={{ color: "black" }} prefix={<WalletOutlined />} />
                   </Card>
                 </Col>
 
-                <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                   <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
                     <Statistic title="จำนวนการสมัครสมาชิก" value={`${memberCountForCurrentMonth} ท่าน`} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
                   </Card>

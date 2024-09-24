@@ -56,12 +56,12 @@ func SetupDatabase() {
 
 
    categories := []entity.Category{
-		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ (Meats)"},
-		{Category_Code_id: "V", CategoryName: "ผัก (Vegetables)"},
-		{Category_Code_id: "S", CategoryName: "อาหารทะเล (Seafood)"},
-		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง (Noodles and Dough)"},
-		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม (Condiments and sauce)"},
-		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน (Beverages and Desserts)"},
+		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ "},
+		{Category_Code_id: "V", CategoryName: "ผัก "},
+		{Category_Code_id: "S", CategoryName: "อาหารทะเล "},
+		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง "},
+		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม "},
+		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน "},
 	}
    suppliers := []entity.Supplier{
 		{SupplierName: "Supplier A", Phone: "012-345-6789", Email: "contact@suppliera.com", Address: "มทส"},
@@ -219,7 +219,10 @@ func SetupDatabase() {
       Email: "testadmin@shabubuu.com",
    })
 }
-func parseDate(dateStr string) time.Time {
-	t, _ := time.Parse("2006-01-02 15:04", dateStr)
-	return t
+func parseDate(dateStr string) time.Time { 
+   // แปลงวันที่จาก string เป็น time.Time
+   t, _ := time.Parse("2006-01-02 15:04", dateStr)
+   // แปลงเวลาเป็น GMT+7
+   loc, _ := time.LoadLocation("Asia/Bangkok")
+   return t.In(loc)
 }

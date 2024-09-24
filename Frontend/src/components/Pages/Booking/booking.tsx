@@ -190,7 +190,6 @@ function Booking() {
               })}
             </Row>
           )}
-          {/* Button located here */}
           <Row justify="center" style={{ marginTop: 16 }}>
             <Col xs={24} sm={12} md={8}>
               <Button
@@ -200,8 +199,9 @@ function Booking() {
                   backgroundColor: "#FF7F50",
                   borderColor: "#FF7F50",
                   color: "#fff",
-                  width: "100%", // Ensure full width
-                  marginTop: 16, // Add some space above the button
+                  height: "40px",
+                  width: "100%", 
+                  marginTop: 20, 
                 }}
               >
                 รายการจองโต๊ะ

@@ -3,10 +3,12 @@ import { Input, Button, Form, Select, Divider, notification } from "antd";
 import { useState, useEffect } from "react";
 import { UpdateStock } from "../../../../../../services/https";
 import { StockInterface } from "../../../../../../interfaces/Stock";
+import ColumnGroup from "antd/es/table/ColumnGroup";
 
 const { Option } = Select;
 
 export default function StockEdit() {
+  const employeeID = localStorage.getItem("employeeID") || "No ID found";
   const location = useLocation();
   const navigate = useNavigate();
   const { record, path, suppliers, categoryID } = location.state || {};
@@ -19,25 +21,30 @@ export default function StockEdit() {
   }, [record, form]);
 
   const handleFinish = async (values) => {
+    console.log("values",values);
     const supplierData = suppliers.find(supplier => supplier.id === values.supplier);
+    const supplierID = supplierData ? supplierData.id : record.supplier;
+    console.log("supplierID",supplierID);
     
-    if (!supplierData) {
-      notification.error({
-        message: "Error",
-        description: "Invalid supplier selected.",
-      });
-      return;
-    }
   
+  if (!supplierID) {
+    notification.error({
+      message: "Error",
+      description: "Invalid supplier selected.",
+    });
+    return;
+  }
+    
+    
     const updatedItem: StockInterface = {
       stock_id: Number(record.key),
-      category_id: categoryID,
-      product_code_id: values.code,
-      product_name: values.name,
+      category_id: Number(categoryID),
+      product_code_id: String(values.code),
+      product_name: String(values.name),
       quantity: Number(values.quantity),
       price: Number(values.price),
-      supplier_id: supplierData.id,
-      employee_id: 1,
+      supplier_id: Number(supplierID),
+      employee_id:  Number(employeeID),
     };
     
     try {
@@ -47,7 +54,7 @@ export default function StockEdit() {
         description: "Product details updated successfully",
       });
       navigate(`/ManageStock/${path}`);
-    } catch (error) {
+    } catch (error:any) {
       notification.error({
         message: "Error",
         description: error.message || "Failed to update product details.",

@@ -26,7 +26,7 @@ function CustomerSider() {
                 />
                 <FloatButton 
                     icon={<SearchOutlined />} 
-                    onClick={() => navigate(`/customer/search/${id}`)} 
+                    onClick={() => navigate(`/customer/status/${id}`)} 
                 />
             </FloatButton.Group>
         </footer>

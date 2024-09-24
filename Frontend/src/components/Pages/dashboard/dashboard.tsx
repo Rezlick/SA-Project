@@ -1,7 +1,7 @@
 import { Col, Row, Card, Statistic, Table, message, Form, DatePicker, Radio } from "antd";
 import { AuditOutlined, UserOutlined, PieChartOutlined, StockOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMemberCountForCurrentMonth, GetMemberCountForMonth, GetMemberCountForDay } from "../../../services/https";
+import { GetMemberCountForCurrentMonth, GetMemberCountForMonth, GetMemberCountForDay, GetNetIncomeForCurrentMonth } from "../../../services/https";
 import { useEffect, useState } from "react";
 
 interface DataType {
@@ -21,6 +21,7 @@ export default function Dashboard() {
 
   const [data, setData] = useState<DataType[]>([]);
   const [memberCountForCurrentMonth, setMemberCountForCurrentMonth] = useState<number>(0);
+  const [netIncomeForCurrentMonth, setNetIncomeForCurrentMonth] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDayMode, setIsDayMode] = useState<boolean>(false);
 
@@ -33,6 +34,19 @@ export default function Dashboard() {
       const res = await GetMemberCountForCurrentMonth();
       if (res.status === 200) {
         setMemberCountForCurrentMonth(res.data.memberCount || 0);
+      } else {
+        message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      message.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
+  const getNetIncomeForCurrentMonth = async () => {
+    try {
+      const res = await GetNetIncomeForCurrentMonth();
+      if (res.status === 200) {
+        setNetIncomeForCurrentMonth(res.data.netIncome || 0);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -88,6 +102,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     getMemberCountForCurrentMonth();
+    getNetIncomeForCurrentMonth();
   }, []);
 
   return (
@@ -116,7 +131,7 @@ export default function Dashboard() {
 
               <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                 <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="จำนวน" value={3000} valueStyle={{ color: "black" }} prefix={<PieChartOutlined />} />
+                  <Statistic title="รายได้สุทธิ" value={netIncomeForCurrentMonth} valueStyle={{ color: "black" }} prefix={<PieChartOutlined />} />
                 </Card>
               </Col>
 

@@ -54,13 +54,6 @@ func SetupDatabase() {
       &entity.Stock{},
 	)
 
-   orderproduct1 := entity.Order_Product{Quantity: 3, OrderID:1, Product_Code_ID: "M001"}
-   orderproduct2 := entity.Order_Product{Quantity: 5, OrderID:1, Product_Code_ID: "M002"}
-   orderproduct3 := entity.Order_Product{Quantity: 1, OrderID:1, Product_Code_ID: "C002"}
-   orderproduct4 := entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M001"}
-   orderproduct5 := entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M002"}
-   orderproduct6 := entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "C002"}
-   orderproduct7 := entity.Order_Product{Quantity: 1, OrderID: 3, Product_Code_ID: "C002"}
 
    categories := []entity.Category{
 		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ (Meats)"},
@@ -90,10 +83,6 @@ func SetupDatabase() {
 
    TypeCash := entity.TypePayment{Name: "เงินสด"}
    TypeScanQR := entity.TypePayment{Name: "โอนเงิน"}
-
-   order1 := entity.Order{BookingID: 1, Status_OrderID: 2}
-   order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
-   order3 := entity.Order{BookingID: 3, Status_OrderID: 2}
 
    GenderMale := entity.Gender{Name: "ชาย"}
    GenderFemale := entity.Gender{Name: "หญิง"}
@@ -212,19 +201,6 @@ func SetupDatabase() {
 
    db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
    db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
-
-   db.FirstOrCreate(&order1, &entity.Order{BookingID: 1, Status_OrderID: 2})
-   db.FirstOrCreate(&order2, &entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1})
-   db.FirstOrCreate(&order3, &entity.Order{BookingID: 3, Status_OrderID: 2})
-
-   db.FirstOrCreate(&orderproduct1, &entity.Order_Product{Quantity: 3, OrderID:1, Product_Code_ID: "M001"})
-   db.FirstOrCreate(&orderproduct2, &entity.Order_Product{Quantity: 5, OrderID:1, Product_Code_ID: "M002"})
-   db.FirstOrCreate(&orderproduct3, &entity.Order_Product{Quantity: 1, OrderID:1, Product_Code_ID: "C002"})
-   db.FirstOrCreate(&orderproduct4, &entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M001"})
-   db.FirstOrCreate(&orderproduct5, &entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M002"})
-   db.FirstOrCreate(&orderproduct6, &entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "C002"})
-   db.FirstOrCreate(&orderproduct7, &entity.Order_Product{Quantity: 1, OrderID: 3, Product_Code_ID: "C002"})
-
 
 
    hashedPassword, _ := HashPassword("12345")

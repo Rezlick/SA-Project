@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { List, Avatar, Row, Col, message, Card, Statistic, Button, Modal } from "antd";
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./customer.css";
 import { GetBookingByID, GetProductByCodeID } from "../../../services/https";
 import { BookingInterface } from "../../../interfaces/Booking";
@@ -14,7 +14,6 @@ import V2 from "../../../assets/imagesCustomer/veg2.png";
 import Chicken from "../../../assets/imagesCustomer/ChickenPepper.webp";
 
 function Customer() {
-    const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [booking, setBooking] = useState<BookingInterface | null>(null);
     const [tableName, setTableName] = useState<string>("");
@@ -78,7 +77,7 @@ function Customer() {
         );
         setProductData(updatedData); // Map the updated product data
     };
-    
+
 
     const data = [
         { productCode: 'M001', image: SliceBeef, category: 'เนื้อ' },
@@ -107,16 +106,16 @@ function Customer() {
             productName: selectedItem.product_name,
             quantity: quantity,
         };
-    
+
         const existingCart = JSON.parse(localStorage.getItem('cartData')) || [];
         const updatedCart = [...existingCart, data];
-    
+
         localStorage.setItem('cartData', JSON.stringify(updatedCart));
         setCartData(updatedCart);
         console.log('ข้อมูลถูกเก็บในตะกร้า:', updatedCart);
         handleCancel();
     };
-    
+
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -151,7 +150,7 @@ function Customer() {
                 return item;
             });
     };
-    
+
 
     const handleCardClick = (cardName: string, codePrefix: string) => {
         setSelectedCard(cardName);
@@ -308,10 +307,14 @@ function Customer() {
                                     <Button
                                         type="primary"
                                         block
-                                        onClick={handleAddToCart}
+                                        onClick={() => {
+                                            handleAddToCart();  // เรียกใช้ฟังก์ชันเพิ่มสินค้าลงในตะกร้า
+                                            message.success("เพิ่มไปยังตะกร้าแล้ว!");  // แสดงข้อความแจ้งเตือน
+                                        }}
                                     >
                                         เพิ่มไปยังตะกร้า
                                     </Button>
+
                                 </div>
                             )}
                         </Modal>

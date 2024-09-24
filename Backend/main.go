@@ -66,6 +66,9 @@ func main() {
         // Coupon 
         r.POST("/api/check-coupon/:code", controller.CheckCoupon)
 
+        // TypePayment
+        r.GET("/typepayment", controller.GetTypePayment)
+
         // Add point route
         r.PATCH("/member/:id/addPoints", controller.AddPointsToMember)
 

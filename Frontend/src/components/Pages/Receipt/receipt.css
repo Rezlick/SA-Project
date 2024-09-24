@@ -17,11 +17,11 @@
 }
 
 .even-row {
-  background-color: #f0f0f0; /* สีพื้นหลังสำหรับแถวคู่ */
+  background-color: #f0f0f0 !important; /* สีพื้นหลังสำหรับแถวคู่ */
 }
 
 .odd-row {
-  background-color: #ffffff; /* สีพื้นหลังสำหรับแถวคี่ */
+  background-color: #ffffff !important; /* สีพื้นหลังสำหรับแถวคี่ */
 }
 
 .ant-pagination-item-active {
@@ -30,4 +30,12 @@
 
 .ant-pagination-item-active a {
   color: #000000 !important; /* สีตัวอักษรเมื่อ active */
+}
+
+.Receipt-table .ant-table-cell {
+  font-size: 10px !important; /* ปรับขนาดตัวอักษรตามที่ต้องการ */
+}
+
+.Receipt-table .ant-table-thead > tr > th {
+  font-size: 16px !important; /* ปรับขนาดตัวอักษรในส่วนของ header */
 }

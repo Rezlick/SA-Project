@@ -15,15 +15,18 @@ type Receipt struct {
 
 	// การเชื่่อม foreignkey จากตารางอื่น 
 	CouponID 		uint							// สร้างตัวแปรมารับ กำหนด type ให้ตรง
-	Coupon 			Coupon `gorm:"foreignKey:CouponID"`		// ประกาศ file type และ foreignKey : Pk(ที่นำมาใช้)
+	Coupon 			Coupon 			`gorm:"foreignKey:CouponID"`		// ประกาศ file type และ foreignKey : Pk(ที่นำมาใช้)
 
 	EmployeeID 		uint
-	Employee 		Employee `gorm:"foreignKey: employee_id"`
+	Employee 		Employee 		`gorm:"foreignKey: employee_id"`
 
 	MemberID 		uint
-	Member 			Member `gorm:"foreignKey: member_id"`
+	Member 			Member 			`gorm:"foreignKey: member_id"`
 	
-	BookingID      uint   
-    Booking        Booking     `gorm:"foreignKey: booking_id"`
+	BookingID      	uint   
+    Booking        	Booking     	`gorm:"foreignKey: booking_id"`
+
+	TypePaymentID  	uint
+	TypePayment		TypePayment  	`gorm:"foreignKey: TypePaymentID"`
 
 }

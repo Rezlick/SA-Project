@@ -6,7 +6,7 @@ export default function StockCondimentsAndSauce() {
   const condimentsAndSauceData = useStockData(5);
   return (
     <StockCategory
-      categoryTitle="เครื่องปรุงรสและน้ำจิ้ม (Condiments and Sauce)"
+      categoryTitle="เครื่องปรุงรสและน้ำจิ้ม "
       initialData={condimentsAndSauceData}
       categoryID = {5}
       path = {"CondimentsAndSauce"}

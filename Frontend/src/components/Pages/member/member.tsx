@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, message, Dropdown, Modal, Progress, Card, Statistic } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined, DashOutlined, AuditOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMembers, DeleteMemberByID, GetMemberCountForToday, GetMemberCountByReceiptToday } from "../../../services/https/index";
+import { GetMembers, DeleteMemberByID, GetMemberCountForToday, GetMemberCountByReceiptToday, GetNetIncomeByMemberToday } from "../../../services/https/index";
 import { MemberInterface } from "../../../interfaces/Member";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,6 +15,7 @@ export default function Member() {
 
   const [memberCountForToday, setMemberCountForToday] = useState<number>(0);
   const [memberCountByReceiptToday, setMemberCountByReceiptToday] = useState<number>(0);
+  const [netIncomeByMemberToday, setNetIncomeByMemberToday] = useState<number>(0);
 
   const columns: ColumnsType<MemberInterface> = [
     {
@@ -134,6 +135,20 @@ export default function Member() {
     }
   };
 
+  const getNetIncomeByMemberToday = async () => {
+    try {
+      const res = await GetNetIncomeByMemberToday(); // Fetch data from the API
+
+      if (res.status === 200) {
+        setNetIncomeByMemberToday(res.data.netIncome); // Set the data from the API response
+      } else {
+        messageApi.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
   const getMemberCountForToday = async () => {
     try {
       const res = await GetMemberCountForToday(); // Fetch data from the API
@@ -166,6 +181,7 @@ export default function Member() {
     getMembers();
     getMemberCountForToday();
     getMemberCountByReceiptToday();
+    getNetIncomeByMemberToday();
   }, []);
 
   return (
@@ -195,7 +211,7 @@ export default function Member() {
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={24} md={12} lg={12} xl={8}>
                 <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="จำนวน" value={200} valueStyle={{ color: "black" }} prefix={<AuditOutlined />} />
+                  <Statistic title="รายได้สุทธิจากสมาชิก" value={`${netIncomeByMemberToday} บาท`} valueStyle={{ color: "black" }} prefix={<AuditOutlined />} />
                 </Card>
               </Col>
 

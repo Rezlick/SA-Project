@@ -121,17 +121,17 @@ function TableList() {
       sorter: (a, b) => (a.ID ?? 0) - (b.ID ?? 0),
     },
     {
-      title: "Table",
+      title: "โต๊ะ",
       key: "table_id",
       render: (record) => <>{record.table?.table_name ?? "N/A"}</>,
     },
     {
-      title: "Number of Customers",
+      title: "จำนวนลูกค้า",
       dataIndex: "number_of_customer",
       key: "number_of_customer",
     },
     {
-      title: "Soups",
+      title: "ซุป",
       dataIndex: "soups",
       key: "soups",
       render: (soups) =>
@@ -140,12 +140,12 @@ function TableList() {
           : "N/A",
     },
     {
-      title: "Package",
+      title: "แพ็กเกจ",
       key: "package_name",
       render: (record) => <>{record.package?.name ?? "N/A"}</>,
     },
     {
-      title: "Employee",
+      title: "พนักงาน",
       key: "employee_name",
       render: (record) => <>{record.employee?.FirstName ?? "N/A"}</>,
     },
@@ -191,12 +191,12 @@ function TableList() {
     <div className="table-list-container">
       <Row gutter={[16, 16]}>
         <Col xs={24}>
-          <h1 className="table-list-header">Booking List</h1>
+          <h1 className="table-list-header">รายการจองโต๊ะ</h1>
         </Col>
 
         <Col xs={24}>
           <div className="current-time">
-            <span>Current Time: </span>
+            <span>เวลา: </span>
             <span className="time-display">{currentTime}</span>
           </div>
           <Table
@@ -220,7 +220,7 @@ function TableList() {
                 onClick={handleButtonClick}
                 className="table-list-back-button"
               >
-                Back
+                กลับ
               </Button>
             </Col>
           </Row>

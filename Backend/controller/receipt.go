@@ -45,6 +45,7 @@ func GetReceipts(c *gin.Context) {
 		Preload("Coupon").
 		Preload("Booking").
 		Preload("Booking.Table").
+        Preload("TypePayment").
 		Where("DATE(created_at) = ?", today.Format("2006-01-02")). // เปรียบเทียบเฉพาะวันที่
 		Find(&receipts)
 
@@ -100,4 +101,30 @@ func CreateReceipt(c *gin.Context) {
         "message":    "receipt created successfully",
         "receipt_id": receipt.ID,
     })
+}
+
+func GetMemberCountByReceiptToday(c *gin.Context) {
+	var count int64
+
+	db := config.DB()
+	results := db.Raw(`SELECT COUNT(id) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND member_id != 0`).Scan(&count)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"memberCount": count})
+}
+
+func GetNetIncomeForCurrentMonth(c *gin.Context) {
+	var income int64
+
+	db := config.DB()
+	results := db.Raw(`SELECT SUM(total_price) FROM receipts WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')`).Scan(&income)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+    
+	c.JSON(http.StatusOK, gin.H{"netIncome": income})
 }

@@ -1,10 +1,49 @@
 body {
+  font-family: 'Noto Sans Thai', sans-serif;
   margin: 0;
 }
+
+h1 {
+  font-family: 'Noto Sans Thai', sans-serif;
+  font-size: 2rem; /* ปรับขนาด */
+  font-weight: bold; /* ทำให้ตัวหนา */
+}
+
+p {
+  font-family: 'Noto Sans Thai', sans-serif;
+  font-size: 1rem; /* ขนาดปกติ */
+  line-height: 1.5; /* ระยะห่างระหว่างบรรทัด */
+}
+
 
 .logo {
   object-fit: contain;
   height: 100px;
   width: 100px;
   border-radius: 5%;
+}
+
+@media (max-width: 768px) {
+  .ant-layout {
+    flex-direction: column;
+  }
+
+  .ant-layout-sider {
+    min-width: 100px;
+  }
+
+  .ant-layout-content {
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ant-layout-content {
+    margin: 0 5px;
+    padding: 10px;
+  }
+
+  .ant-breadcrumb {
+    display: none;
+  }
 }

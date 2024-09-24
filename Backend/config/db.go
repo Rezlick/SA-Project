@@ -30,7 +30,12 @@ func SetupDatabase() {
 		&entity.Gender{},
 		&entity.Rank{},
 		&entity.Position{},
+
       &entity.Receipt{},
+      &entity.Coupon{},
+      &entity.TypePayment{},
+
+
       &entity.Booking{},
       &entity.Soup{},
       &entity.BookingSoup{},
@@ -76,8 +81,6 @@ func SetupDatabase() {
    products:=[]entity.Product{
 		{Product_Code_ID: "B001",ProductName:"น้ำโค๊ก",CategoryID:6,EmployeeID: 1},
 		{Product_Code_ID: "B002",ProductName:"น้ำหวาน",CategoryID: 6,EmployeeID: 1},
-      {Product_Code_ID: "M001",ProductName:"หมู",CategoryID: 6,EmployeeID: 1},
-      {Product_Code_ID: "M002",ProductName:"ไก่",CategoryID: 6,EmployeeID: 1},
 	}
 
    StocksMap :=[]entity.Stock{
@@ -85,6 +88,8 @@ func SetupDatabase() {
 		{ProductID:2,Quantity:100,Price:150,DateIn:parseDate("2024-08-22 14:00"),ExpirationDate:parseDate("2025-08-22 14:00"),SupplierID:1,EmployeeID:1,},
 	}
 
+   TypeCash := entity.TypePayment{Name: "เงินสด"}
+   TypeScanQR := entity.TypePayment{Name: "โอนเงิน"}
 
    order1 := entity.Order{BookingID: 1, Status_OrderID: 2}
    order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
@@ -124,8 +129,8 @@ func SetupDatabase() {
    TableEightSeat1 := entity.Table{TableName: "E1", TableStatusID: 1, TableCapacityID: 3}
    TableEightSeat2 := entity.Table{TableName: "E2", TableStatusID: 1, TableCapacityID: 3}
 
-   Soup1 := entity.Soup{Name: "น้ำใส"}
-   Soup2 := entity.Soup{Name: "น้ำดำ"}
+   Soup1 := entity.Soup{Name: "ซุปน้ำใส"}
+   Soup2 := entity.Soup{Name: "ซุปน้ำดำ"}
    Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
    Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
    
@@ -154,6 +159,8 @@ func SetupDatabase() {
 		db.FirstOrCreate(&stock, entity.Stock{ProductID: stock.ProductID, SupplierID: stock.SupplierID, DateIn: stock.DateIn})
 	}
 
+   db.FirstOrCreate(&TypeCash, &entity.TypePayment{Name: "เงินสด"})
+   db.FirstOrCreate(&TypeScanQR, &entity.TypePayment{Name: "พร้อมเพย์"})
 
    db.FirstOrCreate(&status1, &entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"})
    db.FirstOrCreate(&status2, &entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"})
@@ -194,8 +201,8 @@ func SetupDatabase() {
    db.FirstOrCreate(&CapacitySix, &entity.TableCapacity{MinCustomer: 5, MaxCustomer: 6})
    db.FirstOrCreate(&CapacityEight, &entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8})
 
-   db.FirstOrCreate(&Soup1, &entity.Soup{Name: "น้ำใส"})
-   db.FirstOrCreate(&Soup2, &entity.Soup{Name: "น้ำดำ"})
+   db.FirstOrCreate(&Soup1, &entity.Soup{Name: "ซุปน้ำใส"})
+   db.FirstOrCreate(&Soup2, &entity.Soup{Name: "ซุปน้ำดำ"})
    db.FirstOrCreate(&Soup3, &entity.Soup{Name: "ซุปหม่าล่า"})
    db.FirstOrCreate(&Soup4, &entity.Soup{Name: "ซุปทงคัตสึ"})
 

@@ -58,13 +58,18 @@ func main() {
         r.GET("/memberCountForDay", controller.GetMemberCountForDay)
         r.GET("/memberCountForToday", controller.GetMemberCountForToday)
         r.GET("/memberCountForMonth", controller.GetMemberCountForMonth)
+        r.GET("/memberCountByReceiptToday", controller.GetMemberCountByReceiptToday)
 
         // Receipt s
         r.GET("/receipt", controller.GetReceipts)
         r.POST("/receipt", controller.CreateReceipt)
+        r.GET("/getNetIncomeForCurrentMonth", controller.GetNetIncomeForCurrentMonth)
 
         // Coupon 
         r.POST("/api/check-coupon/:code", controller.CheckCoupon)
+
+        // TypePayment
+        r.GET("/typepayment", controller.GetTypePayment)
 
         // Add point route
         r.PATCH("/member/:id/addPoints", controller.AddPointsToMember)

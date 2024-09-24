@@ -51,11 +51,11 @@ export default function Supplier() {
                     onChange={e => handleSearch(e.target.value)}
                 />
             </Header>
-            <Content style={{ padding: '20px' }}>
+            <Content style={{ padding: '20px', background:"#ffffff"}}>
                 <>
                     <Row className="button-group" justify="space-between">
                         <Col>
-                            <Button type="primary">
+                            <Button type="default">
                                 <Link to="/ManageStock">ย้อนกลับ</Link>
                             </Button>
                         </Col>

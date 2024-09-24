@@ -30,7 +30,7 @@ p {
   }
 
   .ant-layout-sider {
-    min-width: 100px;
+    min-width: 100px; /* Keep this for usability */
   }
 
   .ant-layout-content {
@@ -45,13 +45,13 @@ p {
   }
 
   .ant-breadcrumb {
-    display: none;
+    display: none; /* Hide breadcrumb on small screens */
   }
 }
 
 .sider {
-  background-color: #fff8e1; /* Soft peach background for the sider */
-  color: #000; /* Black text color */
+  background-color: #fffae3; /* Soft, creamy yellow background for warmth */
+  color: #444; /* Slightly darker gray for better contrast */
 }
 
 .profile-image {
@@ -78,30 +78,30 @@ p {
 }
 
 .menu {
-  background-color: transparent; /* Transparent background for the menu */
+  background-color: transparent; /* Keep transparent for a modern look */
 }
 
 /* Hover effect for menu items */
 .menu-item {
-  padding: 10px 15px; /* Add padding for better clickability */
+  padding: 10px 15px; /* Increase padding for better clickability */
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
 }
 
 .menu-item:hover {
-  background-color: #ffab40; /* Soft orange on hover */
-  color: #fff; /* White text color on hover */
+  background-color: #ffe0b2; /* Soft pastel orange for hover */
+  color: #333; /* Dark gray text color for hover */
 }
 
 /* Active state for menu items */
 .menu-item.active {
-  background-color: #ff8a65; /* Slightly darker soft orange for active item */
+  background-color: #ffcc80; /* Warm light orange for active item */
   color: #fff; /* White text color for active item */
 }
 
 /* Focus state for accessibility */
 .menu-item:focus {
   outline: none; /* Remove default outline */
-  background-color: #ffcc80; /* Light orange background for focus */
+  background-color: #ffb74d; /* Slightly darker orange for focus */
   color: #000; /* Black text color for focus */
 }
 
@@ -109,34 +109,34 @@ p {
 .toggle-button {
   position: absolute;
   top: 0;
-  right: -46px;
+  right: -46px; /* Ensure visibility */
   z-index: 1;
 }
 
 /* Custom styles for the sidebar */
 .custom-sider {
-  background-color: #ffe0b2; /* Soft orange background */
-  color: #000; /* Black text color for contrast */
+  background-color: #ffe0b2; /* Soft pastel orange background */
+  color: #444; /* Darker gray for contrast */
 }
 
 /* Ensure the custom sider takes precedence */
 .ant-layout-sider.custom-sider {
-  background-color: #ffe0b2; /* Apply soft orange background */
-  color: #000; /* Black text color for contrast */
+  background-color: #F6C191; /* Apply soft orange background */
+  color: #444; /* Darker gray for contrast */
 }
 
 .profile-name {
   font-size: large;
-  color: #000; /* Change to black for better visibility */
+  color: #444; /* Dark gray for better visibility */
 }
 
 .profile-position {
   font-size: default;
-  color: #000; /* Change to black for better visibility */
+  color: #444; /* Dark gray for better visibility */
 }
 
 .edit-profile-link {
   font-size: smaller;
-  color: #ff5722; /* Soft orange color */
+  color: #ff5722; /* Vibrant orange for links */
   text-decoration: underline;
 }

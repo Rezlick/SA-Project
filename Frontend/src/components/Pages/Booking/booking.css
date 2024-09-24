@@ -1,4 +1,3 @@
-/* Select style */
 .select-style {
   width: 100%;
   border-radius: 8px;
@@ -11,7 +10,6 @@
   outline: none; /* Ensure outline is removed on focus */
 }
 
-/* Card style */
 .card-style {
   background-color: #FEF6E4; /* Light cream with warmth */
   padding: 24px;
@@ -21,8 +19,6 @@
   margin: 16px; /* Add margin for spacing */
 }
 
-
-/* Button style */
 .button-style {
   margin-top: 20px;
   background-color: #E75B4E; /* Rich tomato color */
@@ -32,7 +28,7 @@
   font-weight: bold;
   padding: 12px 24px; /* Generous padding for comfort */
   text-align: center;
-  font-size: 1rem; /* Consistent font size */
+  font-size: 1.2rem; /* Consistent font size */
   transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform for smooth effect */
   width: 100%; /* Make button full width */
 }
@@ -43,7 +39,6 @@
   transform: translateY(-2px); /* Slight lift effect on hover */
 }
 
-/* Back button style */
 .back-button-style {
   margin-top: 20px;
   background-color: #6C757D; /* Neutral gray color */
@@ -53,7 +48,7 @@
   font-weight: bold;
   padding: 12px 24px; /* Generous padding for comfort */
   text-align: center;
-  font-size: 1rem; /* Consistent font size */
+  font-size: 1.2rem; /* Consistent font size */
   transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform for smooth effect */
   width: 100%; /* Make button full width */
 }
@@ -64,7 +59,6 @@
   transform: translateY(-2px); /* Slight lift effect on hover */
 }
 
-/* Heading style */
 .heading-style {
   text-align: center;
   color: #D9773D; /* Warm orange for consistency */
@@ -74,17 +68,15 @@
   line-height: 1.2; /* Improved readability with line height */
 }
 
-/* Empty state styling */
 .emptyState {
   text-align: center;
   color: #D9773D; /* Matching warm orange for consistency */
   font-size: 1.1rem; /* Slightly smaller font size */
 }
 
-/* Button styling */
 .tableButton {
   width: 150px; /* Fixed width to make the button square */
-  height: 150px; /* Fixed height to make the button square */
+  height: 200px; /* Fixed height to make the button square */
   border: 1px solid #FBBF77; /* Light, warm orange border */
   box-shadow: rgba(220, 150, 90, 0.3) 0px 8px 20px; /* Softer shadow for buttons */
   border-radius: 12px; /* Rounded corners for a soft look */
@@ -93,72 +85,64 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #FEF9F3; /* Very light, warm cream background */
+  background-color: #FEF9F3; 
   transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  padding: 15px; /* Reduced padding */
-  font-size: 0.9rem; /* Slightly smaller font size */
+  padding: 40px; 
+  font-size: 0.9rem; 
 }
 
 .tableButton:hover {
-  background-color: #FCE8D1; /* Slightly warmer tone on hover */
-  box-shadow: rgba(220, 150, 90, 0.5) 0px 10px 25px; /* Enhanced hover shadow */
-  transform: scale(1.05); /* Slightly larger on hover */
+  background-color: #FCE8D1; 
+  box-shadow: rgba(220, 150, 90, 0.5) 0px 10px 25px;
+  transform: scale(1.05); 
 }
 
 .tableButton:active {
   transform: scale(1);
 }
 
-/* Statistic value styling */
 .statisticValue {
-  color: #D9773D; /* Warm orange to match theme */
-  font-size: 1rem; /* Slightly smaller font size */
+  color: #D9773D; 
+  font-size: 1rem; 
 }
 
-/* Icon styling */
 .icon {
-  color: #D9773D; /* Consistent warm orange */
+  color: #D9773D; 
 }
 
-/* Tag styling */
 .ant-tag {
   font-size: 0.875rem;
   font-weight: 500;
-  background-color: #FEF6E4; /* Light cream background for tags */
-  color: #D9773D; /* Warm orange text for tags */
-  border-radius: 10px; /* Slightly smaller rounded corners */
-  padding: 4px 8px; /* Reduced padding for tags */
+  background-color: #FEF6E4; 
+  color: #D9773D; 
+  border-radius: 10px; 
+  padding: 4px 8px; 
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .heading-style {
-    font-size: 1.6rem; /* Adjusted size for smaller screens */
-    margin: 15px 0; /* Reduced margin */
+    font-size: 1.6rem; 
+    margin: 15px 0; 
   }
 
   .tableButton {
-    width: 120px; /* Smaller width for mobile */
-    height: 120px; /* Smaller height for mobile */
-    padding: 10px; /* Adjusted padding for mobile */
-    font-size: 0.8rem; /* Smaller font size for mobile */
+    width: 120px; 
+    height: 120px; 
+    padding: 10px; 
+    font-size: 0.8rem; 
   }
 
-  /* Card style adjustments for smaller screens */
   .card-style {
-    padding: 16px; /* Reduced padding for smaller screens */
-    margin: 12px; /* Reduced margin for smaller screens */
+    padding: 16px; 
+    margin: 12px; 
   }
 
-  /* Button styles for smaller screens */
   .button-style, .back-button-style {
-    padding: 10px 20px; /* Adjusted padding */
-    font-size: 0.9rem; /* Slightly smaller font size */
+    padding: 10px 20px;
+    font-size: 0.9rem; 
   }
 }
 
 .statistic-container {
   text-align: center;
 }
-
-  /*----------------------------------------------------------------------------------------------*/

@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
 import { PositionInterface } from "../../interfaces/Position";
 import { EmployeeInterface } from "../../interfaces/Employee";
-import "../../App.css"; // Import the CSS file
+import "../../App.css"; 
 
 function ITSider() {
   const page = localStorage.getItem("page");
@@ -106,7 +106,7 @@ function ITSider() {
           <div style={{ position: "relative" }}>
             <Button
               onClick={toggleCollapsed}
-              className="toggle-button" // Apply class for styling
+              className="toggle-button" 
             >
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
@@ -115,7 +115,7 @@ function ITSider() {
               <img
                 src={profile}
                 alt="Profile"
-                className={`profile-image ${collapsed ? "small" : "large"}`} // Apply class for styling
+                className={`profile-image ${collapsed ? "small" : "large"}`} 
                 style={{
                   width: collapsed ? "50px" : "100px",
                   height: collapsed ? "50px" : "100px",

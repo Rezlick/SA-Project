@@ -250,7 +250,7 @@ func CheckPhone(c *gin.Context) {
 }
 
 func GetMemberCountForToday(c *gin.Context) {
-    var count int64
+    var count int
 
     db := config.DB()
 
@@ -283,7 +283,7 @@ func GetNetIncomeByMemberToday(c *gin.Context) {
 	var income int
 
 	db := config.DB()
-	results := db.Raw(`SELECT SUM(total_price) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND member_id != 0`).Scan(&income)
+	results := db.Raw(`SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND member_id != 0`).Scan(&income)
 	if results.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
 		return

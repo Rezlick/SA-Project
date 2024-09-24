@@ -7,4 +7,5 @@ export interface ReceiptInterface {
     CouponID?: number,
     MemberID?: number;
     EmployeeID?: number;
+    TypePaymentID?: number;
 }

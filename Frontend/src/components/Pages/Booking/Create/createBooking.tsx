@@ -128,7 +128,7 @@ function CreateBookingTable() {
     Modal.confirm({
       title: "Confirm Booking",
       content: "Are you sure you want to confirm this booking?",
-      centered: true, // Center the modal
+      centered: true,
       onOk: async () => {
         const tableIdNumber = Number(tableId);
 
@@ -196,7 +196,7 @@ function CreateBookingTable() {
     return Array.from({ length: numberOfSoups }, (_, i) => (
       <Col xs={24} sm={24} md={12} key={`soup${i + 1}`}>
         <Form.Item
-          label={`Soup ${i + 1}`}
+          label={`ซุป ${i + 1}`}
           name={`soup${i + 1}`}
           rules={[{ required: true, message: "Please select a soup!" }]}
         >
@@ -218,7 +218,7 @@ function CreateBookingTable() {
     <>
       <Row gutter={[16, 16]} justify="center" style={{ marginBottom: "20px" }}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h1 className="heading-style">Table Booking for {tableName}</h1>
+          <h1 className="heading-style">จองโต๊ะสำหรับ {tableName}</h1>
         </Col>
       </Row>
       <Row gutter={[16, 16]} justify="center" style={{ marginTop: "0px" }}>
@@ -233,7 +233,7 @@ function CreateBookingTable() {
               <Row gutter={[16, 16]}>
                 <Col xs={24} sm={24} md={12}>
                   <Form.Item
-                    label="Number of Customers"
+                    label="จำนวนลูกค้า"
                     name="number_of_customer"
                     rules={[
                       {
@@ -261,7 +261,7 @@ function CreateBookingTable() {
                 </Col>
                 <Col xs={24} sm={24} md={12}>
                   <Form.Item
-                    label="Package"
+                    label="แพ็กเกจ"
                     name="package_id"
                     rules={[
                       { required: true, message: "Please select a package!" },
@@ -288,7 +288,7 @@ function CreateBookingTable() {
                     onClick={handleBackButtonClick}
                     className="back-button-style"
                   >
-                    Back
+                    กลับ
                   </Button>
                 </Col>
                 <Col>
@@ -297,7 +297,7 @@ function CreateBookingTable() {
                     htmlType="submit"
                     className="button-style"
                   >
-                    Confirm
+                    ยืนยัน
                   </Button>
                 </Col>
               </Row>

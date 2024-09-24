@@ -129,19 +129,7 @@ function Booking() {
   return (
     <Row gutter={[16, 0]}>
       <Col xs={24}>
-        <h1 className="heading">Table Selection</h1>
-        <Button
-          type="primary"
-          onClick={goToBookingList}
-          style={{
-            backgroundColor: "#FF7F50",
-            borderColor: "#FF7F50",
-            marginBottom: 16,
-            color: "#fff",
-          }}
-        >
-          Booking List
-        </Button>
+        <h1 className="heading-style">เลือกโต๊ะ</h1>
         <Divider />
       </Col>
       <Col xs={24}>
@@ -166,11 +154,11 @@ function Booking() {
                       type="default"
                       className="tableButton"
                       onClick={() => handleButtonClick(table)}
-                      // disabled={
-                      //   !table.table_name ||
-                      //   status?.status === "Occupied" ||
-                      //   status?.status === "Cleaning"
-                      // }
+                      disabled={
+                        !table.table_name ||
+                        status?.status === "Occupied" ||
+                        status?.status === "Cleaning"
+                      }
                       style={{
                         width: "100%",
                         display: "flex",
@@ -204,6 +192,20 @@ function Booking() {
               })}
             </Row>
           )}
+          {/* ปุ่มอยู่ที่นี่ */}
+          <Button
+            type="primary"
+            onClick={goToBookingList}
+            style={{
+              backgroundColor: "#FF7F50",
+              borderColor: "#FF7F50",
+              marginTop: 16, // ใช้ marginTop แทน marginBottom
+              color: "#fff",
+              width: "100%", // ทำให้ปุ่มเต็มความกว้าง
+            }}
+          >
+            รายการจองโต๊ะ
+          </Button>
         </Card>
       </Col>
     </Row>

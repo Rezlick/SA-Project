@@ -8,7 +8,6 @@ import {
   Spin,
   Empty,
   Badge,
-  Divider,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -130,10 +129,9 @@ function Booking() {
     <Row gutter={[16, 0]}>
       <Col xs={24}>
         <h1 className="heading-style">เลือกโต๊ะ</h1>
-        <Divider />
       </Col>
       <Col xs={24}>
-        <Card className="card">
+        <Card className="card-style" style={{ marginBottom: 16 }}>
           {loading ? (
             <Spin tip="Loading..." className="spinContainer" />
           ) : tables.length === 0 ? (
@@ -192,20 +190,24 @@ function Booking() {
               })}
             </Row>
           )}
-          {/* ปุ่มอยู่ที่นี่ */}
-          <Button
-            type="primary"
-            onClick={goToBookingList}
-            style={{
-              backgroundColor: "#FF7F50",
-              borderColor: "#FF7F50",
-              marginTop: 16, // ใช้ marginTop แทน marginBottom
-              color: "#fff",
-              width: "100%", // ทำให้ปุ่มเต็มความกว้าง
-            }}
-          >
-            รายการจองโต๊ะ
-          </Button>
+          {/* Button located here */}
+          <Row justify="center" style={{ marginTop: 16 }}>
+            <Col xs={24} sm={12} md={8}>
+              <Button
+                type="primary"
+                onClick={goToBookingList}
+                style={{
+                  backgroundColor: "#FF7F50",
+                  borderColor: "#FF7F50",
+                  color: "#fff",
+                  width: "100%", // Ensure full width
+                  marginTop: 16, // Add some space above the button
+                }}
+              >
+                รายการจองโต๊ะ
+              </Button>
+            </Col>
+          </Row>
         </Card>
       </Col>
     </Row>

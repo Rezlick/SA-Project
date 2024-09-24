@@ -27,7 +27,6 @@ import { TableInterface } from "../../../../interfaces/Table";
 import { TableCapacityInterface } from "../../../../interfaces/TableCapacity";
 import { useNavigate, useLocation } from "react-router-dom";
 
-
 function CreateBookingTable() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -112,14 +111,13 @@ function CreateBookingTable() {
     const capacity = tableCaps.find(
       (cap) => cap.ID === table.table_capacity_id
     );
-    if (!capacity) return { min: 1, max: 10 };
-
-    return { min: capacity.min || 1, max: capacity.max || 10 };
+    return capacity
+      ? { min: capacity.min || 1, max: capacity.max || 10 }
+      : { min: 1, max: 10 };
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     const { min, max } = fetchTableCapacityLimits();
-
     if (values.number_of_customer < min || values.number_of_customer > max) {
       message.error(`Number of customers must be between ${min} and ${max}!`);
       return;
@@ -131,12 +129,10 @@ function CreateBookingTable() {
       centered: true,
       onOk: async () => {
         const tableIdNumber = Number(tableId);
-
         if (!tableId || isNaN(tableIdNumber) || tableIdNumber <= 0) {
           message.error("Invalid or missing table ID.");
           return;
         }
-
         if (!accountid) {
           message.error("User ID is missing. Please log in.");
           return;
@@ -152,7 +148,6 @@ function CreateBookingTable() {
         try {
           const bookingRes = await CreateBooking(bookingPayload);
           const bookingId = bookingRes?.booking_id;
-
           if (!bookingId)
             throw new Error("Booking ID is missing from the response");
 
@@ -163,13 +158,15 @@ function CreateBookingTable() {
             values.soup4,
           ].filter((soup): soup is number => typeof soup === "number");
 
-          const bookingSoupsPayload: BookingSoupInterface[] =
-            selectedSoupIds.map((soupId) => ({
-              booking_id: bookingId,
-              soup_id: soupId,
-            }));
+          if (selectedSoupIds.length > 0) {
+            const bookingSoupsPayload: BookingSoupInterface[] =
+              selectedSoupIds.map((soupId) => ({
+                booking_id: bookingId,
+                soup_id: soupId,
+              }));
 
-          await Promise.all(bookingSoupsPayload.map(CreateBookingSoup));
+            await Promise.all(bookingSoupsPayload.map(CreateBookingSoup));
+          }
 
           await updateTableStatus(tableIdNumber, 2);
           message.success("Booking confirmed!");
@@ -177,6 +174,9 @@ function CreateBookingTable() {
         } catch (error) {
           message.error("Booking failed! Please try again.");
         }
+      },
+      onCancel: () => {
+        message.info("Booking was cancelled.");
       },
     });
   };

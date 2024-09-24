@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Layout, Card, message } from "antd";
 import { Routes, Route } from "react-router-dom";
 import Customer from "../Pages/customer/customer";
+import CustomerCart from "../Pages/customer/CartCustomer/cartCustomer";
 import CustomerSider from "../Sider/CustomerSider"; // Import CustomerSider ที่ถูกต้อง
 import logo from "../../assets/logo.png";
 import Background from "../../assets/background_customer.webp";
@@ -55,6 +56,7 @@ const CustomerLayout: React.FC = () => {
                             <div>
                                 <Routes>
                                     <Route path="/customer/:id" element={<Customer />} />
+                                    <Route path="/customer/cart/:id" element={<CustomerCart />} />
                                 </Routes>
                             </div>
                         </Card>

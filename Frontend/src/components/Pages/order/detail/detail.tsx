@@ -15,7 +15,6 @@ function OrderDetail() {
     const [statusorder, setStatusOrder] = useState<number>();
     const [tableName, setTableName] = useState<string>("");
     const [order, setOrderByID] = useState<OrderInterface[]>([]);
-    const [productcode, setProductCode] = useState<string>("");
     const [form] = Form.useForm(); // Ant Design form
     const { id } = useParams<{ id: string }>(); // Check if `id` is valid
     const employeeID = localStorage.getItem("employeeID") || "No ID found";
@@ -88,7 +87,6 @@ function OrderDetail() {
             }, 2000);
         }
     };
-    console.log("awdvwa = ", orderproduct);
     
 
     useEffect(() => {
@@ -133,7 +131,7 @@ function OrderDetail() {
             align: "center",
         },
     ];
-
+    
     return (
         <>
             <Form form={form} onFinish={onFinish}>

@@ -1,20 +1,19 @@
 body {
-  font-family: 'Noto Sans Thai', sans-serif;
+  font-family: "Noto Sans Thai", sans-serif;
   margin: 0;
 }
 
 h1 {
-  font-family: 'Noto Sans Thai', sans-serif;
+  font-family: "Noto Sans Thai", sans-serif;
   font-size: 2rem; /* ปรับขนาด */
   font-weight: bold; /* ทำให้ตัวหนา */
 }
 
 p {
-  font-family: 'Noto Sans Thai', sans-serif;
+  font-family: "Noto Sans Thai", sans-serif;
   font-size: 1rem; /* ขนาดปกติ */
   line-height: 1.5; /* ระยะห่างระหว่างบรรทัด */
 }
-
 
 .logo {
   object-fit: contain;
@@ -23,6 +22,7 @@ p {
   border-radius: 5%;
 }
 
+/* Sider style ------------------------------------------------------------------------ */
 @media (max-width: 768px) {
   .ant-layout {
     flex-direction: column;
@@ -46,4 +46,96 @@ p {
   .ant-breadcrumb {
     display: none;
   }
+}
+
+.sider {
+  background-color: #fff8e1; /* Soft peach background for the sider */
+  color: #000; /* Black text color */
+}
+
+.profile-image {
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ffcc80; /* Light orange border */
+  background-color: white;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0 20px 0; /* Top, Right, Bottom, Left */
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px 0; /* Top and Bottom margin */
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+.menu {
+  background-color: transparent; /* Transparent background for the menu */
+}
+
+/* Hover effect for menu items */
+.menu-item {
+  padding: 10px 15px; /* Add padding for better clickability */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+.menu-item:hover {
+  background-color: #ffab40; /* Soft orange on hover */
+  color: #fff; /* White text color on hover */
+}
+
+/* Active state for menu items */
+.menu-item.active {
+  background-color: #ff8a65; /* Slightly darker soft orange for active item */
+  color: #fff; /* White text color for active item */
+}
+
+/* Focus state for accessibility */
+.menu-item:focus {
+  outline: none; /* Remove default outline */
+  background-color: #ffcc80; /* Light orange background for focus */
+  color: #000; /* Black text color for focus */
+}
+
+/* Button to toggle collapsed state */
+.toggle-button {
+  position: absolute;
+  top: 0;
+  right: -46px;
+  z-index: 1;
+}
+
+/* Custom styles for the sidebar */
+.custom-sider {
+  background-color: #ffe0b2; /* Soft orange background */
+  color: #000; /* Black text color for contrast */
+}
+
+/* Ensure the custom sider takes precedence */
+.ant-layout-sider.custom-sider {
+  background-color: #ffe0b2; /* Apply soft orange background */
+  color: #000; /* Black text color for contrast */
+}
+
+.profile-name {
+  font-size: large;
+  color: #000; /* Change to black for better visibility */
+}
+
+.profile-position {
+  font-size: default;
+  color: #000; /* Change to black for better visibility */
+}
+
+.edit-profile-link {
+  font-size: smaller;
+  color: #ff5722; /* Soft orange color */
+  text-decoration: underline;
 }

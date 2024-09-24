@@ -149,25 +149,6 @@ func DeleteMember(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ลบข้อมูลสำเร็จ"})
 }
 
-func GetMemberCountForCurrentMonth(c *gin.Context) {
-    var count int64
-
-    db := config.DB()
-    // Select members created in the current month
-    result := db.Raw(
-        `SELECT COUNT(id) 
-        FROM members 
-        WHERE strftime('%Y-%m', created_at) = strftime('%Y-%m', 'now')
-        AND deleted_at IS NULL`).Scan(&count)
-    
-    if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{"memberCount": count})
-}
-
 func AddPointsToMember(c *gin.Context) {
     var pointsToAdd struct {
         Points int 
@@ -205,74 +186,6 @@ func AddPointsToMember(c *gin.Context) {
     }
 
     c.JSON(http.StatusOK, gin.H{"message": "Points added successfully", "updatedPoints": member.Point})
-}
-
-func GetMemberCountForMonth(c *gin.Context) {
-    var count int64
-
-    // Get the month and year from query parameters
-    month := c.Query("month") // Expects "MM" format
-    year := c.Query("year")   // Expects "YYYY" format
-
-    if month == "" || year == "" {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Month and year are required"})
-        return
-    }
-
-    db := config.DB()
-    
-    // Select members created in the specified month and year
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m', created_at) = ? AND deleted_at IS NULL"
-    result := db.Raw(query, year+"-"+month).Scan(&count)
-
-    if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{"memberCount": count})
-}
-
-func GetMemberCountForDay(c *gin.Context) {
-    var count int64
-
-    // Get the date from query parameters (expects "YYYY-MM-DD" format)
-    day := c.Query("day")
-
-    if day == "" {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Day is required in format YYYY-MM-DD"})
-        return
-    }
-
-    db := config.DB()
-
-    // Select members created on the specified day
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = ? AND deleted_at IS NULL"
-    result := db.Raw(query, day).Scan(&count)
-
-    if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{"memberCount": count})
-}
-
-func GetMemberCountForToday(c *gin.Context) {
-    var count int64
-
-    db := config.DB()
-
-    // Select members created on the specified day
-    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND deleted_at IS NULL"
-    result := db.Raw(query).Scan(&count)
-
-    if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-        return
-    }
-
-    c.JSON(http.StatusOK, gin.H{"memberCount": count})
 }
 
 func CheckMember(c *gin.Context){
@@ -336,3 +249,45 @@ func CheckPhone(c *gin.Context) {
 	}
 }
 
+func GetMemberCountForToday(c *gin.Context) {
+    var count int64
+
+    db := config.DB()
+
+    // Select members created on the specified day
+    query := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND deleted_at IS NULL"
+    result := db.Raw(query).Scan(&count)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"memberCount": count})
+}
+
+func GetMemberCountByReceiptToday(c *gin.Context) {
+	var count int64
+
+	db := config.DB()
+	results := db.Raw(`SELECT COUNT(id) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND member_id != 0`).Scan(&count)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"memberCount": count})
+}
+
+func GetNetIncomeByMemberToday(c *gin.Context) {
+	var income int
+
+	db := config.DB()
+	results := db.Raw(`SELECT SUM(total_price) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND member_id != 0`).Scan(&income)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"netIncome": income})
+}

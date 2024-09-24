@@ -29,4 +29,8 @@ npm install antd --save
 npm install axios --save
 
 npm i antd-img-crop
+
+npm install moment
+
+npm install --save-dev @types/lodash
 ```

@@ -34,6 +34,7 @@ func main() {
         r.PATCH("/employee/:id", controller.UpdateEmployee)
         r.DELETE("/employee/:id", controller.DeleteEmployee)
         r.POST("/checkEmail/:email", controller.CheckEmail)
+        r.PATCH("/employee/:id/changePassword", controller.ChangePassword)
 
         // Member Routes
         r.POST("/member", controller.CreateMember)
@@ -43,6 +44,9 @@ func main() {
         r.PATCH("/member/:id", controller.UpdateMember)
         r.DELETE("/member/:id", controller.DeleteMember)
         r.POST("/checkPhone/:phoneNumber", controller.CheckPhone)
+        r.GET("/memberCountForToday", controller.GetMemberCountForToday)
+        r.GET("/memberCountByReceiptToday", controller.GetMemberCountByReceiptToday)
+        r.GET("/netIncomeByMemberToday", controller.GetNetIncomeByMemberToday)
 
         // Gender Routes
         r.GET("/genders", controller.GetGenders)
@@ -53,15 +57,16 @@ func main() {
         // Rank Routes
         r.GET("/ranks", controller.GetRanks)
 
-        // MemberCount Routes
+        // Dashboard Routes
         r.GET("/memberCountForCurrentMonth", controller.GetMemberCountForCurrentMonth)
-        r.GET("/memberCountForDay", controller.GetMemberCountForDay)
-        r.GET("/memberCountForToday", controller.GetMemberCountForToday)
-        r.GET("/memberCountForMonth", controller.GetMemberCountForMonth)
+        r.GET("/getNetIncomeForCurrentMonth", controller.GetNetIncomeForCurrentMonth)
+        r.GET("/dashboardDataForDay", controller.GetDashboardDataForDay)
+        r.GET("/dashboardDataForMonth", controller.GetDashboardDataForMonth)
 
         // Receipt s
         r.GET("/receipt", controller.GetReceipts)
         r.POST("/receipt", controller.CreateReceipt)
+        r.DELETE("/receipt/:id", controller.DeleteBookingAfterPay)
 
         // Coupon 
         r.POST("/api/check-coupon/:code", controller.CheckCoupon)
@@ -71,8 +76,6 @@ func main() {
 
         // Add point route
         r.PATCH("/member/:id/addPoints", controller.AddPointsToMember)
-
-        r.PATCH("/employee/:id/changePassword", controller.ChangePassword)
 
         // Booking
 		r.GET("/booking", controller.GetBookings)
@@ -104,7 +107,7 @@ func main() {
 
         //ManageStock
         r.GET("/Stock/:category_id", controller.GetStock)
-	   r.GET("/SupplierName", controller.GetNameSupplier)
+	    r.GET("/SupplierName", controller.GetNameSupplier)
 		r.GET("/Supplier", controller.GetdataAllSupplier)
 		r.POST("/AddStock", controller.AddStockHandler)
 		r.PUT("/UpdateStock", controller.UpdateStock)

@@ -70,6 +70,21 @@ async function CheckEmail(email: string) {
   .then((res) => res)
   .catch((e) => e.response);
 }
+async function GetGenders() {
+  return await axios
+    .get(`${apiUrl}/genders`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+// Member functions
+
+async function GetPositions() {
+  return await axios
+    .get(`${apiUrl}/positions`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
 
 async function CreateMember(data: MemberInterface) {
   return await axios
@@ -101,46 +116,55 @@ async function CheckPhone(phoneNumber: string) {
 
 async function GetMemberByID(id: string | undefined) {
   return await axios
-    .get(`${apiUrl}/member/${id}`, requestOptions)
-    .then((res) => res)
-    .catch((e) => e.response);
+  .get(`${apiUrl}/member/${id}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
 }
 
 async function UpdateMember(id: string | undefined, data: MemberInterface) {
   return await axios
-    .patch(`${apiUrl}/member/${id}`, data, requestOptions)
-    .then((res) => res)
-    .catch((e) => e.response);
+  .patch(`${apiUrl}/member/${id}`, data, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
 }
 
 async function DeleteMemberByID(id: string | undefined) {
   return await axios
-    .delete(`${apiUrl}/member/${id}`, requestOptions)
-    .then((res) => res)
-    .catch((e) => e.response);
+  .delete(`${apiUrl}/member/${id}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
 }
 
-async function GetGenders() {
+async function GetMemberCountByReceiptToday() {
   return await axios
-    .get(`${apiUrl}/genders`, requestOptions)
+    .get(`${apiUrl}/memberCountByReceiptToday`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
+  
+async function GetMemberCountForToday() {
+    return await axios
+      .get(`${apiUrl}/memberCountForToday`, requestOptions)
+      .then((res) => res)
+      .catch((e) => e.response);
+}
 
-async function GetPositions() {
+async function GetNetIncomeByMemberToday() {
   return await axios
-    .get(`${apiUrl}/positions`, requestOptions)
+    .get(`${apiUrl}/netIncomeByMemberToday`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
-
+  
 async function GetRanks() {
-  return await axios
+    return await axios
     .get(`${apiUrl}/ranks`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
 
+// Dashboard functions
+  
 async function GetMemberCountForCurrentMonth() {
   return await axios
     .get(`${apiUrl}/memberCountForCurrentMonth`, requestOptions)
@@ -148,23 +172,25 @@ async function GetMemberCountForCurrentMonth() {
     .catch((e) => e.response);
 }
 
-async function GetMemberCountForMonth(month: string, year: string) {
+async function GetDashboardDataForMonth(month: string, year: string) {
   return await axios
-    .get(`${apiUrl}/memberCountForMonth?month=${month}&year=${year}`, requestOptions)
+    .get(`${apiUrl}/dashboardDataForMonth?month=${month}&year=${year}`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
 
-async function GetMemberCountForDay(date: string) {
+async function GetDashboardDataForDay(date: string) {
   return await axios
-    .get(`${apiUrl}/memberCountForDay?day=${date}`, requestOptions)
+    .get(`${apiUrl}/dashboardDataForDay?day=${date}`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
 
-async function GetMemberCountForToday() {
+
+
+async function GetNetIncomeForCurrentMonth() {
   return await axios
-    .get(`${apiUrl}/memberCountForToday`, requestOptions)
+    .get(`${apiUrl}/getNetIncomeForCurrentMonth`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -181,6 +207,13 @@ async function GetReceipts() {
 async function CreateReceipt(data: ReceiptInterface) {
   return await axios
     .post(`${apiUrl}/receipt`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function DeleteBookingAfterPay(id: string | undefined) {
+  return await axios
+    .delete(`${apiUrl}/receipt/${id}`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -468,8 +501,7 @@ export {
   CheckBooking,
   AddPointsToMember,
   changePassword,
-  GetMemberCountForMonth,
-  GetMemberCountForDay,
+  GetDashboardDataForMonth,
   GetTables,
   UpdateTableStatus,
   GetTableCapacity,
@@ -500,4 +532,9 @@ export {
   GetSupplierName,
   GetMemberCountForToday,
   GetProductByCodeID,
+  GetMemberCountByReceiptToday,
+  GetNetIncomeForCurrentMonth,
+  GetDashboardDataForDay,
+  GetNetIncomeByMemberToday,
+  DeleteBookingAfterPay,
 };

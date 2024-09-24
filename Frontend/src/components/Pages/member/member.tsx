@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Space, Table, Button, Col, Row, Divider, message, Dropdown, Modal, Progress } from "antd";
-import { PlusOutlined, DeleteOutlined, EditOutlined, DashOutlined } from "@ant-design/icons";
+import { Space, Table, Button, Col, Row, Divider, message, Dropdown, Modal, Progress, Card, Statistic } from "antd";
+import { PlusOutlined, DeleteOutlined, EditOutlined, DashOutlined, WalletOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMembers, DeleteMemberByID } from "../../../services/https/index";
+import { GetMembers, DeleteMemberByID, GetMemberCountForToday, GetMemberCountByReceiptToday, GetNetIncomeByMemberToday } from "../../../services/https/index";
 import { MemberInterface } from "../../../interfaces/Member";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,6 +12,10 @@ export default function Member() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+
+  const [memberCountForToday, setMemberCountForToday] = useState<number>(0);
+  const [memberCountByReceiptToday, setMemberCountByReceiptToday] = useState<number>(0);
+  const [netIncomeByMemberToday, setNetIncomeByMemberToday] = useState<number>(0);
 
   const columns: ColumnsType<MemberInterface> = [
     {
@@ -42,10 +46,10 @@ export default function Member() {
         const currentPoints = record.Point || 0;
         const currentRank = record.Rank?.Name || "ไม่มี";
         let maxPoints = record.Rank?.PointToUpgrade || 0;
-    
+
         // Don't show maxPoints if the rank is "Gold"
         const percentage = maxPoints > 0 ? (currentPoints / maxPoints) * 100 : 100;
-    
+
         return (
           <div style={{ width: 300 }}>
             <Progress
@@ -58,7 +62,7 @@ export default function Member() {
         );
       },
     },
-    
+
     {
       title: "สมัครโดย",
       key: "Employee",
@@ -131,8 +135,53 @@ export default function Member() {
     }
   };
 
+  const getNetIncomeByMemberToday = async () => {
+    try {
+      const res = await GetNetIncomeByMemberToday(); // Fetch data from the API
+
+      if (res.status === 200) {
+        setNetIncomeByMemberToday(res.data.netIncome); // Set the data from the API response
+      } else {
+        messageApi.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
+  const getMemberCountForToday = async () => {
+    try {
+      const res = await GetMemberCountForToday(); // Fetch data from the API
+
+      if (res.status === 200) {
+        setMemberCountForToday(res.data.memberCount); // Set the data from the API response
+      } else {
+        messageApi.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
+  const getMemberCountByReceiptToday = async () => {
+    try {
+      const res = await GetMemberCountByReceiptToday(); // Fetch data from the API
+
+      if (res.status === 200) {
+        setMemberCountByReceiptToday(res.data.memberCount); // Set the data from the API response
+      } else {
+        messageApi.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
+      }
+    } catch (error) {
+      messageApi.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+  };
+
   useEffect(() => {
-    getMembers(); 
+    getMembers();
+    getMemberCountForToday();
+    getMemberCountByReceiptToday();
+    getNetIncomeByMemberToday();
   }, []);
 
   return (
@@ -140,7 +189,7 @@ export default function Member() {
       {contextHolder}
       <Row>
         <Col span={12}>
-          <h2>ข้อมูลสมาชิก</h2>
+          <h1>ข้อมูลสมาชิก</h1>
         </Col>
 
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
@@ -152,6 +201,35 @@ export default function Member() {
             </Link>
           </Space>
         </Col>
+
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <h2>สถิติ วันนี้</h2>
+        </Col>
+
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card style={{ backgroundColor: "#F5F5F5" }}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                  <Statistic title="รายได้สุทธิจากสมาชิก" value={`${netIncomeByMemberToday} บาท`} valueStyle={{ color: "black" }} prefix={<WalletOutlined />} />
+                </Card>
+              </Col>
+
+              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                  <Statistic title="สมาชิกที่มาใช้บริการ" value={`${memberCountByReceiptToday} ท่าน`} valueStyle={{ color: "black" }} prefix={<FileDoneOutlined />} />
+                </Card>
+              </Col>
+
+              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                  <Statistic title="การสมัครสมาชิก" value={`${memberCountForToday} ท่าน`} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
+                </Card>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
       </Row>
 
       <Divider />

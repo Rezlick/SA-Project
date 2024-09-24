@@ -23,12 +23,7 @@ func CreateOrderProducts(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection failed"})
 		return
 	}
-	if db == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Database connection failed"})
-		return
-	}
 
-	// Start a transaction
 	tx := db.Begin()
 
 	// Check if the Order exists

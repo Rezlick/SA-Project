@@ -99,7 +99,7 @@ function Order() {
   return (
     <>
       <Row>
-        <Col span={12} style={{ marginTop: "-10px", marginBottom: "-5px"}}>
+        <Col span={12} style={{ marginTop: "-10px", marginBottom: "-15px"}}>
           <h2>รายการออเดอร์</h2>
         </Col>
       </Row>

@@ -1,5 +1,6 @@
 import StockCategory from "../Category/StockCategory/StockCategory";
 import useStockData from "../../../..//Hook/useStockData";
+import useGetProductByCodeID from "../../../..//Hook/useGetProductByCodeID";
 //import useSupplierData from '../../Hook/useSupplierData';
 
 export default function StockBeveragesAndDesserts() {
@@ -7,6 +8,8 @@ export default function StockBeveragesAndDesserts() {
   const beveragesAndDessertsData = useStockData(id); // ดึงข้อมูล Stock ด้วย categoryID = 6
   //const SupplierData = useSupplierData(); // ดึงข้อมูล Supplier
   console.log("beveragesAndDessertsData : ",beveragesAndDessertsData);
+  console.log("useGetProductByCodeID",useGetProductByCodeID("B001"));
+  
   
   return (
     <StockCategory

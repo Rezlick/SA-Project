@@ -10,7 +10,7 @@ type Order_Product struct {
 	OrderID      uint
 	Orders       Order   `gorm:"foreignKey:OrderID"`
 
-	ProductID    uint
-	Products     Product `gorm:"foreignKey:ProductID"`
+	Product_Code_ID    string
+	Products     Product `gorm:"foreignKey:Product_Code_ID;references:Product_Code_ID"`
 
 }

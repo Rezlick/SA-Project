@@ -213,7 +213,7 @@ function Pay() {
                     message.error("เกิดข้อผิดพลาดในการลบข้อมูลการจอง");
                 }
     
-                if (MemberID != 1) {
+                if (MemberID != 0) {
                             AddPointsToMember(String(MemberID), Point);
                         }
             

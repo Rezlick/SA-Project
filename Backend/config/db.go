@@ -76,8 +76,6 @@ func SetupDatabase() {
    products:=[]entity.Product{
 		{Product_Code_ID: "B001",ProductName:"น้ำโค๊ก",CategoryID:6,EmployeeID: 1},
 		{Product_Code_ID: "B002",ProductName:"น้ำหวาน",CategoryID: 6,EmployeeID: 1},
-      {Product_Code_ID: "M001",ProductName:"หมู",CategoryID: 6,EmployeeID: 1},
-      {Product_Code_ID: "M002",ProductName:"ไก่",CategoryID: 6,EmployeeID: 1},
 	}
 
    StocksMap :=[]entity.Stock{

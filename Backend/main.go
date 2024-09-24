@@ -63,6 +63,7 @@ func main() {
         // Receipt s
         r.GET("/receipt", controller.GetReceipts)
         r.POST("/receipt", controller.CreateReceipt)
+        r.GET("/getNetIncomeForCurrentMonth", controller.GetNetIncomeForCurrentMonth)
 
         // Coupon 
         r.POST("/api/check-coupon/:code", controller.CheckCoupon)

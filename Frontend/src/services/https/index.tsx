@@ -169,6 +169,8 @@ async function GetMemberCountForToday() {
     .catch((e) => e.response);
 }
 
+// Receipt
+
 async function GetReceipts() {
   return await axios
   .get(`${apiUrl}/receipt`, requestOptions)
@@ -181,6 +183,24 @@ async function CreateReceipt(data: ReceiptInterface) {
     .post(`${apiUrl}/receipt`, data, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
+}
+
+// Coupon
+
+async function CheckCoupons(code: string) {
+  return await axios
+  .post(`${apiUrl}/api/check-coupon/${code}`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
+// TypePayment
+
+async function GetTypePayment() {
+  return await axios
+  .get(`${apiUrl}/typepayment`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
 }
 
 async function AddPointsToMember(memberID: string, points: number) {
@@ -212,12 +232,6 @@ async function GetBooking() {
   .catch((e) => e.response);
 }
 
-async function CheckCoupons(code: string) {
-  return await axios
-  .post(`${apiUrl}/api/check-coupon/${code}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
-}
 
 async function CreateBooking(data: BookingInterface) {
   try {
@@ -450,6 +464,7 @@ export {
   GetReceipts,
   CreateReceipt,
   CheckCoupons,
+  GetTypePayment,
   CheckBooking,
   AddPointsToMember,
   changePassword,

@@ -169,6 +169,13 @@ async function GetMemberCountForToday() {
     .catch((e) => e.response);
 }
 
+async function GetMemberCountByReceiptToday() {
+  return await axios
+    .get(`${apiUrl}/memberCountByReceiptToday`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 // Receipt
 
 async function GetReceipts() {
@@ -500,4 +507,5 @@ export {
   GetSupplierName,
   GetMemberCountForToday,
   GetProductByCodeID,
+  GetMemberCountByReceiptToday,
 };

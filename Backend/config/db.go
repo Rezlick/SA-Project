@@ -30,7 +30,12 @@ func SetupDatabase() {
 		&entity.Gender{},
 		&entity.Rank{},
 		&entity.Position{},
+
       &entity.Receipt{},
+      &entity.Coupon{},
+      &entity.TypePayment{},
+
+
       &entity.Booking{},
       &entity.Soup{},
       &entity.BookingSoup{},
@@ -85,6 +90,8 @@ func SetupDatabase() {
 		{ProductID:2,Quantity:100,Price:150,DateIn:parseDate("2024-08-22 14:00"),ExpirationDate:parseDate("2025-08-22 14:00"),SupplierID:1,EmployeeID:1,},
 	}
 
+   TypeCash := entity.TypePayment{Name: "เงินสด"}
+   TypeScanQR := entity.TypePayment{Name: "โอนเงิน"}
 
    order1 := entity.Order{BookingID: 1, Status_OrderID: 2}
    order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
@@ -154,6 +161,8 @@ func SetupDatabase() {
 		db.FirstOrCreate(&stock, entity.Stock{ProductID: stock.ProductID, SupplierID: stock.SupplierID, DateIn: stock.DateIn})
 	}
 
+   db.FirstOrCreate(&TypeCash, &entity.TypePayment{Name: "เงินสด"})
+   db.FirstOrCreate(&TypeScanQR, &entity.TypePayment{Name: "พร้อมเพย์"})
 
    db.FirstOrCreate(&status1, &entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"})
    db.FirstOrCreate(&status2, &entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"})

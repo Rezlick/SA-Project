@@ -211,6 +211,13 @@ async function CreateReceipt(data: ReceiptInterface) {
     .catch((e) => e.response);
 }
 
+async function DeleteBookingAfterPay(id: string | undefined) {
+  return await axios
+    .delete(`${apiUrl}/receipt/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 // Coupon
 
 async function CheckCoupons(code: string) {
@@ -529,4 +536,5 @@ export {
   GetNetIncomeForCurrentMonth,
   GetDashboardDataForDay,
   GetNetIncomeByMemberToday,
+  DeleteBookingAfterPay,
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Layout, Menu, message, Button } from "antd";
-
 import {
   UserOutlined,
   DashboardOutlined,
@@ -11,12 +10,13 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   TeamOutlined,
-  OrderedListOutlined
+  OrderedListOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
 import { PositionInterface } from "../../interfaces/Position";
 import { EmployeeInterface } from "../../interfaces/Employee";
+import "../../App.css"; // Import the CSS file
 
 function ITSider() {
   const page = localStorage.getItem("page");
@@ -30,17 +30,16 @@ function ITSider() {
   const [profile, setProfile] = useState("");
   const employeeID = localStorage.getItem("employeeID");
 
-  // Function to fetch positions and set the appropriate position name
   const getEmployeeById = async () => {
     try {
-      const res = await GetEmployeeByID(employeeID || ""); // Fetch employee data from the API
+      const res = await GetEmployeeByID(employeeID || "");
       if (res.status === 200) {
         const employee: EmployeeInterface = res.data;
         setFirstName(employee.FirstName || "");
         setLastName(employee.LastName || "");
         setProfile(employee.Profile || "");
         if (employee.PositionID) {
-          getPositionNameById(employee.PositionID); // Fetch position name based on PositionID
+          getPositionNameById(employee.PositionID);
         } else {
           setPositionName("Unknown Position");
         }
@@ -52,10 +51,9 @@ function ITSider() {
     }
   };
 
-  // Function to fetch position name by position ID
   const getPositionNameById = async (positionID: number) => {
     try {
-      const res = await GetPositions(); // Fetch all positions
+      const res = await GetPositions();
       if (res.status === 200) {
         const positions: PositionInterface[] = res.data;
         const position = positions.find((pos) => pos.ID === positionID);
@@ -96,7 +94,7 @@ function ITSider() {
   return (
     <>
       {contextHolder}
-      <Sider collapsed={collapsed} style={{backgroundColor:"#FF7D29"}}>
+      <Sider collapsed={collapsed} className="custom-sider">
         <div
           style={{
             display: "flex",
@@ -108,66 +106,35 @@ function ITSider() {
           <div style={{ position: "relative" }}>
             <Button
               onClick={toggleCollapsed}
-              style={{
-                position: "absolute",
-                top: 0,
-                right: -46,
-                zIndex: 1,
-              }}
+              className="toggle-button" // Apply class for styling
             >
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: 50,
-                marginBottom: 20,
-              }}
-            >
+            <div className="profile-container">
               <img
                 src={profile}
                 alt="Profile"
+                className={`profile-image ${collapsed ? "small" : "large"}`} // Apply class for styling
                 style={{
-                  objectFit: "cover",
                   width: collapsed ? "50px" : "100px",
                   height: collapsed ? "50px" : "100px",
-                  borderRadius: "50%",
-                  transition: "width 0.3s ease, height 0.3s ease",
-                  border: "1px solid #e0dede",
-                  backgroundColor:"white",
                 }}
               />
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginTop: 20,
-                marginBottom: 20,
-                overflowWrap: "break-word",
-                textAlign: "center",
-              }}
-            >
-              <span style={{ fontSize: "large", color: "white" }}>{firstName} {lastName}</span>
-              <span style={{ fontSize: "default", color: "white" }}>({positionName})</span>
-              <span><Link to="/profileEdit" style={{ fontSize: "smaller", color: "white", textDecorationLine:"underline"}}>แก้ไขโปรไฟล์</Link></span>
-              
+            <div className="profile-info">
+              <span style={{ fontSize: "large", color: "black" }}>{firstName} {lastName}</span>
+              <span style={{ fontSize: "default", color: "black" }}>({positionName})</span>
+              <span>
+                <Link to="/profileEdit" style={{ fontSize: "smaller", color: "black", textDecorationLine: "underline" }}>
+                  แก้ไขโปรไฟล์
+                </Link>
+              </span>
             </div>
 
-            <Menu
-              style={{ backgroundColor: "#FF7D29" }}
-              defaultSelectedKeys={[page ? page : "dashboard"]}
-              mode="inline"
-              inlineCollapsed={collapsed}
-            >
-              <Menu.Item
-                key="dashboard"
-                onClick={() => setCurrentPage("dashboard")}
-              >
+            <Menu className="menu" defaultSelectedKeys={[page ? page : "dashboard"]} mode="inline" inlineCollapsed={collapsed}>
+              <Menu.Item key="dashboard" onClick={() => setCurrentPage("dashboard")}>
                 <Link to="/dashboard">
                   <DashboardOutlined />
                   <span>แดชบอร์ด</span>
@@ -209,10 +176,7 @@ function ITSider() {
                 </Link>
               </Menu.Item>
 
-              <Menu.Item
-                key="employee"
-                onClick={() => setCurrentPage("employee")}
-              >
+              <Menu.Item key="employee" onClick={() => setCurrentPage("employee")}>
                 <Link to="/employee">
                   <TeamOutlined />
                   <span>พนักงาน</span>
@@ -221,7 +185,7 @@ function ITSider() {
             </Menu>
           </div>
 
-          <Menu style={{ backgroundColor: "#FF7D29" }} mode="inline">
+          <Menu className="menu" mode="inline">
             <Menu.Item key="logout" onClick={Logout}>
               <LogoutOutlined />
               <span>ออกจากระบบ</span>

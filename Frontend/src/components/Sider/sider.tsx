@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Layout, Menu, message, Button } from "antd";
-
 import {
   UserOutlined,
   LogoutOutlined,
@@ -20,24 +19,22 @@ function Sider() {
   const { Sider } = Layout;
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [positionName, setPositionName] = useState("");
   const [profile, setProfile] = useState("");
   const employeeID = localStorage.getItem("employeeID");
 
-  // Function to fetch positions and set the appropriate position name
   const getEmployeeById = async () => {
     try {
-      const res = await GetEmployeeByID(employeeID || ""); // Fetch employee data from the API
+      const res = await GetEmployeeByID(employeeID || "");
       if (res.status === 200) {
         const employee: EmployeeInterface = res.data;
         setFirstName(employee.FirstName || "");
         setLastName(employee.LastName || "");
         setProfile(employee.Profile || "");
         if (employee.PositionID) {
-          getPositionNameById(employee.PositionID); // Fetch position name based on PositionID
+          getPositionNameById(employee.PositionID);
         } else {
           setPositionName("Unknown Position");
         }
@@ -51,14 +48,12 @@ function Sider() {
     }
   };
 
-  // Function to fetch position name by position ID
   const getPositionNameById = async (positionID: number) => {
     try {
-      const res = await GetPositions(); // Fetch all positions
+      const res = await GetPositions();
       if (res.status === 200) {
         const positions: PositionInterface[] = res.data;
         const position = positions.find((pos) => pos.ID === positionID);
-
         if (position) {
           setPositionName(position.Name || "Unknown Position");
         } else {
@@ -95,7 +90,7 @@ function Sider() {
   return (
     <>
       {contextHolder}
-      <Sider collapsed={collapsed} style={{backgroundColor:"#FF7D29"}}>
+      <Sider collapsed={collapsed} style={{ backgroundColor: '#f5f5dc' }}> {/* Light beige background */}
         <div
           style={{
             display: "flex",
@@ -134,8 +129,8 @@ function Sider() {
                   height: collapsed ? "50px" : "100px",
                   borderRadius: "50%",
                   transition: "width 0.3s ease, height 0.3s ease",
-                  border: "1px solid #e0dede",
-                  backgroundColor:"white",
+                  border: "2px solid #8FBC8F", // Olive green border
+                  backgroundColor: "white",
                 }}
               />
             </div>
@@ -151,19 +146,19 @@ function Sider() {
                 textAlign: "center",
               }}
             >
-              <span style={{ fontSize: "large", color: "white" }}>{firstName} {lastName}</span>
-              <span style={{ fontSize: "default", color: "white" }}>({positionName})</span>
-              <span><Link to="/profileEdit" style={{ fontSize: "smaller", color: "white", textDecorationLine:"underline"}}>แก้ไขโปรไฟล์</Link></span>
-              
+              <span style={{ fontSize: "large", color: "#001529" }}>{firstName} {lastName}</span> {/* Dark text for readability */}
+              <span style={{ fontSize: "default", color: "#001529" }}>({positionName})</span> {/* Dark text for readability */}
+              <span>
+                <Link to="/profileEdit" style={{ fontSize: "smaller", color: "#001529", textDecorationLine: "underline" }}>แก้ไขโปรไฟล์</Link>
+              </span>
             </div>
 
             <Menu
-              style={{ backgroundColor: "#FF7D29" }}
+              style={{ backgroundColor: "transparent" }} // Changed background color to transparent
               defaultSelectedKeys={["member"]}
               mode="inline"
               inlineCollapsed={collapsed}
             >
-
               <Menu.Item key="member" onClick={() => setCurrentPage("member")}>
                 <Link to="/member">
                   <UserOutlined />
@@ -198,11 +193,10 @@ function Sider() {
                   <span>จัดการข้อมูลสินค้า</span>
                 </Link>
               </Menu.Item>
-
             </Menu>
           </div>
 
-          <Menu style={{ backgroundColor: "#FF7D29" }} mode="inline">
+          <Menu style={{ backgroundColor: "transparent" }} mode="inline"> {/* Changed background color to transparent */}
             <Menu.Item key="logout" onClick={Logout}>
               <LogoutOutlined />
               <span>ออกจากระบบ</span>

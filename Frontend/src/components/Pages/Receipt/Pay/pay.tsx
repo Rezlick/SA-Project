@@ -2,7 +2,7 @@ import { useState , useEffect } from "react";
 import { Link , useNavigate } from 'react-router-dom';
 import { QrcodeOutlined } from "@ant-design/icons";
 import { message , Card , Row , Col , Form , Input , Button , Checkbox , Select } from "antd";
-import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking , GetTypePayment} from "../../../../services/https";
+import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking , GetTypePayment, DeleteBookingAfterPay} from "../../../../services/https";
 import  PromtPay  from "../../../../assets/PromptPay-logo.png"
 import './pay.css';
 import { ReceiptInterface } from "../../../../interfaces/Receipt";
@@ -189,9 +189,9 @@ function Pay() {
     const onFinish = async () => {
         try {
             // สร้างข้อมูลใบเสร็จ
-            setIsSubmitting(true)
+            setIsSubmitting(true);
             const receiptData: ReceiptInterface = {
-                BookingID: Number(BookID), // สมมุติว่าคุณมีการกำหนด BookingID ไว้
+                BookingID: Number(BookID), // ใช้ค่า BookingID ที่ดึงมาได้
                 totalprice: NetTotal,
                 totaldiscount: TotalDiscount,
                 CouponID: CouponID, // ใช้ค่า CouponID ที่ตรวจสอบแล้วจาก Coupon
@@ -205,9 +205,19 @@ function Pay() {
     
             if (res.status === 201) {
                 message.success("ชำระเงินสำเร็จ");
-                if(MemberID != 1){
-                    AddPointsToMember(String(MemberID),Point)
+                
+                // ลบข้อมูลการจองหลังจากสร้างใบเสร็จแล้ว
+                const deleteRes = await DeleteBookingAfterPay(BookID);
+                if (deleteRes.status === 200) {
+                    message.success("ลบข้อมูลการจองสำเร็จ");
+                } else {
+                    message.error("เกิดข้อผิดพลาดในการลบข้อมูลการจอง");
                 }
+    
+                if (MemberID != 1) {
+                    AddPointsToMember(String(MemberID), Point);
+                }
+    
                 setTimeout(() => {
                     navigate("/receipt");
                 }, 2000);
@@ -220,6 +230,7 @@ function Pay() {
     
         setShowPopup(false);
     };
+    
 
     const handleEnterPressCoupon = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
@@ -277,7 +288,7 @@ function Pay() {
         }
         return null
     }
-  
+
     return (
         <>
         <Row>

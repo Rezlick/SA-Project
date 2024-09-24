@@ -66,6 +66,7 @@ func main() {
         // Receipt s
         r.GET("/receipt", controller.GetReceipts)
         r.POST("/receipt", controller.CreateReceipt)
+        r.DELETE("/receipt/:id", controller.DeleteBookingAfterPay)
 
         // Coupon 
         r.POST("/api/check-coupon/:code", controller.CheckCoupon)

@@ -2,9 +2,7 @@
 .select-style {
   width: 100%;
   border-radius: 8px;
-  border-color: #dcdcdc;
   color: #ff6262;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .select-style:focus {
@@ -71,7 +69,7 @@
   text-align: center;
   color: #D9773D; /* Warm orange for consistency */
   font-weight: bold;
-  font-size: 2rem; /* Slightly larger font size for emphasis */
+  font-size: 3rem; /* Slightly larger font size for emphasis */
   margin: 20px 0; /* Balanced margin for spacing */
   line-height: 1.2; /* Improved readability with line height */
 }
@@ -164,81 +162,3 @@
 }
 
   /*----------------------------------------------------------------------------------------------*/
-  /*Booking list style*/
-  /* App.css */
-  
-  /* Container for the entire table list */
-  .table-list-container {
-    padding: 20px;
-    background-color: #F5F5F5; /* Light cream background for a warm feel */
-    border-radius: 10px;
-  }
-  
-  /* Header style */
-  .table-list-header {
-    text-align: center;
-    color: #D95D39; /* Warm, soft orange */
-    margin-bottom: 20px;
-    font-family: 'Arial', sans-serif;
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  
-  /* Card style */
-  .table-list-card {
-    background-color: #FFF8E1; /* Soft light yellow for the card background */
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Button style */
-  .table-list-button {
-    background-color: #F57C00; /* Warm orange for primary button */
-    border-color: #F57C00;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .table-list-back-button {
-    background-color: #F57C00;
-    border-color: #F57C00;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-  }
-  
-  /* Search and Reset button styles */
-  .table-list-search-button {
-    width: 100px;
-    background-color: #FFB74D; /* Soft orange for search button */
-    border-color: #FFB74D;
-  }
-  
-  .table-list-reset-button {
-    width: 100px;
-    background-color: #FF8A65; /* Soft coral for reset button */
-    border-color: #FF8A65;
-  }
-  
-  /* Edit and Delete button styles */
-  .table-list-edit-button {
-    margin-right: 8px;
-    color: #4CAF50; /* Green color for edit button */
-  }
-  
-  .table-list-delete-button {
-    color: #F44336; /* Red color for delete button */
-  }
-  
-  /* Table style */
-  .table-list {
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .custom-row {
-    background-color: #FFFFFF; /* White background for table rows */
-  }

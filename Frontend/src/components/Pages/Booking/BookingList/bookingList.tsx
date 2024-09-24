@@ -191,7 +191,7 @@ function TableList() {
     <div className="table-list-container">
       <Row gutter={[16, 16]}>
         <Col xs={24}>
-          <h1 className="table-list-header">รายการจองโต๊ะ</h1>
+          <h1 className="heading-style">รายการจองโต๊ะ</h1>
         </Col>
 
         <Col xs={24}>

@@ -81,17 +81,17 @@ function Customer() {
     
 
     const data = [
-        { productCode: 'M005', image: SliceBeef, category: 'เนื้อ' },
-        { productCode: 'M006', image: Brisket, category: 'เนื้อ' },
-        { productCode: 'M003', image: PorkSlice, category: 'หมู' },
-        { productCode: 'M004', image: PorkBelly, category: 'หมู' },
-        { productCode: 'B001', image: 'https://path/to/icecream1.png', category: 'ของหวาน' },
-        { productCode: 'B002', image: 'https://path/to/drink2.png', category: 'ของหวาน' },
+        { productCode: 'M001', image: SliceBeef, category: 'เนื้อ' },
+        { productCode: 'M002', image: Brisket, category: 'เนื้อ' },
+        { productCode: 'M004', image: PorkSlice, category: 'หมู' },
+        { productCode: 'M005', image: PorkBelly, category: 'หมู' },
+        { productCode: 'B003', image: 'https://path/to/icecream1.png', category: 'ของหวาน' },
+        { productCode: 'B004', image: 'https://path/to/drink2.png', category: 'ของหวาน' },
         { productCode: 'V001', image: V1, category: 'ผัก' },
         { productCode: 'V002', image: V2, category: 'ผัก' },
         { productCode: 'S001', image: 'https://path/to/drink2.png', category: 'ซีฟู้ด' },
         { productCode: 'S002', image: 'https://path/to/drink2.png', category: 'ซีฟู้ด' },
-        { productCode: 'M007', image: Chicken, category: 'ไก่' },
+        { productCode: 'M003', image: Chicken, category: 'ไก่' },
     ];
 
     const showModal = (item) => {

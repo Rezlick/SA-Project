@@ -6,6 +6,7 @@ import CustomerLayout from "../components/CustomerLayout/customerlayout";
 // Import customer pages
 const CustomerPage = Loadable(lazy(() => import("../components/Pages/customer/customer"))); // หน้าหลักของลูกค้า
 const CustomerCartPage = Loadable(lazy(() => import("../components/Pages/customer/CartCustomer/cartCustomer")))
+// const CustomerStatus = Loadable(lazy(() => import("../components/Pages/customer/customerStauts/customerstatus")))
 
 const CustomerRoutes = (): RouteObject => {
   const customerRotes = [
@@ -21,10 +22,10 @@ const CustomerRoutes = (): RouteObject => {
       path: "/customer/cart/:id",
       element: <CustomerCartPage />,
     },
-    // {
-    //   path: "/member/edit/:id",
-    //   element: <EditMember />,
-    // },
+    {
+      path: "/customer/status/:id",
+      element: <CustomerCartPage />,
+    },
   ];
 
   return {

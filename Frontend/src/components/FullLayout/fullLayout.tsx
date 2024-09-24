@@ -21,7 +21,7 @@ import TableBooking from "../Pages/Booking/Create/createBooking";
 import EditBookingTable from "../Pages/Booking/Edit/editBooking";
 import TableList from "../Pages/Booking/BookingList/bookingList";
 import Order from "../Pages/order/order";
-import OrderDetail from "../Pages/order/detail/detail"
+import OrderDetail from "../Pages/order/detail/detail";
 
 import ManageStock from "../Pages/Managestock/Managestock";
 import StockBeveragesAndDesserts from "../Pages/Managestock/stock-data/StockBeveragesAndDesserts";
@@ -32,28 +32,21 @@ import StockSeafood from "../Pages/Managestock/stock-data/StockSeafood";
 import StockVegetable from "../Pages/Managestock/stock-data/StockVegetable";
 import Supplier from "../Pages/Managestock/Supplier/Suppliper";
 
-import EditStock from "../Pages/Managestock/Category/StockCategory/edit/index"
+import EditStock from "../Pages/Managestock/Category/StockCategory/edit/index";
 
-
-
-
-
-
-
-const {Content} = Layout;
+const { Content } = Layout;
 
 const FullLayout: React.FC = () => {
-
   const [messageApi, contextHolder] = message.useMessage();
 
-  const positionID = localStorage.getItem("positionID"); 
+  const positionID = localStorage.getItem("positionID");
   let role = "";
-  if (positionID === '1') {
-    role = "IT"
-  } else if (positionID === '2'){
-    role = "Manager"
+  if (positionID === "1") {
+    role = "IT";
+  } else if (positionID === "2") {
+    role = "Manager";
   } else {
-    role = "Common"
+    role = "Common";
   }
 
   const renderSider = () => {
@@ -72,63 +65,63 @@ const FullLayout: React.FC = () => {
 
   return (
     <>
-    {contextHolder}
-    <Layout style={{ minHeight: "100vh", maxHeight:"100vh"}}>
-      {renderSider()}
+      {contextHolder}
+      <Layout style={{ minHeight: "100vh", backgroundColor: "#F5F5F5" }}>
+        {renderSider()}
 
-      <Layout style={{backgroundColor:"#FEFFD2", minHeight: "100vh", maxHeight:"100vh"}}> 
-        <Content style={{ margin: "0 30px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }} />
-          <div
-            style={{
-              padding: 24,
-              minHeight: "93%",
-              maxHeight: "93%",
-              background: colorBgContainer,
-            }}
-          >
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/member" element={<Member />} />
-              <Route path="/member/create" element={<MemberCreate />} />
-              <Route path="/member/edit/:id" element={<MemberEdit />} />
-              <Route path="/employee" element={<Employee />} />
-              <Route path="/employee/create" element={<EmployeeCreate />} />
-              <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
-              <Route path="/profileEdit" element={<ProfileEdit />} />
-              <Route path="/changePassword" element={<ChangePassword />} />
-              <Route path="/receipt" element={<Receipt />} />
-//            <Route path="/receipt/pay" element={<Pay />} />
-              <Route path="/booking" element={<Table />} />
-              <Route path="/booking/create" element={<TableBooking />} />
-              <Route path="/booking/edit/:id" element={<EditBookingTable />} />
-              <Route path="/booking/booking_list" element={<TableList />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/order/detail/:id" element={<OrderDetail />} />
+        <Layout style={{ backgroundColor: "#FFFFFF", minHeight: "100vh" }}>
+          <Content style={{ margin: "0 30px" }}>
+            <Breadcrumb style={{ margin: "16px 0" }} />
+            <div
+              style={{
+                padding: 24,
+                minHeight: "93%",
+                maxHeight: "93%",
+                background: "#FAFAFA",
+                borderRadius: "8px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", 
+              }}
+            >
+              <Routes>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/member" element={<Member />} />
+                <Route path="/member/create" element={<MemberCreate />} />
+                <Route path="/member/edit/:id" element={<MemberEdit />} />
+                <Route path="/employee" element={<Employee />} />
+                <Route path="/employee/create" element={<EmployeeCreate />} />
+                <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
+                <Route path="/profileEdit" element={<ProfileEdit />} />
+                <Route path="/changePassword" element={<ChangePassword />} />
+                <Route path="/receipt" element={<Receipt />} />
+                <Route path="/receipt/pay" element={<Pay />} />
+                <Route path="/booking" element={<Table />} />
+                <Route path="/booking/create" element={<TableBooking />} />
+                <Route path="/booking/edit/:id" element={<EditBookingTable />} />
+                <Route path="/booking/booking_list" element={<TableList />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/order/detail/:id" element={<OrderDetail />} />
 
-              <Route path="/ManageStock" element={<ManageStock />} />
-              <Route path="/ManageStock/Meat" element={<StockMeat />} />
-              <Route path="/ManageStock/Vegetable" element={<StockVegetable />} />
-              <Route path="/ManageStock/CondimentsAndSauce" element={<StockCondimentsAndSauce />} />
-              <Route path="/ManageStock/Seafood" element={<StockSeafood />} />
-              <Route path="/ManageStock/NoodlesAndDough" element={<StockNoodlesAndDough />} />
-              <Route path="/ManageStock/BeveragesAndDesserts" element={<StockBeveragesAndDesserts />} />
-              <Route path="/ManageStock/Supplier" element={<Supplier />} />
+                <Route path="/ManageStock" element={<ManageStock />} />
+                <Route path="/ManageStock/Meat" element={<StockMeat />} />
+                <Route path="/ManageStock/Vegetable" element={<StockVegetable />} />
+                <Route path="/ManageStock/CondimentsAndSauce" element={<StockCondimentsAndSauce />} />
+                <Route path="/ManageStock/Seafood" element={<StockSeafood />} />
+                <Route path="/ManageStock/NoodlesAndDough" element={<StockNoodlesAndDough />} />
+                <Route path="/ManageStock/BeveragesAndDesserts" element={<StockBeveragesAndDesserts />} />
+                <Route path="/ManageStock/Supplier" element={<Supplier />} />
 
-              <Route path="/ManageStock/Meat/EditStock" element={<EditStock />} />
-              <Route path="/ManageStock/Vegetable/EditStock" element={<EditStock />} />
-              <Route path="/ManageStock/CondimentsAndSauce/EditStock" element={<EditStock />} />
-              <Route path="/ManageStock/Seafood/EditStock" element={<EditStock />} />
-              <Route path="/ManageStock/NoodlesAndDough/EditStock" element={<EditStock />} />
-              <Route path="/ManageStock/BeveragesAndDesserts/EditStock" element={<EditStock />} />
-              
-            </Routes>
-          </div>
-        </Content>
+                <Route path="/ManageStock/Meat/EditStock" element={<EditStock />} />
+                <Route path="/ManageStock/Vegetable/EditStock" element={<EditStock />} />
+                <Route path="/ManageStock/CondimentsAndSauce/EditStock" element={<EditStock />} />
+                <Route path="/ManageStock/Seafood/EditStock" element={<EditStock />} />
+                <Route path="/ManageStock/NoodlesAndDough/EditStock" element={<EditStock />} />
+                <Route path="/ManageStock/BeveragesAndDesserts/EditStock" element={<EditStock />} />
+              </Routes>
+            </div>
+          </Content>
+        </Layout>
       </Layout>
-
-    </Layout>
-  </>
+    </>
   );
 };
 

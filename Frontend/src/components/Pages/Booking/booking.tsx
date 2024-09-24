@@ -12,20 +12,24 @@ import {
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { GetTableStatus, GetTables, GetTableCapacity } from "../../../services/https";
+import {
+  GetTableStatus,
+  GetTables,
+  GetTableCapacity,
+} from "../../../services/https";
 import { TableInterface } from "../../../interfaces/Table";
 import { TableCapacityInterface } from "../../../interfaces/TableCapacity";
 import { TableStatusInterface } from "../../../interfaces/TableStatus";
 import "./booking.css";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 function Booking() {
   const [tables, setTables] = useState<TableInterface[]>([]);
   const [tableCaps, setTableCaps] = useState<TableCapacityInterface[]>([]);
   const [tableStatus, setTableStatus] = useState<TableStatusInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  
-  const navigate = useNavigate(); // Initialize useNavigate
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,13 +50,17 @@ function Booking() {
         if (statusRes.status === 200) {
           setTableStatus(statusRes.data);
         } else {
-          message.error(statusRes.data.error || "Unable to fetch table statuses");
+          message.error(
+            statusRes.data.error || "Unable to fetch table statuses"
+          );
         }
 
         if (capsRes.status === 200) {
           setTableCaps(capsRes.data);
         } else {
-          message.error(capsRes.data.error || "Unable to fetch table capacities");
+          message.error(
+            capsRes.data.error || "Unable to fetch table capacities"
+          );
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -71,7 +79,9 @@ function Booking() {
       return;
     }
 
-    const status = tableStatus.find((s) => s.ID === table.table_status_id)?.status;
+    const status = tableStatus.find(
+      (s) => s.ID === table.table_status_id
+    )?.status;
 
     if (status === "Occupied") {
       message.warning("This table is not available for booking!");
@@ -96,17 +106,17 @@ function Booking() {
   };
 
   const goToBookingList = () => {
-    navigate("/booking/booking_list"); // Navigate to the booking list page
+    navigate("/booking/booking_list");
   };
 
   const getStatusColor = (status: string): string => {
     switch (status) {
       case "Available":
-        return "#8BC34A"; 
+        return "#8BC34A";
       case "Occupied":
-        return "#FFB74D"; 
+        return "#FFB74D";
       case "Cleaning":
-        return "#64B5F6"; 
+        return "#64B5F6";
       default:
         return "#B0BEC5";
     }
@@ -120,19 +130,19 @@ function Booking() {
     <Row gutter={[16, 0]}>
       <Col xs={24}>
         <h1 className="heading">Table Selection</h1>
-        <Button 
-          type="primary" 
-          onClick={goToBookingList} 
+        <Button
+          type="primary"
+          onClick={goToBookingList}
           style={{
-            backgroundColor: "#FF7F50", // Pastel color
+            backgroundColor: "#FF7F50",
             borderColor: "#FF7F50",
             marginBottom: 16,
             color: "#fff",
           }}
         >
-          Go to Booking List
+          Booking List
         </Button>
-        <Divider/>
+        <Divider />
       </Col>
       <Col xs={24}>
         <Card className="card">
@@ -156,11 +166,11 @@ function Booking() {
                       type="default"
                       className="tableButton"
                       onClick={() => handleButtonClick(table)}
-                      disabled={
-                        !table.table_name ||
-                        status?.status === "Not Available" ||
-                        status?.status === "Reserved"
-                      }
+                      // disabled={
+                      //   !table.table_name ||
+                      //   status?.status === "Occupied" ||
+                      //   status?.status === "Cleaning"
+                      // }
                       style={{
                         width: "100%",
                         display: "flex",
@@ -169,7 +179,8 @@ function Booking() {
                         textAlign: "left",
                       }}
                     >
-                      <Statistic className="statistic-container"
+                      <Statistic
+                        className="statistic-container"
                         title={`Table : ${table.table_name || "Unknown"}`}
                         value={formatCapacity(
                           tableCapacity?.min,

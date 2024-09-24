@@ -422,6 +422,14 @@ async function GetSupplierName() {
     .catch((e) => e.response);
 }
 
+async function GetProductByCodeID(Product_code_id: string) {
+  return await axios
+    .get(`${apiUrl}/GetProductByCodeID/${Product_code_id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+
 export {
   SignIn,
   CreateEmployee,
@@ -476,4 +484,5 @@ export {
   UpdateStock,
   GetSupplierName,
   GetMemberCountForToday,
+  GetProductByCodeID,
 };

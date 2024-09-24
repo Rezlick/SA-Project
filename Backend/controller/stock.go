@@ -89,6 +89,7 @@ type Result struct {
 	DateIn         time.Time `json:"date_in"`
 	ExpirationDate time.Time `json:"expiration_date"`
 	SupplierName   string    `json:"supplier_name"`
+	EmployeeName   string    `json:"employee_name"`
 }
 
 func GetStock(c *gin.Context) {
@@ -97,6 +98,7 @@ func GetStock(c *gin.Context) {
 	var products []entity.Product
 	var stocks []entity.Stock
 	var suppliers []entity.Supplier
+	var employees []entity.Employee
 
 	// ดึงข้อมูลสินค้าใน category ที่ระบุ
 	if err := config.DB().Where("category_id = ?", categoryID).Find(&products).Error; err != nil {
@@ -130,10 +132,29 @@ func GetStock(c *gin.Context) {
 		return
 	}
 
+	// ดึงข้อมูลพนักงานที่เกี่ยวข้อง
+	employeeIDs := []uint{}
+	for _, stock := range stocks {
+		if stock.EmployeeID != 0 {
+			employeeIDs = append(employeeIDs, stock.EmployeeID)
+		}
+	}
+
+	if err := config.DB().Where("id IN ?", employeeIDs).Find(&employees).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error retrieving employees"})
+		return
+	}
+
 	// สร้าง map สำหรับเก็บข้อมูล supplier
 	supplierByID := make(map[uint]entity.Supplier)
 	for _, supplier := range suppliers {
 		supplierByID[supplier.ID] = supplier
+	}
+
+	// สร้าง map สำหรับเก็บข้อมูล employee
+	employeeByID := make(map[uint]entity.Employee)
+	for _, employee := range employees {
+		employeeByID[employee.ID] = employee
 	}
 
 	// สร้างข้อมูลผลลัพธ์
@@ -147,6 +168,12 @@ func GetStock(c *gin.Context) {
 						supplierName = supplier.SupplierName
 					}
 				}
+				employeeName := ""
+				if stock.EmployeeID != 0 {
+					if employee, ok := employeeByID[stock.EmployeeID]; ok {
+						employeeName = employee.FirstName 
+					}
+				}
 				result = append(result, Result{
 					StockID:        stock.ID,
 					ProductCodeID:  product.Product_Code_ID,
@@ -156,6 +183,7 @@ func GetStock(c *gin.Context) {
 					DateIn:         stock.DateIn,
 					ExpirationDate: stock.ExpirationDate,
 					SupplierName:   supplierName,
+					EmployeeName:   employeeName,
 				})
 			}
 		}

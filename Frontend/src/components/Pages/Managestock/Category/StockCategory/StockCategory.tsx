@@ -115,9 +115,17 @@ export default function StockCategory({
 
     const timeout = setTimeout(() => {
       const lowercasedQuery = value.toLowerCase();
-      const filtered = initialData.filter((item) =>
-        item.name.toLowerCase().includes(lowercasedQuery)
-      );
+
+      const filtered = initialData.filter((item) => {
+        const matchesName = item.name.toLowerCase().includes(lowercasedQuery);
+  
+        const matchesStock = !isNaN(value) && item.stock.toString().includes(value);
+  
+        return matchesName || matchesStock;
+      });
+
+      console.log("filtered",filtered);
+      
       setFilteredData(filtered);
     }, 500); // หน่วงเวลา 500ms
 
@@ -215,6 +223,25 @@ export default function StockCategory({
     { title: "ผู้จัดจำหน่าย", dataIndex: "supplier", key: "supplier" },
     { title: "วันที่นำเข้า", dataIndex: "importDate", key: "importDate" },
     { title: "วันหมดอายุ", dataIndex: "expiryDate", key: "expiryDate" },
+    { title: "พนักงาน", dataIndex: "employees", key: "employees" },
+    {
+      title: "สถานะ",
+      key: "status",
+      render: (record) => {
+        const isExpired = moment().isAfter(moment(record.expiryDate, "MM/DD/YYYY, HH:mm:ss"));
+        return (
+          <span
+            style={{
+              display: "inline-block",
+              width: "12px",
+              height: "12px",
+              borderRadius: "50%",
+              backgroundColor: isExpired ? "red" : "green",
+            }}
+          />
+        );
+      },
+    },
     {
       title: "แก้ไขข้อมูล",
       key: "activity",
@@ -227,11 +254,22 @@ export default function StockCategory({
   ];
   const [filterType, setFilterType] = useState(null);
   const [dateRange, setDateRange] = useState<[Moment, Moment] | null>(null);
+  const [selectValue, setSelectValue] = useState(null);
 
   const handleSelectChange = (value) => {
+    if (value === "cancel") {
+      // รีเซ็ต filterType และ dateRange
+      setFilterType(null);
+      setDateRange(null);
+      setFilteredData(initialData); // รีเซ็ตข้อมูลกลับเป็นข้อมูลเริ่มต้น
+      setSelectValue(null);
+      
+      return; // ออกจากฟังก์ชัน
+    }
     console.log("handleSelectChange", value);
 
     setFilterType(value);
+
     const today = moment();
 
     if (value === "lastweek") {
@@ -306,11 +344,39 @@ export default function StockCategory({
               className="Select-Filter"
               placeholder="กรองข้อมูล"
               onChange={handleSelectChange}
+              value={selectValue}
             >
-              <Option value="day">เลือกวัน</Option>
-              <Option value="lastweek">สัปดาห์ล่าสุด</Option>
-              <Option value="month">เลือกเดือน</Option>
-              <Option value="year">เลือกปี</Option>
+              <Option value="day" className="hover-option"
+                style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                เลือกวันที่
+              </Option>
+              <Option value="lastweek" className="hover-option"
+                style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                สัปดาห์ล่าสุด
+                </Option>
+              <Option value="month" className="hover-option"
+              style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                เลือกเดือน
+                </Option>
+              <Option value="year" className="hover-option"
+                style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >เลือกปี</Option>
+              <Option value="cancel" className="hover-option cancel-option"
+                style={{ backgroundColor: selectValue === "cancel" ? 'lightcoral' : 'transparent' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightcoral'} 
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >ยกเลิก</Option>
             </Select>
             {filterType === "day" && (
               <DatePicker
@@ -326,7 +392,6 @@ export default function StockCategory({
                 สัปดาห์ล่าสุด: {dateRange[0].format("DD/MM/YYYY")} -{" "}
                 {dateRange[1].format("DD/MM/YYYY")}
               </div>
-              
               </Col>
               
             )}
@@ -355,7 +420,7 @@ export default function StockCategory({
           <>
             <Row style={{ marginBottom: "20px" }} justify="space-between">
               <Col>
-                <Button type="primary" onClick={handleBackClick}>
+                <Button type="default" onClick={handleBackClick}>
                   ย้อนกลับ
                 </Button>
               </Col>
@@ -511,6 +576,7 @@ export default function StockCategory({
                   </Button>
                   <Button
                     type="default"
+
                     onClick={() => setIsAdding(false)}
                     style={{ marginLeft: "10px" }}
                   >
@@ -547,6 +613,7 @@ function transformStockData(data: any[]) {
     supplier: item.supplier_name || "N/A",
     importDate: item.date_in ? formatDate(item.date_in) : "N/A",
     expiryDate: item.expiration_date ? formatDate(item.expiration_date) : "N/A",
+    employees: item.employee_name || "",
   }));
 }
 

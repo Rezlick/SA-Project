@@ -42,3 +42,14 @@
     height: 30px; 
   }
   
+  .Select-Filter .ant-select-item-option {
+    transition: background-color 0.3s ease; /* เพิ่มการเปลี่ยนแปลงสี */
+  }
+  
+  .Select-Filter .hover-option:hover {
+    background-color: lightblue !important; /* เปลี่ยนสีพื้นหลังเป็นสีฟ้าเมื่อ hover */
+  }
+  
+  .Select-Filter .cancel-option:hover {
+    background-color: lightcoral !important; /* เปลี่ยนสีพื้นหลังเป็นสีแดงเมื่อ hover */
+  }

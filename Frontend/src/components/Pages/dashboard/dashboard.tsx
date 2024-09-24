@@ -1,18 +1,27 @@
 import { Col, Row, Card, Statistic, Table, message, Form, DatePicker, Radio } from "antd";
 import { AuditOutlined, UserOutlined, PieChartOutlined, StockOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMemberCountForCurrentMonth, GetMemberCountForMonth, GetMemberCountForDay, GetNetIncomeForCurrentMonth } from "../../../services/https";
+import { GetMemberCountForCurrentMonth, GetDashboardDataForDay, GetNetIncomeForCurrentMonth, GetDashboardDataForMonth } from "../../../services/https";
 import { useEffect, useState } from "react";
+import moment from 'moment';
+
+// npm install moment
 
 interface DataType {
-  MemberCountForMonth: string;
+  MemberCount: string;
+  NetIncome: string;
 }
 
 const columns: ColumnsType<DataType> = [
   {
+    title: "รายได้สุทธิ",
+    dataIndex: "NetIncome",
+    key: "NetIncome",
+  },
+  {
     title: "การสมัครสมาชิก",
-    dataIndex: "MemberCountForMonth",
-    key: "MemberCountForMonth",
+    dataIndex: "MemberCount",
+    key: "MemberCount",
   },
 ];
 
@@ -55,12 +64,12 @@ export default function Dashboard() {
     }
   };
 
-  const getMemberCountForMonth = async (month: number, year: number) => {
+  const getDashboardDataForMonth = async (month: number, year: number) => {
     try {
       const formattedMonth = month.toString().padStart(2, "0");
-      const res = await GetMemberCountForMonth(formattedMonth, year.toString());
+      const res = await GetDashboardDataForMonth(formattedMonth, year.toString());
       if (res.status === 200) {
-        setData([{ MemberCountForMonth: res.data.memberCount.toString() + " ท่าน" }]);
+        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท"}]);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -69,11 +78,11 @@ export default function Dashboard() {
     }
   };
 
-  const getMemberCountForDay = async (date: string) => {
+  const getDashboardDataForDay = async (date: string) => {
     try {
-      const res = await GetMemberCountForDay(date);
+      const res = await GetDashboardDataForDay(date);
       if (res.status === 200) {
-        setData([{ MemberCountForMonth: res.data.memberCount.toString() + " ท่าน" }]);
+        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท"}]);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -82,15 +91,21 @@ export default function Dashboard() {
     }
   };
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+
+  const handleDateChange = (date: moment.Moment | null) => {
     if (date) {
+      setSelectedDate(date.toDate());
+      
       if (isDayMode) {
-        const formattedDate = date.toISOString().split("T")[0]; // Format date to "YYYY-MM-DD"
-        getMemberCountForDay(formattedDate);
+        // Format date to "YYYY-MM-DD" in local timezone
+        const formattedDate = date.format('YYYY-MM-DD');
+        getDashboardDataForDay(formattedDate);
       } else {
-        getMemberCountForMonth(date.getMonth() + 1, date.getFullYear());
+        // For month mode, use the correct month and year
+        getDashboardDataForMonth(date.month() + 1, date.year());
       }
+    } else {
+      setSelectedDate(null);
     }
   };
 
@@ -110,8 +125,8 @@ export default function Dashboard() {
     <Form form={form}>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h2>แดชบอร์ด</h2>
-          <h3>สถิติ ณ เดือน {currentMonth}</h3>
+          <h1>แดชบอร์ด</h1>
+          <h2>สถิติ ณ เดือน {currentMonth}</h2>
         </Col>
 
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -119,7 +134,7 @@ export default function Dashboard() {
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                 <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="จำนวน" value={1800} prefix={<StockOutlined />} />
+                  <Statistic title="จำนวนลูกค้า" value={1800} prefix={<StockOutlined />} />
                 </Card>
               </Col>
 
@@ -131,13 +146,13 @@ export default function Dashboard() {
 
               <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                 <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="รายได้สุทธิ" value={netIncomeForCurrentMonth} valueStyle={{ color: "black" }} prefix={<PieChartOutlined />} />
+                  <Statistic title="รายได้สุทธิ" value={`${netIncomeForCurrentMonth} ฿`} valueStyle={{ color: "black" }} prefix={<PieChartOutlined />} />
                 </Card>
               </Col>
 
               <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                 <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="การสมัครสมาชิก" value={`${memberCountForCurrentMonth} ท่าน`} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
+                  <Statistic title="จำนวนการสมัครสมาชิก" value={`${memberCountForCurrentMonth} ท่าน`} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
                 </Card>
               </Col>
             </Row>
@@ -174,7 +189,7 @@ export default function Dashboard() {
           rules={[{ required: true, message: 'กรุณาเลือกเดือนหรือวัน!' }]}
         >
           <DatePicker
-            onChange={(date) => handleDateChange(date?.toDate() || null)}
+            onChange={handleDateChange}
             picker={isDayMode ? 'date' : 'month'} // Switch between date and month picker
           />
         </Form.Item>

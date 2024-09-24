@@ -16,6 +16,7 @@ import { PositionInterface } from "../../interfaces/Position";
 import { EmployeeInterface } from "../../interfaces/Employee";
 
 function Sider() {
+  const page = localStorage.getItem("page");
   const { Sider } = Layout;
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
@@ -102,63 +103,34 @@ function Sider() {
           <div style={{ position: "relative" }}>
             <Button
               onClick={toggleCollapsed}
-              style={{
-                position: "absolute",
-                top: 0,
-                right: -46,
-                zIndex: 1,
-              }}
+              className="toggle-button" // Apply class for styling
             >
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: 50,
-                marginBottom: 20,
-              }}
-            >
+            <div className="profile-container">
               <img
                 src={profile}
                 alt="Profile"
+                className={`profile-image ${collapsed ? "small" : "large"}`} // Apply class for styling
                 style={{
-                  objectFit: "cover",
                   width: collapsed ? "50px" : "100px",
                   height: collapsed ? "50px" : "100px",
-                  borderRadius: "50%",
-                  transition: "width 0.3s ease, height 0.3s ease",
-                  border: "2px solid #8FBC8F", // Olive green border
-                  backgroundColor: "white",
                 }}
               />
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginTop: 20,
-                marginBottom: 20,
-                overflowWrap: "break-word",
-                textAlign: "center",
-              }}
-            >
-              <span style={{ fontSize: "large", color: "#001529" }}>{firstName} {lastName}</span> {/* Dark text for readability */}
-              <span style={{ fontSize: "default", color: "#001529" }}>({positionName})</span> {/* Dark text for readability */}
+            <div className="profile-info">
+              <span style={{ fontSize: "large", color: "black" }}>{firstName} {lastName}</span>
+              <span style={{ fontSize: "default", color: "black" }}>({positionName})</span>
               <span>
-                <Link to="/profileEdit" style={{ fontSize: "smaller", color: "#001529", textDecorationLine: "underline" }}>แก้ไขโปรไฟล์</Link>
+                <Link to="/profileEdit" style={{ fontSize: "smaller", color: "black", textDecorationLine: "underline" }}>
+                  แก้ไขโปรไฟล์
+                </Link>
               </span>
             </div>
 
-            <Menu
-              style={{ backgroundColor: "transparent" }} // Changed background color to transparent
-              defaultSelectedKeys={["member"]}
-              mode="inline"
-              inlineCollapsed={collapsed}
-            >
+            <Menu className="menu" defaultSelectedKeys={[page ? page : "dashboard"]} mode="inline" inlineCollapsed={collapsed}>
               <Menu.Item key="member" onClick={() => setCurrentPage("member")}>
                 <Link to="/member">
                   <UserOutlined />
@@ -167,7 +139,7 @@ function Sider() {
               </Menu.Item>
 
               <Menu.Item key="table" onClick={() => setCurrentPage("table")}>
-                <Link to="/">
+                <Link to="/booking">
                   <SolutionOutlined />
                   <span>จองโต๊ะ</span>
                 </Link>

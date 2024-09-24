@@ -124,8 +124,8 @@ func SetupDatabase() {
    TableEightSeat1 := entity.Table{TableName: "E1", TableStatusID: 1, TableCapacityID: 3}
    TableEightSeat2 := entity.Table{TableName: "E2", TableStatusID: 1, TableCapacityID: 3}
 
-   Soup1 := entity.Soup{Name: "น้ำใส"}
-   Soup2 := entity.Soup{Name: "น้ำดำ"}
+   Soup1 := entity.Soup{Name: "ซุปน้ำใส"}
+   Soup2 := entity.Soup{Name: "ซุปน้ำดำ"}
    Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
    Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
    
@@ -194,8 +194,8 @@ func SetupDatabase() {
    db.FirstOrCreate(&CapacitySix, &entity.TableCapacity{MinCustomer: 5, MaxCustomer: 6})
    db.FirstOrCreate(&CapacityEight, &entity.TableCapacity{MinCustomer: 7, MaxCustomer: 8})
 
-   db.FirstOrCreate(&Soup1, &entity.Soup{Name: "น้ำใส"})
-   db.FirstOrCreate(&Soup2, &entity.Soup{Name: "น้ำดำ"})
+   db.FirstOrCreate(&Soup1, &entity.Soup{Name: "ซุปน้ำใส"})
+   db.FirstOrCreate(&Soup2, &entity.Soup{Name: "ซุปน้ำดำ"})
    db.FirstOrCreate(&Soup3, &entity.Soup{Name: "ซุปหม่าล่า"})
    db.FirstOrCreate(&Soup4, &entity.Soup{Name: "ซุปทงคัตสึ"})
 

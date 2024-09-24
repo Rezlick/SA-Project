@@ -243,7 +243,10 @@ func SetupDatabase() {
       Email: "testadmin@shabubuu.com",
    })
 }
-func parseDate(dateStr string) time.Time {
-	t, _ := time.Parse("2006-01-02 15:04", dateStr)
-	return t
+func parseDate(dateStr string) time.Time { 
+   // แปลงวันที่จาก string เป็น time.Time
+   t, _ := time.Parse("2006-01-02 15:04", dateStr)
+   // แปลงเวลาเป็น GMT+7
+   loc, _ := time.LoadLocation("Asia/Bangkok")
+   return t.In(loc)
 }

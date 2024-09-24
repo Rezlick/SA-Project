@@ -1,5 +1,5 @@
 import { Col, Row, Card, Statistic, Table, message, Form, DatePicker, Radio } from "antd";
-import { AuditOutlined, UserOutlined, PieChartOutlined, StockOutlined } from "@ant-design/icons";
+import { AuditOutlined, UserOutlined, WalletOutlined, StockOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetMemberCountForCurrentMonth, GetDashboardDataForDay, GetNetIncomeForCurrentMonth, GetDashboardDataForMonth } from "../../../services/https";
 import { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ export default function Dashboard() {
       const formattedMonth = month.toString().padStart(2, "0");
       const res = await GetDashboardDataForMonth(formattedMonth, year.toString());
       if (res.status === 200) {
-        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท"}]);
+        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท" }]);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -82,7 +82,7 @@ export default function Dashboard() {
     try {
       const res = await GetDashboardDataForDay(date);
       if (res.status === 200) {
-        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท"}]);
+        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท" }]);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -95,7 +95,7 @@ export default function Dashboard() {
   const handleDateChange = (date: moment.Moment | null) => {
     if (date) {
       setSelectedDate(date.toDate());
-      
+
       if (isDayMode) {
         // Format date to "YYYY-MM-DD" in local timezone
         const formattedDate = date.format('YYYY-MM-DD');
@@ -122,84 +122,76 @@ export default function Dashboard() {
 
   return (
     <>
-    <Form form={form}>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h1>แดชบอร์ด</h1>
-          <h2>สถิติ ณ เดือน {currentMonth}</h2>
-        </Col>
+      <Form form={form}>
+        <Row gutter={[16,16]}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <h1>แดชบอร์ด</h1>
+            <h2>สถิติ ณ เดือน {currentMonth}</h2>
+          </Col>
 
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card style={{ backgroundColor: "#F5F5F5" }}>
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="จำนวนลูกค้า" value={1800} prefix={<StockOutlined />} />
-                </Card>
-              </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Card style={{ backgroundColor: "#F5F5F5" }}>
+              <Row gutter={[16, 16]}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                  <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                    <Statistic title="จำนวนลูกค้า" value={1800} prefix={<StockOutlined />} />
+                  </Card>
+                </Col>
 
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="จำนวน" value={200} valueStyle={{ color: "black" }} prefix={<AuditOutlined />} />
-                </Card>
-              </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                  <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                    <Statistic title="รายได้สุทธิ" value={`${netIncomeForCurrentMonth} ฿`} valueStyle={{ color: "black" }} prefix={<WalletOutlined />} />
+                  </Card>
+                </Col>
 
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="รายได้สุทธิ" value={`${netIncomeForCurrentMonth} ฿`} valueStyle={{ color: "black" }} prefix={<PieChartOutlined />} />
-                </Card>
-              </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+                  <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+                    <Statistic title="จำนวนการสมัครสมาชิก" value={`${memberCountForCurrentMonth} ท่าน`} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
+                  </Card>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Radio.Group defaultValue="month" buttonStyle="solid" onChange={handleModeChange}>
+              <Radio.Button
+                value="month"
+                style={{
+                  backgroundColor: mode === 'month' ? '#FF7D29' : '', // Apply color if selected
+                  color: mode === 'month' ? '#fff' : '', // Ensure text is white on the selected button
+                }}
+              >
+                สถิติรายเดือน
+              </Radio.Button>
+              <Radio.Button
+                value="day"
+                style={{
+                  backgroundColor: mode === 'day' ? '#FF7D29' : '', // Apply color if selected
+                  color: mode === 'day' ? '#fff' : '', // Ensure text is white on the selected button
+                }}
+              >
+                สถิติรายวัน
+              </Radio.Button>
+            </Radio.Group>
+          </Col>
 
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card bordered={false} style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
-                  <Statistic title="จำนวนการสมัครสมาชิก" value={`${memberCountForCurrentMonth} ท่าน`} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+            <Form.Item
+              name="MonthID"
+              rules={[{ required: true, message: 'กรุณาเลือกเดือนหรือวัน!' }]}
+            >
+              <DatePicker
+                onChange={handleDateChange}
+                picker={isDayMode ? 'date' : 'month'} // Switch between date and month picker
+              />
+            </Form.Item>
+          </Col>
 
-      <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-      <Radio.Group defaultValue="month" buttonStyle="solid" onChange={handleModeChange}>
-      <Radio.Button
-        value="month"
-        style={{
-          backgroundColor: mode === 'month' ? '#FF7D29' : '', // Apply color if selected
-          color: mode === 'month' ? '#fff' : '', // Ensure text is white on the selected button
-        }}
-      >
-        สถิติรายเดือน
-      </Radio.Button>
-
-      <Radio.Button
-        value="day"
-        style={{
-          backgroundColor: mode === 'day' ? '#FF7D29' : '', // Apply color if selected
-          color: mode === 'day' ? '#fff' : '', // Ensure text is white on the selected button
-        }}
-      >
-        สถิติรายวัน
-      </Radio.Button>
-    </Radio.Group>
-      </Col>
-
-      <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-        <Form.Item
-          name="MonthID"
-          rules={[{ required: true, message: 'กรุณาเลือกเดือนหรือวัน!' }]}
-        >
-          <DatePicker
-            onChange={handleDateChange}
-            picker={isDayMode ? 'date' : 'month'} // Switch between date and month picker
-          />
-        </Form.Item>
-      </Col>
-
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Table columns={columns} dataSource={data} pagination={false} style={{ height: "100%" }} />
-        </Col>
-      </Row>
-    </Form>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Table columns={columns} dataSource={data} pagination={false} style={{ height: "100%" }} />
+          </Col>
+        </Row>
+      </Form>
     </>
   );
 }

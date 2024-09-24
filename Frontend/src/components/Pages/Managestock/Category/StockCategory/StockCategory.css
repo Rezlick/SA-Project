@@ -1,0 +1,44 @@
+.header-StockCategory {
+    background-color: #f8f8f8;
+    padding: 0 20px;
+    display: grid;
+    grid-template-rows: 40px 40px;
+    height: 100px;
+    /* grid-template-columns: 1fr 1fr; */
+  }
+  .Row2{
+    display: grid;
+    grid-template-columns: 2fr 1fr ;
+    align-items: center;
+  }
+  .Select-Filter{
+    width: 200px;
+
+  }
+  .form-container {
+    max-height: 500px; /* กำหนดความสูงสูงสุด */
+    overflow-y: auto; /* แสดงลูกกลิ้งเมื่อเนื้อหามากเกิน */
+    padding: 10px; /* ปรับพื้นที่ด้านในตามต้องการ */
+    background-color: #fff; /* เปลี่ยนสีพื้นหลังตามต้องการ */
+    border-radius: 5px; /* มุมมน */
+  }
+
+  .filter-container {
+   
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; /* ระยะห่างระหว่าง Select */
+    align-items: center;
+  }
+  .date-range {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    border: 1px solid #ccc; 
+    background-color: #ffffff;
+    border-radius: 5px; 
+    padding: 5px; 
+    margin-left: 10px; 
+    height: 30px; 
+  }
+  

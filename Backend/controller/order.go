@@ -84,19 +84,22 @@ func GetOrderByID(c *gin.Context) {
 
 func GetOrderByBookingID(c *gin.Context) {
     bookingID := c.Param("id")
-    var order entity.Order
+    var orders []entity.Order 
 
     db := config.DB()
-    results := db.Preload("Booking").Preload("Booking.Table").Preload("Status_Order").Where("booking_id = ?", bookingID).Find(&order)
+    results := db.Preload("Booking").Preload("Booking.Table").Preload("Status_Order").Where("booking_id = ?", bookingID).Find(&orders)  
+
     if results.Error != nil {
         c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
         return
     }
-    if order.ID == 0 {
+
+    if len(orders) == 0 {  // ตรวจสอบว่าไม่มี order ถูกค้นพบ
         c.JSON(http.StatusNoContent, gin.H{})
         return
     }
-    c.JSON(http.StatusOK, order)
+
+    c.JSON(http.StatusOK, orders)  // ส่งกลับ orders ทั้งหมด
 }
 
 // UpdateOrder updates the EmployeeID and Status_OrderID for an order

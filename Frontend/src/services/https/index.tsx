@@ -149,6 +149,12 @@ async function GetMemberCountForToday() {
       .catch((e) => e.response);
 }
 
+async function GetNetIncomeByMemberToday() {
+  return await axios
+    .get(`${apiUrl}/netIncomeByMemberToday`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
   
 async function GetRanks() {
     return await axios
@@ -522,4 +528,5 @@ export {
   GetMemberCountByReceiptToday,
   GetNetIncomeForCurrentMonth,
   GetDashboardDataForDay,
+  GetNetIncomeByMemberToday,
 };

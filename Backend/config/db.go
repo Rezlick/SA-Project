@@ -63,12 +63,12 @@ func SetupDatabase() {
    orderproduct7 := entity.Order_Product{Quantity: 1, OrderID: 3, Product_Code_ID: "C002"}
 
    categories := []entity.Category{
-		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ (Meats)"},
-		{Category_Code_id: "V", CategoryName: "ผัก (Vegetables)"},
-		{Category_Code_id: "S", CategoryName: "อาหารทะเล (Seafood)"},
-		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง (Noodles and Dough)"},
-		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม (Condiments and sauce)"},
-		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน (Beverages and Desserts)"},
+		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ "},
+		{Category_Code_id: "V", CategoryName: "ผัก "},
+		{Category_Code_id: "S", CategoryName: "อาหารทะเล "},
+		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง "},
+		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม "},
+		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน "},
 	}
    suppliers := []entity.Supplier{
 		{SupplierName: "Supplier A", Phone: "012-345-6789", Email: "contact@suppliera.com", Address: "มทส"},

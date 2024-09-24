@@ -1,16 +1,16 @@
 import StockCategory from "../Category/StockCategory/StockCategory";
 import useStockData from "../../../..//Hook/useStockData";
 
-
-
-
 export default function StockMeat() {
-  const meatData = useStockData(1);
+  const id = 1;
+
+  const meatData = useStockData(id);
+
   return (
     <StockCategory
-      categoryTitle="เนื้อสัตว์ (Meats)"
+      categoryTitle="เนื้อสัตว์ "
       initialData={meatData}
-      categoryID = {1}
+      categoryID = {id}
       path = {"Meat"}
     />
   );

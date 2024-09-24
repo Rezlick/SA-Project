@@ -106,7 +106,7 @@ function Order() {
       <Divider/>
       <Row>
         <Col span={24} style={{ marginTop: "15px"}}>
-          <Table dataSource={order} columns={columns} pagination={{ pageSize: 5 }} loading={loading} />
+          <Table dataSource={order} columns={columns} pagination={{ pageSize: 6 }} loading={loading} />
         </Col>
       </Row>
     </>

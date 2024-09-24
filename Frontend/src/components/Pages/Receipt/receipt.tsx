@@ -1,4 +1,4 @@
-import { Card, Table, Col, Row, Statistic, Button , message , Spin , Empty , Badge, } from 'antd';
+import { Card, Table, Col, Row, Statistic, Button , message , Spin , Empty , Badge, Divider, } from 'antd';
 import { WalletOutlined, FileSyncOutlined, FileDoneOutlined, UserOutlined } from "@ant-design/icons";
 import { ReceiptInterface } from "../../../interfaces/Receipt";
 import { TableInterface } from '../../../interfaces/Table';
@@ -105,6 +105,10 @@ function Receipt() {
     };
 
     fetchData();
+
+    const interval = setInterval(() => { fetchData(); }, 30000);
+    return () => clearInterval(interval);
+
   }, []);
 
   const handleButtonClick = (table: TableInterface) => {
@@ -155,6 +159,7 @@ function Receipt() {
     FetchTotalPrice();
   }, []);
 
+
   const columns: ColumnsType<ReceiptInterface> =[
     {
       key: 'date_time',
@@ -164,6 +169,7 @@ function Receipt() {
         const date = record.CreatedAt;
         return <p>{dayjs(date).format("HH:mm : DD MMM YYYY")}</p>;
       },
+      
     },
     {
       key: 'id',
@@ -201,8 +207,9 @@ function Receipt() {
   return (
     <Row gutter={[16, 16]}>
       <Col span={12}>
-        <Card style={{ borderRadius: '20px', padding: '0px', width: '100%', height: '55vh' }}>
+        <Card style={{ borderRadius: '20px', padding: '0px', width: '100%' }}>
           <h2 style={{ marginTop: '-3px' }}>ประวัติการชำระเงินรายวัน</h2>
+          <Divider></Divider>
             {/* Content Section */}
             {loading ? (
               <Spin tip="Loading..." className="spinContainer" />
@@ -213,7 +220,7 @@ function Receipt() {
                 dataSource={receipt}
                 columns={columns}
                 rowClassName={(_, index) => (index % 2 === 0 ? 'even-row' : 'odd-row')}
-                pagination={{ pageSize: 3 }}
+                pagination={{ pageSize: 6 }}
                 className="Receipt-table"
               />
             )}

@@ -46,6 +46,7 @@ func main() {
         r.POST("/checkPhone/:phoneNumber", controller.CheckPhone)
         r.GET("/memberCountForToday", controller.GetMemberCountForToday)
         r.GET("/memberCountByReceiptToday", controller.GetMemberCountByReceiptToday)
+        r.GET("/netIncomeByMemberToday", controller.GetNetIncomeByMemberToday)
 
         // Gender Routes
         r.GET("/genders", controller.GetGenders)

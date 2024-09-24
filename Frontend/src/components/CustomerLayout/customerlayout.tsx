@@ -5,6 +5,7 @@ import Customer from "../Pages/customer/customer";
 import CustomerCart from "../Pages/customer/CartCustomer/cartCustomer";
 import CustomerSider from "../Sider/CustomerSider";
 import CustomerStatus from "../Pages/customer/customerStatus/customerstatus"
+import CustomerDetail from "../Pages/customer/customerStatus/customerDetail/customerdetail";
 import logo from "../../assets/logo.png";
 import Background from "../../assets/background_customer.webp";
 import "../../App.css";
@@ -66,6 +67,7 @@ const CustomerLayout: React.FC = () => {
                                     <Route path="/customer/:id" element={<Customer />} />
                                     <Route path="/customer/cart/:id" element={<CustomerCart />} />
                                     <Route path="/customer/status/:id" element={<CustomerStatus />} />
+                                    <Route path="/customer/detail/:bookingID/:id" element={<CustomerDetail />} />
                                 </Routes>
                             </div>
                         </Card>

@@ -108,6 +108,11 @@
   font-size: 16px;
 }
 
+.form-type .ant-form-item-label > label {
+  font-size: 16px; /* ปรับขนาดตัวอักษร */
+  text-align: center; /* จัดตำแหน่งตรงกลาง */
+}
+
 .custom-form .ant-form-item-label > label {
   font-size: 18px; /* ปรับขนาดตัวอักษร */
   text-align: center; /* จัดตำแหน่งตรงกลาง */

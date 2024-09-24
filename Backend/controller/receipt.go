@@ -102,3 +102,16 @@ func CreateReceipt(c *gin.Context) {
         "receipt_id": receipt.ID,
     })
 }
+
+func GetMemberCountByReceiptToday(c *gin.Context) {
+	var count int64
+
+	db := config.DB()
+	results := db.Raw(`SELECT COUNT(id) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = strftime('%Y-%m-%d', 'now') AND member_id != 0`).Scan(&count)
+	if results.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+		return
+	}
+    
+	c.JSON(http.StatusOK, gin.H{"memberCount": count})
+}

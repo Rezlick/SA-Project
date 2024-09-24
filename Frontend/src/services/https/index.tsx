@@ -172,6 +172,20 @@ async function GetMemberCountForCurrentMonth() {
     .catch((e) => e.response);
 }
 
+async function GetCashIncomeForCurrentMonth() {
+  return await axios
+    .get(`${apiUrl}/cashIncomeForCurrentMonth`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetTranferIncomeForCurrentMonth() {
+  return await axios
+    .get(`${apiUrl}/tranferIncomeForCurrentMonth`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 async function GetDashboardDataForMonth(month: string, year: string) {
   return await axios
     .get(`${apiUrl}/dashboardDataForMonth?month=${month}&year=${year}`, requestOptions)
@@ -537,4 +551,6 @@ export {
   GetDashboardDataForDay,
   GetNetIncomeByMemberToday,
   DeleteBookingAfterPay,
+  GetCashIncomeForCurrentMonth,
+  GetTranferIncomeForCurrentMonth,
 };

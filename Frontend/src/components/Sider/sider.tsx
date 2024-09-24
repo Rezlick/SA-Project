@@ -91,7 +91,7 @@ function Sider() {
   return (
     <>
       {contextHolder}
-      <Sider collapsed={collapsed} style={{ backgroundColor: '#f5f5dc' }}> {/* Light beige background */}
+      <Sider collapsed={collapsed} className="custom-sider">
         <div
           style={{
             display: "flex",

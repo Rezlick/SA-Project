@@ -30,7 +30,7 @@ p {
   }
 
   .ant-layout-sider {
-    min-width: 100px; /* Keep this for usability */
+    min-width: 100px;
   }
 
   .ant-layout-content {
@@ -95,7 +95,7 @@ p {
 /* Active state for menu items */
 .menu-item.active {
   background-color: #ffcc80; /* Warm light orange for active item */
-  color: #fff; /* White text color for active item */
+  color: #ff5722 !important; /* สีส้มสำหรับเมนูที่ active */
 }
 
 /* Focus state for accessibility */
@@ -121,7 +121,7 @@ p {
 
 /* Ensure the custom sider takes precedence */
 .ant-layout-sider.custom-sider {
-  background-color: #F6C191; /* Apply soft orange background */
+  background-color: rgb(248 193 167); /* Apply soft orange background */
   color: #444; /* Darker gray for contrast */
 }
 

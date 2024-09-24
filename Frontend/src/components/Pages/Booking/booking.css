@@ -76,7 +76,7 @@
 
 .tableButton {
   width: 150px; /* Fixed width to make the button square */
-  height: 200px; /* Fixed height to make the button square */
+  height: 160px; /* Fixed height to make the button square */
   border: 1px solid #FBBF77; /* Light, warm orange border */
   box-shadow: rgba(220, 150, 90, 0.3) 0px 8px 20px; /* Softer shadow for buttons */
   border-radius: 12px; /* Rounded corners for a soft look */

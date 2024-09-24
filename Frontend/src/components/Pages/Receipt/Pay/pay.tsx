@@ -6,7 +6,6 @@ import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPoint
 import  PromtPay  from "../../../../assets/PromptPay-logo.png"
 import './pay.css';
 import { ReceiptInterface } from "../../../../interfaces/Receipt";
-import { SoupInterface } from "../../../../interfaces/Soup";
 
 
 function Pay() {
@@ -33,16 +32,27 @@ function Pay() {
     const [NumberCustomer,SetNumberCustomer] = useState("");
     const [checked, setChecked] = useState(false);
     const [TotalPrice, setTotalPrice] = useState<number>(0);
+    const [TotalPackagePrice, setTotalPackagePrice] = useState<number>(0);
+    const [TotalSoupPrice, setTotalSoupPrice] = useState<number>(0);
     const [TotalDiscount, setTotalDiscount] = useState<number>(0);
     const [NetTotal, setNetTotal] = useState<number>(0);
     const [RateDiscount, setRateDiscount] = useState<number>(0);
     const [RankDiscount, setRankDiscount] = useState<number>(0);
     const [Soups, setSoups] = useState([{ name:'', price: 0}]);
-    
+    const [Redata] = useState(true);
+
     const EmployeeID = localStorage.getItem("employeeID") ;
     
     const check = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setChecked(e.target.checked);
+        if(Redata){
+            form.setFieldsValue({
+                input_phone: "",
+            });
+            setFirstName("Guest")
+            setRankName("ไม่มี")
+            setRateDiscount(0)
+        }
       };
 
     const getIDBooking = async () =>{
@@ -64,8 +74,6 @@ function Pay() {
                 name: soup.name,
                 price: soup.price
               })))
-            console.log(Soups)
-            console.log(Soups.length)
         } else {
             message.open({
             type: "error",
@@ -108,10 +116,14 @@ function Pay() {
 
     const calculator = async (id: string) => {
         let res = await GetBookingByID(id);
+        const totalsoupprice = Soups.reduce((total, soup) => total + soup.price, 0);
         const CDiscount = CouponDiscount
-        const totalprice = res.data.package.price * res.data.number_of_customer
         const RankDiscount = Math.round(TotalPrice * RateDiscount)
         const totaldiscount = Math.round(RankDiscount + CDiscount)
+        const totalpackage = res.data.package.price * res.data.number_of_customer
+        const totalprice = totalpackage + totalsoupprice
+        setTotalPackagePrice(totalpackage)
+        setTotalSoupPrice(totalsoupprice);
         setRankDiscount(RankDiscount)
         setTotalPrice(totalprice)
         setTotalDiscount(totaldiscount)
@@ -144,7 +156,6 @@ function Pay() {
         }
     }, [CouponDiscount,FirstName,BookID,Point]);
     const handleConfirmPayment = () => {
-        setShowQR(false);
         setShowPopup(true);
     };
 
@@ -210,22 +221,19 @@ function Pay() {
     };
 
     const handleEnterPressPhone = (e: { preventDefault: () => void; }) => {
-        e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
+        e.preventDefault();
 
-        // ถ้าอยู่ในช่วง cooldown ไม่ให้เรียก CheckCoupon
         if (cooldown) {
             message.warning("กรุณารอซักครู่");
             return;
         }
 
-        // ตั้งค่าสถานะ cooldown
         setCooldown(true);
-        CheckPhone(); // เรียกฟังก์ชันตรวจสอบคูปอง
+        CheckPhone();
 
-        // ตั้งค่า timeout ให้ cooldown หายไปหลังจาก 3 วินาที
         setTimeout(() => {
-            setCooldown(false); // ล้างสถานะ cooldown
-        }, 2000); // หน่วงเวลา 3 วินาที (3000 มิลลิวินาที)
+            setCooldown(false); 
+        }, 2000);
     };
 
     const renderSoupFields = () => {
@@ -236,25 +244,12 @@ function Pay() {
                 </Col>
             )
         }
-        if (Soups.length === 2) {
+        if (Soups.length >= 2) {
             return(
-                <Row gutter={[8,0]}>
+                <Row gutter={[5,0]}>
                     {Soups.map((soup, index) => (
                             <Col key={index} lg={1} xl={12}>
-                                <Card className="card-payment">{soup.name}: {soup.price}</Card>
-                                {/* <p>{soup.name}: {soup.price} บาท</p> */}
-                            </Col>
-                    ))}
-                </Row>
-            )
-        }
-        if (Soups.length === 4){
-            return(
-                <Row gutter={[8,0]}>
-                    {Soups.map((soup, index) => (
-                            <Col key={index} lg={3} xl={6}>
-                                <Card className="card-payment">{soup.name}: {soup.price}</Card>
-                                {/* <p>{soup.name}: {soup.price} บาท</p> */}
+                                <Card className="card-payment">{"\" "}{soup.name}{" \" ราคา : "}{soup.price}{" บาท"}</Card>
                             </Col>
                     ))}
                 </Row>
@@ -300,7 +295,7 @@ function Pay() {
                         <Card style={{
                             borderRadius: '10px',
                         }}>
-                            <Row gutter={[8,0]}> 
+                            <Row gutter={[5,0]}> 
                                     <Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                         <Card className="card-payment">{"หมายเลขโต๊ะ : "}{Table}</Card>
                                     </Col>
@@ -337,16 +332,16 @@ function Pay() {
                                     <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
                                         <Card className="card-payment">{"สมาชิก : "}{FirstName}</Card>
                                     </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 7 : 8}>
                                         <Card className="card-payment">{"ระดับสมาชิก : "}{RankName}</Card>
                                     </Col>
-                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 6 : 8}>
-                                        <Card className="card-payment">{"จำนวนลูกค้า : "}{NumberCustomer}</Card>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={checked ? 5 : 8}>
+                                        <Card className="card-payment">{"ลูกค้า : "}{NumberCustomer}{" ท่าน"}</Card>
                                     </Col>
                                     <Col xl={24}>{renderSoupFields()}</Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={7}>
                                         <Form.Item
-                                            label="Coupon"
+                                            label="คูปอง"
                                             name="input_coupon"
                                             >
                                         <Input 
@@ -364,6 +359,12 @@ function Pay() {
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={9}>
                                         <Card className="card-payment">{"ส่วนบัตรสมาชิก : "}{RankDiscount}{" บาท"}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={12}>
+                                        <Card className="card-payment">{"รวมราคาน้ำซุป : "}{TotalSoupPrice}{" บาท"}</Card>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={16} lg={12} xl={12}>
+                                        <Card className="card-payment">{"รวมราคาแพ็คเกจ : "}{TotalPackagePrice}{" บาท"}</Card>
                                     </Col>
                                     <Col xs={24} sm={24} md={16} lg={12} xl={7}>
                                         <Card className="card-payment">{"รวมเป็นเงิน : "}{TotalPrice}{" บาท"}</Card>

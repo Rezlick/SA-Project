@@ -105,7 +105,7 @@ func main() {
 		r.GET("/Supplier", controller.GetdataAllSupplier)
 		r.POST("/AddStock", controller.AddStockHandler)
 		r.PUT("/UpdateStock", controller.UpdateStock)
-        r.GET("/GetApiOrder/:product_code_id",controller.GetProductsByID)
+        r.GET("/GetProductByCodeID/:product_code_id",controller.GetProductsByID)
 
 }
 

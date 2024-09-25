@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Input, Button, Form, Select, Divider, notification } from "antd";
+import { Input, Button, Form, Select, Divider, notification,Card,Row } from "antd";
 import { useState, useEffect } from "react";
 import { UpdateStock } from "../../../../../../services/https";
 import { StockInterface } from "../../../../../../interfaces/Stock";
-//import ColumnGroup from "antd/es/table/ColumnGroup";
+
 
 const { Option } = Select;
 
@@ -87,7 +87,8 @@ export default function StockEdit() {
       </div>
       <Divider />
 
-      <div>
+      <Row justify="center" >
+      <Card style={{width: "800px", height:"600px" , boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)"  }}>
         <Form
           form={form}
           layout="vertical"
@@ -180,7 +181,8 @@ export default function StockEdit() {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+        </Card>
+      </Row>
     </div>
   );
 }

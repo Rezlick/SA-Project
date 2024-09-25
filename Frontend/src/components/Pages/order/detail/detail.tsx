@@ -235,14 +235,28 @@ function OrderDetail() {
                 </Row>
 
                 <Modal
-                    title="ยืนยันการเสิร์ฟอาหาร?"
+                    title={<span style={{ fontSize: '20px' }}>ยืนยันการเสิร์ฟอาหาร?</span>}
                     open={isModalVisible}
                     onOk={() => form.submit()}
                     onCancel={handleCancel}
-                    okText="ยืนยัน"
-                    cancelText="ยกเลิก"
-                    okButtonProps={{ disabled: isSubmitting }}>
-                    <p>ยืนยันการเสิร์ฟใช่หรือไม่</p>
+                    footer={[
+                        <Button
+                            key="cancel"
+                            onClick={handleCancel}
+                            style={{ marginRight: '10px', height: '50px', width: '120px' }}>
+                            ยกเลิก
+                        </Button>,
+                        <Button
+                            key="submit"
+                            type="primary"
+                            disabled={isSubmitting}
+                            onClick={() => form.submit()}
+                            style={{ height: '50px', width: '120px', backgroundColor: 'green', borderColor: 'green' }}>
+                            ยืนยัน
+                        </Button>,
+                    ]}
+                >
+                    <p style={{ textAlign: 'left', fontSize: '18px' }}>ยืนยันการเสิร์ฟใช่หรือไม่</p>
                 </Modal>
 
             </Form>

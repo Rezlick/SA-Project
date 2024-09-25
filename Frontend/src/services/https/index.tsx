@@ -465,6 +465,13 @@ async function GetOrderProductsByOrderID(id: string | undefined) {
     .catch((e) => e.response);
 }
 
+async function GetAllOrderProducts() {
+  return await axios
+    .get(`${apiUrl}/allorderproduct`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
 async function GetProductsByID(id: string | undefined) {
   return await axios
     .get(`${apiUrl}/order/detail/${id}`, requestOptions)
@@ -568,6 +575,7 @@ export {
   UpdateOrder,
   CreateOrderProducts,
   GetOrderProducts,
+  GetAllOrderProducts,
   GetOrderProductsByOrderID,
   GetProductsByID,
   CheckPhone,

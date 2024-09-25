@@ -1,148 +1,205 @@
 .select-style {
   width: 100%;
   border-radius: 8px;
-  color: #ff6262;
 }
 
 .select-style:focus {
-  border-color: #E75B4E; /* Rich tomato color on focus */
-  box-shadow: 0 2px 8px rgba(255, 138, 101, 0.4); /* Warmer peach shadow on focus */
-  outline: none; /* Ensure outline is removed on focus */
+  border-color: #daa520;
+  box-shadow: 0 2px 8px rgba(255, 138, 101, 0.4);
+  outline: none;
 }
 
 .card-style {
-  background-color: #FEF6E4; /* Light cream with warmth */
+  background-color: #ffffff;
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid #F0E0D0; /* Subtle, warm border */
-  box-shadow: 0 12px 24px rgba(228, 170, 112, 0.4); /* Enhanced shadow for more dimension */
-  margin: 16px; /* Add margin for spacing */
+  border: 1px solid #ffffff;
+  box-shadow: 0 12px 24px rgba(228, 170, 112, 0.4);
+  margin: 16px;
 }
 
 .button-style {
   margin-top: 20px;
-  background-color: #E75B4E; /* Rich tomato color */
-  border: 1px solid #E75B4E; /* Matching border color */
+  background-color: #daa520;
+  border: 1px solid #daa520;
   color: #ffffff;
   border-radius: 8px;
-  font-weight: bold;
-  padding: 12px 24px; /* Generous padding for comfort */
+  font-weight: normal;
+  padding: 12px 24px;
   text-align: center;
-  font-size: 1.2rem; /* Consistent font size */
-  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform for smooth effect */
-  width: 100%; /* Make button full width */
+  font-size: 1.15rem;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  width: 100%;
 }
 
 .button-style:hover {
-  background-color: #D64D3D; /* Slightly darker shade on hover */
-  box-shadow: 0 6px 14px rgba(255, 108, 85, 0.4); /* Warmer peach shadow on hover */
-  transform: translateY(-2px); /* Slight lift effect on hover */
+  background-color: #daa520 !important;
+  box-shadow: 0 6px 14px #ffdc85;
+  transform: translateY(-2px);
 }
 
 .back-button-style {
   margin-top: 20px;
-  background-color: #6C757D; /* Neutral gray color */
-  border: 1px solid #6C757D; /* Matching border color */
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
   color: #ffffff;
   border-radius: 8px;
-  font-weight: bold;
-  padding: 12px 24px; /* Generous padding for comfort */
+  font-weight: normal;
+  padding: 12px 50px;
   text-align: center;
-  font-size: 1.2rem; /* Consistent font size */
-  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Added transform for smooth effect */
-  width: 100%; /* Make button full width */
+  font-size: 1.15rem;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  width: 30%;
 }
 
 .back-button-style:hover {
-  background-color: #5A6268; /* Slightly darker gray on hover */
-  box-shadow: 0 6px 14px rgba(108, 115, 125, 0.4); /* Subtle gray shadow on hover */
-  transform: translateY(-2px); /* Slight lift effect on hover */
+  background-color: #5a6268 !important;
+  box-shadow: 0 6px 14px rgba(108, 115, 125, 0.4);
+  transform: translateY(-2px);
 }
 
 .heading-style {
   text-align: center;
-  color: #D9773D; /* Warm orange for consistency */
+  color: #000000e0;
   font-weight: bold;
-  font-size: 3rem; /* Slightly larger font size for emphasis */
-  margin: 20px 0; /* Balanced margin for spacing */
-  line-height: 1.2; /* Improved readability with line height */
+  font-size: 3rem;
+  margin: 20px 0;
+  line-height: 1.2;
 }
 
 .emptyState {
   text-align: center;
-  color: #D9773D; /* Matching warm orange for consistency */
-  font-size: 1.1rem; /* Slightly smaller font size */
+  color: #daa520;
+  font-size: 1.1rem;
 }
 
 .tableButton {
-  width: 150px; /* Fixed width to make the button square */
-  height: 160px; /* Fixed height to make the button square */
-  border: 1px solid #FBBF77; /* Light, warm orange border */
-  box-shadow: rgba(220, 150, 90, 0.3) 0px 8px 20px; /* Softer shadow for buttons */
-  border-radius: 12px; /* Rounded corners for a soft look */
+  width: 150px; /* Fixed width */
+  height: 160px; /* Fixed height */
+  border: 1px solid #faf3e0;
+  box-shadow: rgba(0, 0, 0, 0.2) 5px 5px 12px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: #FEF9F3; 
+  background-color: #ffeebb;
   transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  padding: 40px; 
-  font-size: 0.9rem; 
+  padding: 20px;
+  font-size: 1rem;
 }
 
 .tableButton:hover {
-  background-color: #FCE8D1; 
-  box-shadow: rgba(220, 150, 90, 0.5) 0px 10px 25px;
-  transform: scale(1.05); 
+  border: 1px solid #ffeebb !important;
+  background-color: #fffaee !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 5px 5px 12px;
+  transform: scale(1.05);
 }
 
 .tableButton:active {
   transform: scale(1);
 }
 
+.button-occupied {
+  background-color: #f5f5f5;
+  border: #f5f5f5;
+}
+
+.button-cleaning {
+  background-color: #f5f5f5;
+  border: #f5f5f5;
+}
+
+.button-default {
+  background-color: #f5f5f5;
+  border: #f5f5f5;
+}
+
+.ant-badge {
+  font-size: 14px;
+}
+
 .statisticValue {
-  color: #D9773D; 
-  font-size: 1rem; 
+  color: #d4af37;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .icon {
-  color: #D9773D; 
+  color: #daa520;
+  font-size: 1.5rem;
 }
 
 .ant-tag {
   font-size: 0.875rem;
   font-weight: 500;
-  background-color: #FEF6E4; 
-  color: #D9773D; 
-  border-radius: 10px; 
-  padding: 4px 8px; 
+  background-color: #fef6e4;
+  color: #daa520;
+  border-radius: 10px;
+  padding: 4px 8px;
+  border: 1px solid #d4af37;
 }
 
 @media (max-width: 768px) {
   .heading-style {
-    font-size: 1.6rem; 
-    margin: 15px 0; 
+    font-size: 1.6rem;
+    margin: 15px 0;
   }
 
   .tableButton {
-    width: 120px; 
-    height: 120px; 
-    padding: 10px; 
-    font-size: 0.8rem; 
+    width: 120px;
+    height: 120px;
+    padding: 10px;
+    font-size: 0.8rem;
   }
 
   .card-style {
-    padding: 16px; 
-    margin: 12px; 
+    padding: 16px;
+    margin: 12px;
   }
 
-  .button-style, .back-button-style {
+  .button-style,
+  .back-button-style {
     padding: 10px 20px;
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
   }
 }
 
 .statistic-container {
   text-align: center;
+}
+
+.current-time {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.table-list {
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.custom-row {
+  transition: background-color 0.3s;
+}
+
+.table-list-edit-button,
+.table-list-delete-button {
+  color: #d4af37;
+}
+
+.table-list-edit-button:hover,
+.table-list-delete-button:hover {
+  color: #ffffff;
+}
+
+.ant-modal-body {
+  text-align: center;
+}
+
+.ant-modal-footer {
+  display: flex;
+  justify-content: center;
 }

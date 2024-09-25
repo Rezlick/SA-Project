@@ -26,13 +26,12 @@ function Booking() {
   const [tables, setTables] = useState<TableInterface[]>([]);
   const [tableCaps, setTableCaps] = useState<TableCapacityInterface[]>([]);
   const [tableStatus, setTableStatus] = useState<TableStatusInterface[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const [tablesRes, statusRes, capsRes] = await Promise.all([
           GetTables(),
@@ -40,27 +39,10 @@ function Booking() {
           GetTableCapacity(),
         ]);
 
-        if (tablesRes.status === 200) {
-          setTables(tablesRes.data);
-        } else {
-          message.error(tablesRes.data.error || "Unable to fetch tables");
-        }
-
-        if (statusRes.status === 200) {
-          setTableStatus(statusRes.data);
-        } else {
-          message.error(
-            statusRes.data.error || "Unable to fetch table statuses"
-          );
-        }
-
-        if (capsRes.status === 200) {
-          setTableCaps(capsRes.data);
-        } else {
-          message.error(
-            capsRes.data.error || "Unable to fetch table capacities"
-          );
-        }
+        // Handle responses
+        handleResponse(tablesRes, setTables, "tables");
+        handleResponse(statusRes, setTableStatus, "table statuses");
+        handleResponse(capsRes, setTableCaps, "table capacities");
       } catch (error) {
         console.error("Error fetching data:", error);
         message.error("Error fetching data from the server");
@@ -72,9 +54,20 @@ function Booking() {
     fetchData();
   }, []);
 
+  const handleResponse = (response: any, setter: Function, entity: string) => {
+    if (response.status === 200) {
+      setter(response.data);
+    } else {
+      message.error(response.data.error || `Unable to fetch ${entity}`);
+    }
+  };
+
   const handleButtonClick = (table: TableInterface) => {
-    if (!table.ID || !table.table_capacity_id) {
-      message.warning("Table ID or Table capacity ID is not defined!");
+    const tableID = table.ID;
+    const tableCapacityID = table.table_capacity_id;
+
+    if (!tableID || !tableCapacityID) {
+      message.warning("รหัสโต๊ะหรือรหัสความจุของโต๊ะยังไม่ได้กำหนด!");
       return;
     }
 
@@ -83,29 +76,38 @@ function Booking() {
     )?.status;
 
     if (status === "Occupied") {
-      message.warning("This table is not available for booking!");
+      message.warning("โต๊ะนี้ไม่ว่าง กำลังใช้งานอยู่");
       return;
     }
     if (status === "Cleaning") {
-      message.warning("This table is not already for booking!");
+      message.warning("โต๊ะนี้กำลังทำความสะอาด");
       return;
     }
 
     if (table.table_name) {
-      const params = new URLSearchParams({
-        tableId: table.ID.toString(),
-        tableName: table.table_name,
-        tableCapacityId: table.table_capacity_id.toString(),
-      }).toString();
-
-      window.location.href = `/booking/create?${params}`;
+      navigate(
+        `/booking/create?tableId=${tableID}&tableName=${table.table_name}&tableCapacityId=${tableCapacityID}`
+      );
     } else {
-      message.warning("This table does not have a defined type!");
+      message.warning("โต๊ะนี้ยังไม่ได้กำหนดประเภท!");
     }
   };
 
   const goToBookingList = () => {
     navigate("/booking/booking_list");
+  };
+
+  const getStatusClass = (status: string): string => {
+    switch (status) {
+      case "Available":
+        return "button-available";
+      case "Occupied":
+        return "button-occupied";
+      case "Cleaning":
+        return "button-cleaning";
+      default:
+        return "button-default";
+    }
   };
 
   const getStatusColor = (status: string): string => {
@@ -150,13 +152,10 @@ function Booking() {
                   <Col key={table.ID} xs={24} sm={12} md={8} lg={6}>
                     <Button
                       type="default"
-                      className="tableButton"
+                      className={`tableButton ${getStatusClass(
+                        status?.status ?? "Unknown"
+                      )}`}
                       onClick={() => handleButtonClick(table)}
-                      disabled={
-                        !table.table_name ||
-                        status?.status === "Occupied" ||
-                        status?.status === "Cleaning"
-                      }
                       style={{
                         width: "100%",
                         display: "flex",
@@ -172,7 +171,7 @@ function Booking() {
                           tableCapacity?.min,
                           tableCapacity?.max
                         )}
-                        valueStyle={{ color: "#FF7F50" }}
+                        valueStyle={{ color: "#DAA520" }}
                         prefix={<UserOutlined className="icon" />}
                       />
                       <Badge
@@ -191,18 +190,11 @@ function Booking() {
             </Row>
           )}
           <Row justify="center" style={{ marginTop: 16 }}>
-            <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={4}>
               <Button
                 type="primary"
                 onClick={goToBookingList}
-                style={{
-                  backgroundColor: "#FF7F50",
-                  borderColor: "#FF7F50",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%", 
-                  marginTop: 20, 
-                }}
+                className="button-style"
               >
                 รายการจองโต๊ะ
               </Button>

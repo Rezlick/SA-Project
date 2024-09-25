@@ -111,46 +111,8 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       element: <OrderDetail />
     }
   ]
+
   const ManageStocks =[
-    {
-      path: "", 
-      element: <ManageStock />,
-    }
-    ,
-    {
-      path: "Meat", 
-      element: <StockMeat />,
-    },
-    {
-      path: "Vegetable", 
-      element: <StockVegetable />,
-    },
-    {
-      path: "CondimentsAndSauce", 
-      element: <StockCondimentsAndSauce />,
-    },
-    {
-      path: "NoodlesAndDough", 
-      element: <StockNoodlesAndDough />,
-    },
-    {
-      path: "Seafood", 
-      element: <StockSeafood />,
-    },
-    {
-      path: "BeveragesAndDesserts", 
-      element: <StockBeveragesAndDesserts />,
-    }
-    ,
-    {
-      path: "Supplier", 
-      element: <Supplier />,
-    },
-
-
-  ]
-
-  const ManageStocksEdit =[
     {
       path: "", 
       element: <ManageStock />,
@@ -284,19 +246,10 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
         path: "/coupon",
         element: <Coupon />,
       },
-      {
-        path: "/ManageStock",
-        children: ManageStocksEdit, 
-      },
     ] : []),
-    ...(role === "Manager" ? [
-    {
-      path: "/ManageStock",
-      children: ManageStocksEdit, 
-    },
-  ] : []),
     ],
   };
+  
 };
 
 export default AdminRoutes;

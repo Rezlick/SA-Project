@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Table, Button, Col, Row, Modal, message, Form, Card, Statistic, Divider } from "antd";
-import { DatabaseOutlined, ContainerOutlined } from "@ant-design/icons";
+import { DatabaseOutlined, ContainerOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { OrderProductInterface } from "../../../../interfaces/OrderProduct";
@@ -87,7 +87,7 @@ function OrderDetail() {
             }, 2000);
         }
     };
-    
+
 
     useEffect(() => {
         fetchOrderById()
@@ -107,38 +107,54 @@ function OrderDetail() {
 
     const column: ColumnsType<OrderProductInterface> = [
         {
-            title: "ลำดับ",
+            title: <span style={{ fontSize: '18px', fontWeight: 'bold' }}>ลำดับ</span>, // Increased title font size
             key: "id",
             align: "center",
-            render: (text, record, index) => index + 1,
+            render: (text, record, index) => (
+                <span style={{ fontSize: '16px' }}>{index + 1}</span>
+            ),
         },
         {
-            title: "ประเภทสินค้า",
+            title: <span style={{ fontSize: '18px', fontWeight: 'bold' }}>ประเภทสินค้า</span>, // Increased title font size
             key: "category_id",
             align: "center",
-            render: (record: any) => <>{record.Products?.Category?.category_name || "N/A"}</>,
+            render: (record: any) => (
+                <span style={{ fontSize: '16px' }}>
+                    {record.Products?.Category?.category_name || "N/A"}
+                </span>
+            ),
         },
         {
-            title: "ชื่ออาหาร",
+            title: <span style={{ fontSize: '18px', fontWeight: 'bold' }}>ชื่ออาหาร</span>, // Increased title font size
             key: "product_id",
             align: "center",
-            render: (record: any) => <>{record.Products?.product_name || "N/A"}</>,
+            render: (record: any) => (
+                <span style={{ fontSize: '16px' }}>
+                    {record.Products?.product_name || "N/A"}
+                </span>
+            ),
         },
         {
-            title: "จำนวน",
+            title: <span style={{ fontSize: '18px', fontWeight: 'bold' }}>จำนวน</span>, // Increased title font size
             dataIndex: "Quantity",
             key: "quantity",
             align: "center",
+            render: (text: any) => (
+                <span style={{ fontSize: '16px' }}>
+                    {text}
+                </span>
+            ),
         },
     ];
-    
+
+
     return (
         <>
             <Form form={form} onFinish={onFinish}>
                 <Row>
-                    <Col span={24} style={{ marginTop: "-20px" }}>
-                        <Card>
-                            <h2>รายละเอียดออเดอร์</h2>
+                    <Col span={24}>
+                        <Card style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                            <h1 style={{ marginTop: '10px' }}>รายละเอียดออเดอร์</h1>
                             <Row>
                                 <Col span={5}>
                                     <Card
@@ -148,14 +164,14 @@ function OrderDetail() {
                                         }}>
                                         <Statistic
                                             // title="หมายเลขออเดอร์"
-                                            value={"เลขออเดอร์: " +(order?.ID)}
+                                            value={"เลขออเดอร์: " + (order?.ID)}
                                             valueStyle={{ color: "black" }}
                                             suffix={
                                                 <span style={{ marginLeft: '5px' }}>
-                                                  <ContainerOutlined />
+                                                    <ContainerOutlined />
                                                 </span>
-                                              }
-                                            
+                                            }
+
                                         />
                                     </Card>
                                 </Col>
@@ -167,14 +183,13 @@ function OrderDetail() {
                                             marginLeft: '20px'
                                         }}>
                                         <Statistic
-                                            // title="หมายเลขโต๊ะ"
                                             value={"เลขโต๊ะ: " + (tableName)}
                                             valueStyle={{ color: "black" }}
                                             suffix={
                                                 <span style={{ marginLeft: '5px' }}>
-                                                  <DatabaseOutlined />
+                                                    <DatabaseOutlined />
                                                 </span>
-                                              }
+                                            }
                                         />
                                     </Card>
                                 </Col>
@@ -195,7 +210,7 @@ function OrderDetail() {
                 <Row justify="space-between">
                     <Col>
                         <Link to="/order">
-                            <Button type="primary" style={{ height: '40px', width: '80px' }}>ย้อนกลับ</Button>
+                            <Button type="primary" icon={<ArrowLeftOutlined />} style={{ height: '50px', width: '120px', fontSize: '18px' }}>ย้อนกลับ</Button>
                         </Link>
                     </Col>
 
@@ -208,6 +223,8 @@ function OrderDetail() {
                                 borderColor: statusorder === 1 ? 'rgba(204, 204, 204, 0.8)' : '#4CAF50',
                                 color: statusorder === 1 ? 'rgba(0, 0, 0, 0.5)' : '#FFFFFF',
                                 opacity: statusorder === 1 ? 0.5 : 1,
+                                fontSize: '18px',
+                                height: '50px'
                             }}
                             onClick={showModal}
                             disabled={statusorder === 1} // Disable the button if Status_order?.ID is 1

@@ -93,7 +93,7 @@ func SetupDatabase() {
    PositionRestaurantManager := entity.Position{Name: "ผู้จัดการร้าน"}
    PositionOrderManager := entity.Position{Name: "จัดการออร์เดอร์"}
    PositionFoodServerManager := entity.Position{Name: "เสิร์ฟ"}
-   PositionCounterServiceManager := entity.Position{Name: "แคชเชียร"}
+   PositionCounterServiceManager := entity.Position{Name: "แคชเชียร์"}
    PositionStockManager := entity.Position{Name: "จัดการสินค้า"}
 
    RankBronze := entity.Rank{Name: "Bronze", Discount: 0.03 , PointToUpgrade: 20}
@@ -161,7 +161,7 @@ func SetupDatabase() {
    db.FirstOrCreate(&PositionRestaurantManager, &entity.Position{Name: "ผู้จัดการร้าน"})
    db.FirstOrCreate(&PositionOrderManager, &entity.Position{Name: "จัดการออร์เดอร์"})
    db.FirstOrCreate(&PositionFoodServerManager, &entity.Position{Name: "เสิร์ฟ"})
-   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "แคชเชียร"})
+   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "แคชเชียร์"})
    db.FirstOrCreate(&PositionStockManager, &entity.Position{Name: "จัดการสินค้า"})
 
    db.FirstOrCreate(&TableFourSeat1, &entity.Table{TableName: "F1"})

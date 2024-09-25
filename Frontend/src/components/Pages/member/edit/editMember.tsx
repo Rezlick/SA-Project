@@ -190,6 +190,9 @@ function MemberEdit() {
                       event.preventDefault(); // Block the input if the first digit isn't 0
                     }
                   }}
+                  onCopy={(e) => e.preventDefault()} // Prevent copy
+                  onCut={(e) => e.preventDefault()} // Prevent cut
+                  onPaste={(e) => e.preventDefault()} // Prevent paste
                 />
               </Form.Item>
             </Col>
@@ -224,7 +227,7 @@ function MemberEdit() {
                   <Button 
                     type="primary" 
                     htmlType="submit" 
-                    style={{ backgroundColor: "#FF7D29" }} 
+                    style={{ backgroundColor: "rgb(218, 165, 32)" }} 
                     loading={isSubmitting}
                     disabled={isSubmitting || phoneNumberInvalid} // Disable if submitting or phone is invalid
                   >

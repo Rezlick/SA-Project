@@ -21,10 +21,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { GenderInterface } from "../../../../interfaces/Gender";
 import { PositionInterface } from "../../../../interfaces/Position";
 
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function EmployeeCreate() {
   const navigate = useNavigate();
@@ -198,12 +196,10 @@ function EmployeeCreate() {
                     listType="picture-card"
                     onPreview={onPreview}
                   >
-                    {fileList.length === 0 && (
-                      <div>
-                        <PlusOutlined />
-                        <div style={{ marginTop: 8 }}>อัพโหลด</div>
-                      </div>
-                    )}
+                    <div>
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>อัพโหลด</div>
+                    </div>
                   </Upload>
                 </ImgCrop>
               </Form.Item>
@@ -263,6 +259,7 @@ function EmployeeCreate() {
                     required: true,
                     message: "กรุณาเลือกกรอกรหัสผ่าน!",
                   },
+                  { min: 6, message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร" },
                 ]}
               >
                 <Input.Password />
@@ -319,7 +316,7 @@ function EmployeeCreate() {
               <Form.Item>
                 <Space>
                   <Link to="/employee">
-                    <Button htmlType="button" style={{ marginRight: "10px" }}>
+                    <Button htmlType="button" style={{ marginRight: "10px" , backgroundColor:"#e0dede"}}>
                       ยกเลิก
                     </Button>
                   </Link>
@@ -327,7 +324,7 @@ function EmployeeCreate() {
                   <Button 
                     type="primary" 
                     htmlType="submit" 
-                    style={{backgroundColor:"#FF7D29"}} 
+                    style={{backgroundColor:"rgb(218, 165, 32)"}} 
                     loading={isSubmitting}
                     disabled={isSubmitting || emailInvalid || fileList.length === 0}>
                     ยืนยัน

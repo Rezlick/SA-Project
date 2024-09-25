@@ -8,7 +8,7 @@ import {
   SolutionOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  OrderedListOutlined
+  OrderedListOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
@@ -101,10 +101,7 @@ function Sider() {
           }}
         >
           <div style={{ position: "relative" }}>
-            <Button
-              onClick={toggleCollapsed}
-              className="toggle-button" 
-            >
+            <Button onClick={toggleCollapsed} className="toggle-button">
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
 
@@ -112,7 +109,7 @@ function Sider() {
               <img
                 src={profile}
                 alt="Profile"
-                className={`profile-image ${collapsed ? "small" : "large"}`} 
+                className={`profile-image ${collapsed ? "small" : "large"}`}
                 style={{
                   width: collapsed ? "50px" : "100px",
                   height: collapsed ? "50px" : "100px",
@@ -121,16 +118,32 @@ function Sider() {
             </div>
 
             <div className="profile-info">
-              <span style={{ fontSize: "large", color: "black" }}>{firstName} {lastName}</span>
-              <span style={{ fontSize: "default", color: "black" }}>({positionName})</span>
+              <span style={{ fontSize: "large", color: "black" }}>
+                {firstName} {lastName}
+              </span>
+              <span style={{ fontSize: "default", color: "black" }}>
+                ({positionName})
+              </span>
               <span>
-                <Link to="/profileEdit" style={{ fontSize: "smaller", color: "black", textDecorationLine: "underline" }}>
+                <Link
+                  to="/profileEdit"
+                  style={{
+                    fontSize: "smaller",
+                    color: "black",
+                    textDecorationLine: "underline",
+                  }}
+                >
                   แก้ไขโปรไฟล์
                 </Link>
               </span>
             </div>
 
-            <Menu className="menu" defaultSelectedKeys={[page ? page : "dashboard"]} mode="inline" inlineCollapsed={collapsed}>
+            <Menu
+              className="menu"
+              defaultSelectedKeys={[page ? page : "dashboard"]}
+              mode="inline"
+              inlineCollapsed={collapsed}
+            >
               <Menu.Item key="member" onClick={() => setCurrentPage("member")}>
                 <Link to="/member">
                   <UserOutlined />
@@ -145,7 +158,10 @@ function Sider() {
                 </Link>
               </Menu.Item>
 
-              <Menu.Item key="payment" onClick={() => setCurrentPage("payment")}>
+              <Menu.Item
+                key="payment"
+                onClick={() => setCurrentPage("payment")}
+              >
                 <Link to="/receipt">
                   <DollarOutlined />
                   <span>ชำระเงิน</span>

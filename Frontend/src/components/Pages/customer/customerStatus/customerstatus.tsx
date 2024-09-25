@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message, Divider, Empty } from "antd";
-import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Table, Row, Col, Spin, Button, message, Divider, Empty, Card } from "antd";
+import { CheckCircleOutlined, LoadingOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetOrderByBookingID } from "../../../../services/https";
 import type { ColumnsType } from "antd/es/table";
@@ -35,16 +35,16 @@ function CustomerStatus() {
         }
     };
     console.log(orders);
-    
+
 
     useEffect(() => {
         const interval = setInterval(() => {
             fetchOrderByBooking();
         }, 5000);
-    
+
         return () => clearInterval(interval); // ล้าง interval เมื่อคอมโพเนนต์ถูกถอดออก
     }, [bookingID]);
-    
+
 
     const columns: ColumnsType<OrderInterface> = [
         {
@@ -58,7 +58,7 @@ function CustomerStatus() {
             key: "date_time",
             render: (record) => {
                 const date = record.CreatedAt;
-                return <p>{dayjs(date).format("HH:mm : DD MMM YYYY")}</p>;
+                return <p>{dayjs(date).format("HH:mm")}</p>;
             },
         },
         {
@@ -76,7 +76,7 @@ function CustomerStatus() {
                         ) : (
                             <Spin
                                 indicator={<LoadingOutlined style={{ fontSize: "20px" }} />}
-                                tip="รอเสิร์ฟ..."
+                                tip="รอเสิร์ฟ"
                             >
                                 <div style={{ height: 40 }}></div>
                             </Spin>
@@ -92,8 +92,9 @@ function CustomerStatus() {
             render: (orders) => (
                 // เปลี่ยนเส้นทางไปยัง order detail page พร้อมส่ง orderID ไปใน URL path
                 <Link to={`/customer/detail/${bookingID}/${orders?.ID}`}>
-                    <Button type="primary">ดูรายละเอียด</Button>
+                    <InfoCircleOutlined style={{ fontSize: '30px' }} /> {/* Adjust the fontSize to change the icon size */}
                 </Link>
+
 
             ),
         },
@@ -101,23 +102,31 @@ function CustomerStatus() {
 
     return (
         <>
-            <Row>
-                <Col span={12} style={{ marginTop: "-10px", marginBottom: "-15px" }}>
-                    <h2>รายการออเดอร์</h2>
-                </Col>
-            </Row>
-            <Divider />
-            <Row>
-                <Col span={24} style={{ marginTop: "15px" }}>
-                    {loading ? (
-                        <Spin tip="กำลังโหลดข้อมูล..." size="large" />
-                    ) : orders.length > 0 ? (
-                        <Table dataSource={orders} columns={columns} pagination={{ pageSize: 6 }} />
-                    ) : (
-                        <Empty description="ไม่มีออเดอร์ที่ต้องแสดง" />
-                    )}
-                </Col>
-            </Row>
+            <Card style={{ marginTop: '20px', height: '75vh', width: '55vh', backgroundColor: '#2C2C2C',border: '3px solid #FFD700' }}>
+                <Row>
+                    <Col span={12} style={{ marginTop: "-10px", marginBottom: "-15px" }}>
+                        <h2 style={{ color: 'white' }}>รายการออเดอร์</h2>
+                    </Col>
+                </Row>
+                <Divider style={{ borderColor: '#FFD700', color: '#FFD700' }} />
+                <Row>
+                    <Col xs={24} style={{ marginTop: "15px" }}>
+                        {loading ? (
+                            <Spin tip="กำลังโหลดข้อมูล..." size="large" />
+                        ) : orders.length > 0 ? (
+                            <Table
+                                dataSource={orders}
+                                columns={columns}
+                                pagination={false}
+                                scroll={{ y: 400 }} // Enables vertical and horizontal scroll
+                            />
+
+                        ) : (
+                            <Empty description="ไม่มีออเดอร์ที่ต้องแสดง" />
+                        )}
+                    </Col>
+                </Row>
+            </Card>
         </>
     );
 }

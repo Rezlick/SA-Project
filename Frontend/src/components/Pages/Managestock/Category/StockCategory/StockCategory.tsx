@@ -10,7 +10,8 @@ import {
   Row,
   Col,
   Modal,
-  Divider,
+  notification,
+  message,
 } from "antd";
 import {
   SearchOutlined,
@@ -27,6 +28,7 @@ import "./StockCategory.css";
 
 const { Header, Content } = Layout;
 const { Option } = Select;
+const messageApi = message;
 
 export default function StockCategory({
   categoryTitle,
@@ -35,8 +37,6 @@ export default function StockCategory({
   path,
 }) {
   const employeeID = localStorage.getItem("employeeID") || "No ID found";
-  // console.log("employeeID",employeeID);
-
   const navigate = useNavigate();
   const [isAdding, setIsAdding] = useState(false); // แสดง/ไม่แสดง ของ form หลัก
   const [form] = Form.useForm();
@@ -49,21 +49,19 @@ export default function StockCategory({
     []
   ); // รายชื่อผู้จัดจำหน่าย
   const [products, setProducts] = useState([]); // รายชื่อสินค้า
-  const [formDisabled, setFormDisabled] = useState(false); //
-  const [open, setOpen] = useState(false); //  42 and 43 เป็นลูกเล่นเปิดปิด form
+  const [formDisabled, setFormDisabled] = useState(false); // เป็นลูกเล่นเปิดปิด form
+  const [open, setOpen] = useState(false); //   เป็นลูกเล่นเปิดปิด form
   const [searchTimeout, setSearchTimeout] = useState(null); //ดีเลเวลานะจ๊ะ
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false); //เปิดปิด Mode
+  const [currentPage, setCurrentPage] = useState(1); //เก็บค่าหน้า page table ที่เปิดอยู่ 
 
   const fetchStockData = async () => {
     try {
       const res = await GetStock(categoryID);
       if (res && res.data) {
         const data = res.data.data;
-        console.log("API Response:", data);
         if (Array.isArray(data)) {
           const transformedData = transformStockData(data);
-          console.log("Transformed Data:", transformedData);
           setFilteredData(transformedData);
         } else {
           console.error("API Response Error: Data is not an array", data);
@@ -72,6 +70,7 @@ export default function StockCategory({
       }
     } catch (error) {
       console.error("Error fetching stock data:", error);
+      messageApi.error("เกิดปัญหาในการดึงข้อมูล");
       setFilteredData([]);
     }
   };
@@ -125,8 +124,6 @@ export default function StockCategory({
         return matchesName || matchesStock;
       });
 
-      console.log("filtered", filtered);
-
       setFilteredData(filtered);
     }, 500); // หน่วงเวลา 500ms
 
@@ -155,7 +152,6 @@ export default function StockCategory({
   };
 
   const handleEditClick = (record: any) => {
-    console.log("record", record);
     setEditingRecord(record);
 
     navigate(`/ManageStock/${path}/EditStock`, {
@@ -190,12 +186,17 @@ export default function StockCategory({
         fetchStockData();
         setIsAdding(false);
         form.resetFields();
+
+        notification.success({
+          message: 'บันทึกข้อมูลสำเร็จ',
+          description: 'ข้อมูลสินค้าได้ถูกบันทึกเรียบร้อยแล้ว',
+        });
       }
     } catch (error) {
       console.error("Error in submitting stock:", error);
-      Modal.error({
-        title: "Error",
-        content: "มีข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองอีกครั้ง",
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: 'มีข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองอีกครั้ง',
       });
     }
   };
@@ -208,42 +209,54 @@ export default function StockCategory({
     form.setFieldsValue({ code: "เพิ่มสินค้าใหม่" });
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+  // };
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
   const columns = [
-    { title: "รหัสรายการ", dataIndex: "stock", key: "stock" },
+    { title: "รหัสรายการ", dataIndex: "stock", key: "stock"  ,sorter: (a, b) => a.stock - b.stock,},
     { title: "รหัสสินค้า", dataIndex: "code", key: "code" },
     { title: "ชื่อสินค้า", dataIndex: "name", key: "name" },
     { title: "จำนวน", dataIndex: "quantity", key: "quantity" },
     { title: "ราคา (บาท)", dataIndex: "price", key: "price" },
     { title: "ผู้จัดจำหน่าย", dataIndex: "supplier", key: "supplier" },
-    { title: "วันที่นำเข้า", dataIndex: "importDate", key: "importDate" },
-    { title: "วันหมดอายุ", dataIndex: "expiryDate", key: "expiryDate" },
+    { title: "วันที่นำเข้า (เดือน/วัน/ปี)", dataIndex: "importDate", key: "importDate" },
+    { title: "วันหมดอายุ (เดือน/วัน/ปี)", dataIndex: "expiryDate", key: "expiryDate" },
     { title: "พนักงาน", dataIndex: "employees", key: "employees" },
     {
       title: "สถานะ",
       key: "status",
       render: (record) => {
         console.log("record-new", record);
-
+    
         const isExpired = moment().isAfter(
           moment(record.expiryDate, "MM/DD/YYYY, HH:mm:ss")
         );
+        
+        // คำนวณวันที่เหลือ
+        const remainingDays = moment(record.expiryDate, "MM/DD/YYYY, HH:mm:ss").diff(moment(), 'days');
+    
         return (
-          <span
-            style={{
-              display: "inline-block",
-              width: "12px",
-              height: "12px",
-              borderRadius: "50%",
-              backgroundColor: isExpired ? "red" : "green",
-            }}
-          />
+          <span style={{ display: "flex", alignItems: "center" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                backgroundColor: isExpired ? "red" : "green",
+                marginRight: "8px",
+              }}
+            />
+            <span>
+              {isExpired 
+                ? "หมดอายุ" 
+                : `ยังไม่หมดอายุ (เหลืออีก ${remainingDays} วัน)`}
+            </span>
+          </span>
         );
       },
     },
@@ -289,8 +302,6 @@ export default function StockCategory({
   };
 
   const handleDateChange = (date) => {
-    console.log("Selected date:", date); // แสดงวันที่ที่เลือก
-
     if (filterType === "day" && date) {
       const startOfDay = date.clone().startOf("day");
       const endOfDay = date.clone().endOf("day");
@@ -317,7 +328,6 @@ export default function StockCategory({
       console.log("item.importDate", item.importDate);
 
       const importDate = moment(item.importDate, "MM/DD/YYYY, HH:mm:ss");
-      //console.log("importDate:", importDate); // Log importDate
       console.log(
         "Checking if importDate is between:",
         startDate.format("MM/DD/YYYY, HH:mm:ss"),
@@ -330,10 +340,8 @@ export default function StockCategory({
         endDate.format("MM/DD/YYYY, HH:mm:ss"),
         null,
         "[]"
-      ); // Include both endpoints
+      ); 
     });
-
-    console.log("Filtered data:", filtered);
     setFilteredData(filtered);
   };
   return (
@@ -488,12 +496,13 @@ export default function StockCategory({
                 </Button>
               </Col>
               <Col>
-                <Button type="primary" onClick={handleAdd}>
+                <Button type="primary" onClick={handleAdd} className="custom-button">
                   เพิ่ม
                 </Button>
               </Col>
             </Row>
             <Table
+              className="custom-table"
               dataSource={filteredData}
               columns={columns}
               pagination={{
@@ -558,7 +567,7 @@ export default function StockCategory({
                       <Button
                         onClick={openForm}
                         type="primary"
-                        style={{ marginLeft: 10 }}
+                        style={{ marginLeft: 10 ,backgroundColor: '#D95D25',color: 'white',width:"205px"}}
                       >
                         <PlusSquareOutlined />
                         ไม่มีรหัส ? คลิกเพื่อเพิ่ม
@@ -638,6 +647,7 @@ export default function StockCategory({
                     style={{ width: "100%" }}
                     showTime={{ format: "HH:mm" }}
                     format="M/D/YYYY HH:mm"
+                    disabledDate={(current) => current && current > moment().endOf('day')}
                   />
                 </Form.Item>
 
@@ -650,11 +660,27 @@ export default function StockCategory({
                     style={{ width: "100%" }}
                     showTime={{ format: "HH:mm" }}
                     format="M/D/YYYY HH:mm"
+                    disabledDate={(current) => current && current < moment().startOf('day')}
                   />
                 </Form.Item>
 
                 <Form.Item>
-                  <Button type="primary" onClick={showModal}>
+                  <Button type="primary"
+                   onClick={() => {
+                    form
+                      .validateFields()
+                      .then(() => {
+                        // ถ้าทุกฟิลด์ถูกต้องให้แสดง Modal
+                        setIsModalVisible(true);
+                      })
+                      .catch((errorInfo) => {
+                        // ถ้ามีข้อผิดพลาดให้แสดง error message
+                        console.log('Validation Failed:', errorInfo);
+                      });
+                  }}
+                   
+                   
+                   >
                     บันทึก
                   </Button>
                   <Button
@@ -700,15 +726,15 @@ export default function StockCategory({
 function transformStockData(data: any[]) {
   return data.map((item: any, index: number) => ({
     key: index + 1,
-    stock: item.stock_id,
-    code: item.product_code_id || "",
-    name: item.product_name || "",
+    stock: item.stock_id || "N/A",
+    code: item.product_code_id || "N/A",
+    name: item.product_name || "N/A",
     quantity: item.quantity ? String(item.quantity) : "N/A",
     price: item.price ? String(item.price) : "N/A",
     supplier: item.supplier_name || "N/A",
     importDate: item.date_in ? formatDate(item.date_in) : "N/A",
     expiryDate: item.expiration_date ? formatDate(item.expiration_date) : "N/A",
-    employees: item.employee_name || "",
+    employees: item.employee_name || "N/A",
   }));
 }
 

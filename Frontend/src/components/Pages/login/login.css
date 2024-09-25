@@ -37,14 +37,14 @@
     height: 40px;
     width: 100%;
     border-radius: 50px;
-    border: 1px solid #FF7D29;
+    border: 1px solid rgb(218, 165, 32);
     padding: 12px;
 }
 
 .login-button {
     color: white !important;
-    background-color: #FF7D29 !important;
-    border: 1px solid #FF7D29 !important;
+    background-color: rgb(218, 165, 32) !important;
+    border: 1px solid rgb(218, 165, 32) !important;
     height: 40px;
     width: 100%;
     border-radius: 50px;
@@ -57,8 +57,8 @@
 
 .login-button:hover {
     color: white !important;
-    background-color: #FF7D29 !important;
-    border: 1px solid #FF7D29 !important;
+    background-color: rgb(218, 165, 32) !important;
+    border: 1px solid rgb(218, 165, 32) !important;
     box-shadow: 0 0 10px rgba(255, 125, 41, 0.5);
     transform: scale(1.05);
 }

@@ -21,10 +21,8 @@ import { PositionInterface } from "../../../../interfaces/Position";
 import { GetEmployeeByID, UpdateEmployee, GetPositions, GetGenders } from "../../../../services/https";
 import { useNavigate, Link, useParams } from "react-router-dom";
 
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function EmployeeEdit() {
   const navigate = useNavigate();
@@ -271,7 +269,7 @@ function EmployeeEdit() {
               <Form.Item>
                 <Space>
                   <Link to="/employee">
-                    <Button htmlType="button" style={{ marginRight: "10px" }}>
+                    <Button htmlType="button" style={{ marginRight: "10px" , backgroundColor:"#e0dede"}}>
                       ยกเลิก
                     </Button>
                   </Link>
@@ -279,7 +277,7 @@ function EmployeeEdit() {
                   <Button 
                     type="primary" 
                     htmlType="submit" 
-                    style={{backgroundColor:"#FF7D29"}} 
+                    style={{backgroundColor:"rgb(218, 165, 32)"}} 
                     loading={isSubmitting}
                     disabled={isSubmitting}
                   >

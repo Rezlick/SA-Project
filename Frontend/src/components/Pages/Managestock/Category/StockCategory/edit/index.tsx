@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Input, Button, Form, Select, Divider, notification } from "antd";
+import { Input, Button, Form, Select, Divider, notification,Card,Row } from "antd";
 import { useState, useEffect } from "react";
 import { UpdateStock } from "../../../../../../services/https";
 import { StockInterface } from "../../../../../../interfaces/Stock";
-//import ColumnGroup from "antd/es/table/ColumnGroup";
+
 
 const { Option } = Select;
 
@@ -75,18 +75,20 @@ export default function StockEdit() {
     <div>
       <div
         style={{
-          // backgroundColor: "#fff",
+          background: "linear-gradient(to right, #f1f1f0, #434343)",
           padding: "0 20px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          height: "120px",
         }}
       >
         <h1>แก้ไขข้อมูล สินค้า</h1>
       </div>
       <Divider />
 
-      <div>
+      <Row justify="center" >
+      <Card style={{width: "800px", height:"600px" , boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)"  }}>
         <Form
           form={form}
           layout="vertical"
@@ -94,9 +96,16 @@ export default function StockEdit() {
           style={{ maxWidth: 600, margin: "auto" }}
         >
           <Form.Item
+            label="รหัสรายการ"
+            name="stock"
+            rules={[{ required: true}]}
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item
             label="รหัสสินค้า"
             name="code"
-            rules={[{ required: true, message: "กรุณากรอกรหัสสินค้า" }]}
+            rules={[{ required: true }]}
           >
             <Input disabled />
           </Form.Item>
@@ -172,7 +181,8 @@ export default function StockEdit() {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+        </Card>
+      </Row>
     </div>
   );
 }

@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
 import { PositionInterface } from "../../interfaces/Position";
 import { EmployeeInterface } from "../../interfaces/Employee";
-import "../../App.css"; 
+import "../../App.css";
 
 function ITSider() {
   const page = localStorage.getItem("page");
@@ -105,10 +105,7 @@ function ITSider() {
           }}
         >
           <div style={{ position: "relative" }}>
-            <Button
-              onClick={toggleCollapsed}
-              className="toggle-button" 
-            >
+            <Button onClick={toggleCollapsed} className="toggle-button">
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
 
@@ -116,7 +113,7 @@ function ITSider() {
               <img
                 src={profile}
                 alt="Profile"
-                className={`profile-image ${collapsed ? "small" : "large"}`} 
+                className={`profile-image ${collapsed ? "small" : "large"}`}
                 style={{
                   width: collapsed ? "50px" : "100px",
                   height: collapsed ? "50px" : "100px",
@@ -125,17 +122,36 @@ function ITSider() {
             </div>
 
             <div className="profile-info">
-              <span style={{ fontSize: "large", color: "black" }}>{firstName} {lastName}</span>
-              <span style={{ fontSize: "default", color: "black" }}>({positionName})</span>
+              <span style={{ fontSize: "large", color: "black" }}>
+                {firstName} {lastName}
+              </span>
+              <span style={{ fontSize: "default", color: "black" }}>
+                ({positionName})
+              </span>
               <span>
-                <Link to="/profileEdit" style={{ fontSize: "smaller", color: "black", textDecorationLine: "underline" }}>
+                <Link
+                  to="/profileEdit"
+                  style={{
+                    fontSize: "smaller",
+                    color: "black",
+                    textDecorationLine: "underline",
+                  }}
+                >
                   แก้ไขโปรไฟล์
                 </Link>
               </span>
             </div>
 
-            <Menu className="menu" defaultSelectedKeys={[page ? page : "dashboard"]} mode="inline" inlineCollapsed={collapsed}>
-              <Menu.Item key="dashboard" onClick={() => setCurrentPage("dashboard")}>
+            <Menu
+              className="menu"
+              defaultSelectedKeys={[page ? page : "dashboard"]}
+              mode="inline"
+              inlineCollapsed={collapsed}
+            >
+              <Menu.Item
+                key="dashboard"
+                onClick={() => setCurrentPage("dashboard")}
+              >
                 <Link to="/dashboard">
                   <DashboardOutlined />
                   <span>แดชบอร์ด</span>
@@ -156,7 +172,10 @@ function ITSider() {
                 </Link>
               </Menu.Item>
 
-              <Menu.Item key="payment" onClick={() => setCurrentPage("payment")}>
+              <Menu.Item
+                key="payment"
+                onClick={() => setCurrentPage("payment")}
+              >
                 <Link to="/receipt">
                   <DollarOutlined />
                   <span>ชำระเงิน</span>
@@ -184,7 +203,10 @@ function ITSider() {
                 </Link>
               </Menu.Item>
 
-              <Menu.Item key="employee" onClick={() => setCurrentPage("employee")}>
+              <Menu.Item
+                key="employee"
+                onClick={() => setCurrentPage("employee")}
+              >
                 <Link to="/employee">
                   <TeamOutlined />
                   <span>พนักงาน</span>

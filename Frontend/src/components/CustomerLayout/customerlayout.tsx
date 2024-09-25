@@ -18,18 +18,18 @@ const CustomerLayout: React.FC = () => {
     return (
         <>
             {contextHolder}
-            <Layout style={{ maxHeight: "100%", maxWidth: '100vh' }}>
-                <Layout style={{ maxHeight: "100vh", maxWidth: '95vh' }}>
+            <Layout style={{ height: "100vh", maxWidth: '100vh' }}>
+                <Layout style={{ height: "100vh", width: '70vh' }}>
                     <Content>
                         <div style={{ position: "relative" }}>
                             <img
                                 style={{
                                     zIndex: 1,
                                     height: "99vh",
+                                    marginTop: '1px',
                                     width: "71vh",
                                     marginLeft: '-10px',
-                                    objectFit: 'cover', // ครอบรูปภาพให้เต็ม container
-                                    overflow: 'hidden' // ซ่อนส่วนที่เกินออกมา
+                                    objectFit: 'cover', 
                                 }}
                                 src={Background}
                                 alt="Background"
@@ -54,12 +54,11 @@ const CustomerLayout: React.FC = () => {
                                 backdropFilter: 'blur(12px)',
                                 width: '90%',
                                 height: '85vh',
-                                overflow: 'auto',
                                 display: 'flex',
                                 marginLeft: '4vh',
                                 marginTop: '-93vh',
-                                zIndex: 1, // z-index น้อยกว่า logo
-                                overflowY: 'scroll',
+                                zIndex: 1,
+                                justifyContent:'center'
                             }}
                         >
                             <div>

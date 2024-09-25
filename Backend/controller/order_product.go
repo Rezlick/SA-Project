@@ -94,3 +94,30 @@ func GetOrderProductsByOrderID(c *gin.Context) {
 	// Respond with the result if successful
 	c.JSON(http.StatusOK, orderproduct)
 }
+
+func GetAllOrderProducts(c *gin.Context) {
+    // Define a slice to store the result
+    var orderProducts []entity.Order_Product
+
+    // Get a DB instance
+    db := config.DB()
+
+    // Perform the query to sum quantities and group by product_code_id
+    results := db.Table("order_products").
+        Select("order_products.product_code_id, SUM(order_products.quantity) as quantity").
+        Joins("JOIN products ON products.product_code_id = order_products.product_code_id").
+        Group("order_products.product_code_id").
+        Preload("Products").
+        Preload("Products.Category").
+        Find(&orderProducts)
+
+    // Check for errors in the query
+    if results.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": results.Error.Error()})
+        return
+    }
+
+    // Respond with the result if successful
+    c.JSON(http.StatusOK, orderProducts)
+}
+

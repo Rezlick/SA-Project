@@ -149,7 +149,7 @@ function Sider() {
             </div>
 
             <div className="current-time">
-              <span>เวลา</span>
+              <span>เวลา: </span>
               <span className="time-display">{currentTime}</span>
             </div>
 

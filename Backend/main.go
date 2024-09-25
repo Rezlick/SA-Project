@@ -107,6 +107,7 @@ func main() {
         r.GET("/orderbybooking/:id", controller.GetOrderByBookingID)
         r.PATCH("/order/:id", controller.UpdateOrder)
         r.POST("/createorderproduct", controller.CreateOrderProducts)
+        r.GET("/allorderproduct", controller.GetAllOrderProducts)
         r.GET("/order/detail/:id", controller.GetOrderProductsByOrderID)
         r.GET("/product/:id", controller.GetProductsByID)
 

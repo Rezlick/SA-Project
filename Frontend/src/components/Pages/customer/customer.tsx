@@ -346,7 +346,7 @@ function Customer() {
                                     <List.Item onClick={() => showModal(item)} style={{ cursor: 'pointer' }}>
                                         <List.Item.Meta
                                             avatar={<Avatar src={item.image} shape="square" size={100} />}
-                                            title={<span style={{ fontSize: '18px', fontWeight: 'bold' }}>{item.product_name || "ไม่มีชื่อสินค้า"}</span>}
+                                            title={<span style={{ fontSize: '20px', fontWeight: 'bold' }}>{item.product_name || "ไม่มีชื่อสินค้า"}</span>}
                                         />
                                     </List.Item>
 
@@ -365,7 +365,7 @@ function Customer() {
                             </List>
 
                             <Modal
-                                title={selectedItem?.product_name || "รายละเอียดสินค้า"}
+                                title={<span style={{ fontSize: '20px', fontWeight: 'bold' }}>{selectedItem?.product_name || "รายละเอียดสินค้า"}</span>}
                                 visible={isModalVisible}
                                 onCancel={handleCancel}
                                 footer={null}
@@ -387,7 +387,7 @@ function Customer() {
                                             />
                                         </Card>
                                         <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                                            <p>จำนวน:</p>
+                                            <p style={{ fontSize:'20px'}}>จำนวน:</p>
                                             <MinusCircleOutlined
                                                 onClick={decreaseQuantity}
                                                 style={{ fontSize: '24px', color: quantity <= 1 ? 'gray' : '#1890ff', cursor: 'pointer' }}
@@ -444,7 +444,9 @@ function Customer() {
                                                     disabled={maxQuantity <= 0 || quantity <= 0}  // ปิดปุ่มถ้า maxQuantity <= 0 หรือ จำนวน <= 0
                                                     style={{
                                                         backgroundColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff',
-                                                        borderColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff'
+                                                        borderColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff',
+                                                        fontSize:'20px',
+                                                        height:'50px'
                                                     }}
                                                 >
                                                     เพิ่มไปยังตะกร้า

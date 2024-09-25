@@ -190,6 +190,9 @@ function MemberEdit() {
                       event.preventDefault(); // Block the input if the first digit isn't 0
                     }
                   }}
+                  onCopy={(e) => e.preventDefault()} // Prevent copy
+                  onCut={(e) => e.preventDefault()} // Prevent cut
+                  onPaste={(e) => e.preventDefault()} // Prevent paste
                 />
               </Form.Item>
             </Col>

@@ -105,11 +105,11 @@ function EditBookingTable() {
 
               await fetchTableCapacity(res.data.table?.table_capacity_id);
           } else {
-              throw new Error("ไม่สามารถดึงข้อมูลการจองได้.");
+              throw new Error("ไม่สามารถดึงข้อมูลการจองได้");
           }
       } catch (error) {
           const errorMessage =
-              (error as Error).message || "เกิดข้อผิดพลาดที่ไม่รู้จัก.";
+              (error as Error).message || "เกิดข้อผิดพลาดที่ไม่รู้จัก";
           console.error("เกิดข้อผิดพลาดในการดึงข้อมูลการจอง:", error);
           messageApi.error("ไม่สามารถดึงข้อมูลการจองได้: " + errorMessage);
       }
@@ -124,11 +124,11 @@ function EditBookingTable() {
               );
               setTableCapacity(capacity);
           } else {
-              throw new Error("ไม่สามารถดึงข้อมูลความจุของโต๊ะได้.");
+              throw new Error("ไม่สามารถดึงข้อมูลความจุของโต๊ะได้");
           }
       } catch (error) {
           console.error("เกิดข้อผิดพลาดในการดึงข้อมูลความจุของโต๊ะ:", error);
-          messageApi.error("ไม่สามารถดึงข้อมูลความจุของโต๊ะได้.");
+          messageApi.error("ไม่สามารถดึงข้อมูลความจุของโต๊ะได้");
       }
   };
 
@@ -139,11 +139,11 @@ function EditBookingTable() {
               setSoups(res.data);
           } else {
               setSoups([]);
-              messageApi.error(res.data.error || "ไม่สามารถดึงซุปได้.");
+              messageApi.error(res.data.error || "ไม่สามารถดึงซุปได้");
           }
       } catch (error) {
           setSoups([]);
-          messageApi.error("เกิดข้อผิดพลาดในการดึงซุป.");
+          messageApi.error("เกิดข้อผิดพลาดในการดึงซุป");
       }
   };
 

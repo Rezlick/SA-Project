@@ -1,9 +1,9 @@
 .header-StockCategory {
-    background-color: #f8f8f8;
+    background: linear-gradient(to right, #f1f1f0, #434343);
     padding: 0 20px;
     display: grid;
-    grid-template-rows: 40px 40px;
-    height: 100px;
+    grid-template-rows: 50px 50px;
+    height: 120px;
     /* grid-template-columns: 1fr 1fr; */
   }
   .Row2{
@@ -52,4 +52,20 @@
   
   .Select-Filter .cancel-option:hover {
     background-color: lightcoral !important; /* เปลี่ยนสีพื้นหลังเป็นสีแดงเมื่อ hover */
+  }
+
+  .custom-button {
+    background-color: #928d8d; /* สีพื้นหลัง */
+    /* border-color: #000000; สีกรอบ */
+    color: white; /* สีตัวอักษร */
+    width: 75px;
+    border-radius: 8px;
+  }
+  
+  .custom-button:hover {
+    background-color: #474646 !important; /
+  }
+
+  .custom-table tr {
+    height: 75px; /* ปรับระยะห่างระหว่าง row */
   }

@@ -75,11 +75,12 @@ export default function StockEdit() {
     <div>
       <div
         style={{
-          // backgroundColor: "#fff",
+          background: "linear-gradient(to right, #f1f1f0, #434343)",
           padding: "0 20px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          height: "120px",
         }}
       >
         <h1>แก้ไขข้อมูล สินค้า</h1>
@@ -94,9 +95,16 @@ export default function StockEdit() {
           style={{ maxWidth: 600, margin: "auto" }}
         >
           <Form.Item
+            label="รหัสรายการ"
+            name="stock"
+            rules={[{ required: true}]}
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item
             label="รหัสสินค้า"
             name="code"
-            rules={[{ required: true, message: "กรุณากรอกรหัสสินค้า" }]}
+            rules={[{ required: true }]}
           >
             <Input disabled />
           </Form.Item>

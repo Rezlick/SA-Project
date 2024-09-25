@@ -13,7 +13,7 @@ function LoginPages() {
   const [form] = Form.useForm();
 
   // This function gets triggered when user starts typing in the password field
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = () => {
     setIsSubmitting(false);
   };
 

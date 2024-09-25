@@ -118,14 +118,15 @@ export default function StockCategory({
 
       const filtered = initialData.filter((item) => {
         const matchesName = item.name.toLowerCase().includes(lowercasedQuery);
-  
-        const matchesStock = !isNaN(value) && item.stock.toString().includes(value);
-  
+
+        const matchesStock =
+          !isNaN(value) && item.stock.toString().includes(value);
+
         return matchesName || matchesStock;
       });
 
-      console.log("filtered",filtered);
-      
+      console.log("filtered", filtered);
+
       setFilteredData(filtered);
     }, 500); // หน่วงเวลา 500ms
 
@@ -228,7 +229,11 @@ export default function StockCategory({
       title: "สถานะ",
       key: "status",
       render: (record) => {
-        const isExpired = moment().isAfter(moment(record.expiryDate, "MM/DD/YYYY, HH:mm:ss"));
+        console.log("record-new", record);
+
+        const isExpired = moment().isAfter(
+          moment(record.expiryDate, "MM/DD/YYYY, HH:mm:ss")
+        );
         return (
           <span
             style={{
@@ -263,7 +268,7 @@ export default function StockCategory({
       setDateRange(null);
       setFilteredData(initialData); // รีเซ็ตข้อมูลกลับเป็นข้อมูลเริ่มต้น
       setSelectValue(null);
-      
+
       return; // ออกจากฟังก์ชัน
     }
     console.log("handleSelectChange", value);
@@ -274,12 +279,12 @@ export default function StockCategory({
 
     if (value === "lastweek") {
       const lastWeekStart = today.clone().subtract(7, "days").startOf("day");
-        console.log("lastWeekStart:", lastWeekStart);
-        setDateRange([lastWeekStart, today.endOf("day")]);
-        filterDataByDate(lastWeekStart, today.endOf("day"));
+      console.log("lastWeekStart:", lastWeekStart);
+      setDateRange([lastWeekStart, today.endOf("day")]);
+      filterDataByDate(lastWeekStart, today.endOf("day"));
     } else {
       setDateRange(null);
-        setFilteredData(initialData);
+      setFilteredData(initialData);
     }
   };
 
@@ -289,17 +294,17 @@ export default function StockCategory({
     if (filterType === "day" && date) {
       const startOfDay = date.clone().startOf("day");
       const endOfDay = date.clone().endOf("day");
-  
+
       filterDataByDate(startOfDay, endOfDay);
-  } else if (filterType === "month" && date) {
+    } else if (filterType === "month" && date) {
       const startOfMonth = date.startOf("month");
       const endOfMonth = date.endOf("month");
-      
+
       filterDataByDate(startOfMonth, endOfMonth);
     } else if (filterType === "year" && date) {
       const startOfYear = date.startOf("year");
       const endOfYear = date.endOf("year");
-     
+
       filterDataByDate(startOfYear, endOfYear);
     } else {
       console.log("No valid filter type selected. Resetting to initial data.");
@@ -309,18 +314,28 @@ export default function StockCategory({
 
   const filterDataByDate = (startDate, endDate) => {
     const filtered = initialData.filter((item) => {
-      console.log("item.importDate",item.importDate);
-      
-        const importDate = moment(item.importDate, "MM/DD/YYYY, HH:mm:ss");
-        //console.log("importDate:", importDate); // Log importDate
-        console.log("Checking if importDate is between:", startDate.format("MM/DD/YYYY, HH:mm:ss"), "and", endDate.format("MM/DD/YYYY, HH:mm:ss"));
-      
-        return importDate.isBetween(startDate.format("MM/DD/YYYY, HH:mm:ss"), endDate.format("MM/DD/YYYY, HH:mm:ss"), null, '[]'); // Include both endpoints
+      console.log("item.importDate", item.importDate);
+
+      const importDate = moment(item.importDate, "MM/DD/YYYY, HH:mm:ss");
+      //console.log("importDate:", importDate); // Log importDate
+      console.log(
+        "Checking if importDate is between:",
+        startDate.format("MM/DD/YYYY, HH:mm:ss"),
+        "and",
+        endDate.format("MM/DD/YYYY, HH:mm:ss")
+      );
+
+      return importDate.isBetween(
+        startDate.format("MM/DD/YYYY, HH:mm:ss"),
+        endDate.format("MM/DD/YYYY, HH:mm:ss"),
+        null,
+        "[]"
+      ); // Include both endpoints
     });
 
     console.log("Filtered data:", filtered);
     setFilteredData(filtered);
-};
+  };
   return (
     <Layout>
       <Header className="header-StockCategory">
@@ -346,37 +361,86 @@ export default function StockCategory({
               onChange={handleSelectChange}
               value={selectValue}
             >
-              <Option value="day" className="hover-option"
-                style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              <Option
+                value="day"
+                className="hover-option"
+                style={{
+                  backgroundColor:
+                    selectValue === "day" ? "lightblue" : "transparent",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "lightblue")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
               >
                 เลือกวันที่
               </Option>
-              <Option value="lastweek" className="hover-option"
-                style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              <Option
+                value="lastweek"
+                className="hover-option"
+                style={{
+                  backgroundColor:
+                    selectValue === "day" ? "lightblue" : "transparent",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "lightblue")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
               >
                 สัปดาห์ล่าสุด
-                </Option>
-              <Option value="month" className="hover-option"
-              style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              </Option>
+              <Option
+                value="month"
+                className="hover-option"
+                style={{
+                  backgroundColor:
+                    selectValue === "day" ? "lightblue" : "transparent",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "lightblue")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
               >
                 เลือกเดือน
-                </Option>
-              <Option value="year" className="hover-option"
-                style={{ backgroundColor: selectValue === "day" ? 'lightblue' : 'transparent' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightblue'} 
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-              >เลือกปี</Option>
-              <Option value="cancel" className="hover-option cancel-option"
-                style={{ backgroundColor: selectValue === "cancel" ? 'lightcoral' : 'transparent' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'lightcoral'} 
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-              >ยกเลิก</Option>
+              </Option>
+              <Option
+                value="year"
+                className="hover-option"
+                style={{
+                  backgroundColor:
+                    selectValue === "day" ? "lightblue" : "transparent",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "lightblue")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                เลือกปี
+              </Option>
+              <Option
+                value="cancel"
+                className="hover-option cancel-option"
+                style={{
+                  backgroundColor:
+                    selectValue === "cancel" ? "lightcoral" : "transparent",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "lightcoral")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                ยกเลิก
+              </Option>
             </Select>
             {filterType === "day" && (
               <DatePicker
@@ -387,13 +451,12 @@ export default function StockCategory({
               />
             )}
             {filterType === "lastweek" && dateRange && (
-              <Col  xs={24} sm={24} md={24} lg={24} xl={14}>
+              <Col xs={24} sm={24} md={24} lg={24} xl={14}>
                 <div className="date-range">
-                สัปดาห์ล่าสุด: {dateRange[0].format("DD/MM/YYYY")} -{" "}
-                {dateRange[1].format("DD/MM/YYYY")}
-              </div>
+                  สัปดาห์ล่าสุด: {dateRange[0].format("DD/MM/YYYY")} -{" "}
+                  {dateRange[1].format("DD/MM/YYYY")}
+                </div>
               </Col>
-              
             )}
             {filterType === "month" && (
               <DatePicker
@@ -515,9 +578,17 @@ export default function StockCategory({
                 <Form.Item
                   label="จำนวน"
                   name="quantity"
-                  rules={[{ required: true, message: "กรุณากรอกจำนวน" }]}
+                  rules={[
+                    { required: true, message: "กรุณากรอกจำนวน" },]}
                 >
-                  <Input type="number" placeholder="กรอกจำนวน" />
+                  <Input type="number" min={1} placeholder="กรอกจำนวน" 
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value < 1) {
+                        form.setFieldsValue({ quantity: "" }); 
+                      }
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -525,7 +596,14 @@ export default function StockCategory({
                   name="price"
                   rules={[{ required: true, message: "กรุณากรอกราคา" }]}
                 >
-                  <Input type="number" placeholder="กรอกราคา (บาท)" />
+                  <Input type="number" min={1} placeholder="กรอกราคา (บาท)" 
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value < 1) {
+                        form.setFieldsValue({ price: "" }); 
+                      }
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -576,7 +654,6 @@ export default function StockCategory({
                   </Button>
                   <Button
                     type="default"
-
                     onClick={() => setIsAdding(false)}
                     style={{ marginLeft: "10px" }}
                   >

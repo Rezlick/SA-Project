@@ -10,10 +10,8 @@ export default function useStockData(categoryID: number) {
       .then((res) => {
         if (res && res.data) {
           const data = res.data.data; // เข้าถึงข้อมูลที่เป็นอาร์เรย์
-          console.log("API Response:", data);
           if (Array.isArray(data)) { // ตรวจสอบว่าข้อมูลเป็นอาร์เรย์
             const transformedData = transformStockData(data);
-            console.log("Transformed Data:", transformedData);
             setStockData(transformedData);
           } else {
             console.error("API Response Error: Data is not an array", data);
@@ -41,6 +39,7 @@ function transformStockData(data: any[]) {
     supplier: item.supplier_name || 'N/A', // ชื่อผู้จัดส่ง
     importDate: item.date_in ? formatDate(item.date_in) : 'N/A', // วันที่นำเข้า
     expiryDate: item.expiration_date ? formatDate(item.expiration_date) : 'N/A', // วันหมดอายุ
+    employees: item.employee_name || "N/A",
   }));
 }
 

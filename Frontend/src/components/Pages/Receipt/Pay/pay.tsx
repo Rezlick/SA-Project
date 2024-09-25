@@ -329,7 +329,7 @@ function Pay() {
                             borderRadius: '10px',
                             marginBottom: '40px',
                             background: 'linear-gradient(45deg, #D3D3D3, #F5F5F5)',
-                            border: '3px solid #000000',
+                            border: '3px solid #434343',
 
                         }}>
                             <Row gutter={[15,0]}> 
@@ -363,7 +363,7 @@ function Pay() {
                                                 event.preventDefault();
                                             }
                                             }}
-                                        style={{ border: "3px solid #000000" , marginBottom:"0px" ,  height: "50px"}}
+                                        style={{ border: "3px solid #434343" , marginBottom:"0px" ,  height: "50px"}}
                                         />
                                     </Form.Item>
                                 </Col>)}
@@ -389,7 +389,7 @@ function Pay() {
                                         value={coupon}
                                         onChange={(e) => setCoupon(e.target.value)}
                                         onPressEnter={handleEnterPressCoupon}
-                                        style={{ border: "3px solid #000000" , marginBottom:"0px" ,  height: "50px" }}
+                                        style={{ border: "3px solid #434343" , marginBottom:"0px" ,  height: "50px" }}
                                     />
                                     </Form.Item>
                                 </Col>
@@ -485,7 +485,7 @@ function Pay() {
                                 style={{ width: '380px', height: '130px' }} // เพิ่ม margin เพื่อเว้นระยะระหว่าง img สองตัว
                             />
                         </Col>
-                        <Card className="custom-cardQR" style={{ marginLeft:'20px', border: '3px solid black', padding: 0}}>
+                        <Card className="custom-cardQR" style={{ marginLeft:'20px', border: '3px solid #434343', padding: 0, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'}}>
                             <Col xs={24} sm={24} md={16} lg={12} xl={24}>
                                 <img
                                     src={`https://promptpay.io/0648312668/${NetTotal}`}

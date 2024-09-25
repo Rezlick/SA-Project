@@ -141,3 +141,26 @@ p {
   color: #ff5722 !important; /* Vibrant orange for links */
   text-decoration: underline !important;
 }
+
+.current-time {
+  display: flex;
+  justify-content: center; /* จัดให้อยู่ตรงกลาง */
+  align-items: center;
+  background-color: #ffffff; /* พื้นหลังสีเทาอ่อน */
+  border-radius: 10px; /* มุมมน */
+  padding: 10px 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* เพิ่มเงาเบา ๆ */
+  font-family: 'Arial', sans-serif; /* ฟอนต์ */
+  font-size: 18px; /* ขนาดตัวอักษร */
+  font-weight: bold;
+  color: #333; /* สีตัวอักษร */
+  margin: 20px 0; /* ระยะห่างจากองค์ประกอบอื่น */
+  flex-direction: column !important;
+  overflow-wrap: break-word !important;
+  text-align: center !important;
+}
+
+.time-display {
+  margin-left: 10px; /* ระยะห่างจากคำว่า "เวลา:" */
+  color: #d4af37; /* ใช้สีทองสำหรับเวลาที่แสดง */
+}

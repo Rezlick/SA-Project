@@ -39,13 +39,13 @@ function Booking() {
           GetTableCapacity(),
         ]);
 
-        // Handle responses
+        // จัดการกับการตอบกลับ
         handleResponse(tablesRes, setTables, "tables");
         handleResponse(statusRes, setTableStatus, "table statuses");
         handleResponse(capsRes, setTableCaps, "table capacities");
       } catch (error) {
-        console.error("Error fetching data:", error);
-        message.error("Error fetching data from the server");
+        console.error("เกิดข้อผิดพลาดในการดึงข้อมูล:", error);
+        message.error("เกิดข้อผิดพลาดในการดึงข้อมูลจากเซิร์ฟเวอร์");
       } finally {
         setLoading(false);
       }
@@ -58,7 +58,7 @@ function Booking() {
     if (response.status === 200) {
       setter(response.data);
     } else {
-      message.error(response.data.error || `Unable to fetch ${entity}`);
+      message.error(response.data.error || `ไม่สามารถดึงข้อมูล ${entity} ได้`);
     }
   };
 
@@ -67,7 +67,7 @@ function Booking() {
     const tableCapacityID = table.table_capacity_id;
 
     if (!tableID || !tableCapacityID) {
-      message.warning("รหัสโต๊ะหรือรหัสความจุของโต๊ะยังไม่ได้กำหนด!");
+      message.warning("ไอดีโต๊ะหรือไอดีความจุของโต๊ะยังไม่ได้กำหนด!");
       return;
     }
 
@@ -113,13 +113,13 @@ function Booking() {
   const getStatusColor = (status: string): string => {
     switch (status) {
       case "Available":
-        return "#8BC34A";
+        return "#8BC34A"; // สีเขียว
       case "Occupied":
-        return "#FFB74D";
+        return "#FFB74D"; // สีส้ม
       case "Cleaning":
-        return "#64B5F6";
+        return "#64B5F6"; // สีน้ำเงิน
       default:
-        return "#B0BEC5";
+        return "#B0BEC5"; // สีเทา
     }
   };
 
@@ -135,9 +135,9 @@ function Booking() {
       <Col xs={24}>
         <Card className="card-style" style={{ marginBottom: 16 }}>
           {loading ? (
-            <Spin tip="Loading..." className="spinContainer" />
+            <Spin tip="กำลังโหลด..." className="spinContainer" />
           ) : tables.length === 0 ? (
-            <Empty description="No tables available" className="emptyState" />
+            <Empty description="ไม่มีโต๊ะว่าง" className="emptyState" />
           ) : (
             <Row gutter={[16, 8]} justify="center" align="middle">
               {tables.map((table) => {
@@ -166,19 +166,19 @@ function Booking() {
                     >
                       <Statistic
                         className="statistic-container"
-                        title={`Table : ${table.table_name || "Unknown"}`}
+                        title={`โต๊ะ : ${table.table_name || "ไม่ทราบ"}`}
                         value={formatCapacity(
                           tableCapacity?.min,
                           tableCapacity?.max
                         )}
-                        valueStyle={{ color: "#DAA520" }}
+                        valueStyle={{ color: "#DAA520" }} // สีทอง
                         prefix={<UserOutlined className="icon" />}
                       />
                       <Badge
-                        count={status?.status ?? "Unknown"}
+                        count={status?.status ?? "ไม่ทราบ"}
                         style={{
                           backgroundColor: getStatusColor(
-                            status?.status ?? "Unknown"
+                            status?.status ?? "ไม่ทราบ"
                           ),
                           color: "#fff",
                         }}
@@ -189,7 +189,7 @@ function Booking() {
               })}
             </Row>
           )}
-          <Row justify="center" style={{ marginTop: 16 }}>
+          <Row justify="center" style={{ margin: 16 }}>
             <Col xs={24} sm={12} md={4}>
               <Button
                 type="primary"

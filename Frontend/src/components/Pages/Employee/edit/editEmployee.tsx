@@ -21,10 +21,8 @@ import { PositionInterface } from "../../../../interfaces/Position";
 import { GetEmployeeByID, UpdateEmployee, GetPositions, GetGenders } from "../../../../services/https";
 import { useNavigate, Link, useParams } from "react-router-dom";
 
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function EmployeeEdit() {
   const navigate = useNavigate();

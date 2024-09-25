@@ -21,10 +21,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { GenderInterface } from "../../../../interfaces/Gender";
 import { PositionInterface } from "../../../../interfaces/Position";
 
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function EmployeeCreate() {
   const navigate = useNavigate();

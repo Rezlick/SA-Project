@@ -27,11 +27,11 @@ export default function useSupplierData() {
 
 function transformSupplierData(data: any[]) {
   return data.map((item, index) => ({
-    key: index,                  // ใช้ index เป็น key (เนื่องจากไม่มี id)
-    name: item.supplier_name || '', // ชื่อซัพพลายเออร์
-    phone: item.phone || '',        // เบอร์โทร
-    email: item.email || '',        // อีเมล
-    address: item.address || '',    // ที่อยู่
+    key: index,                  
+    name: item.supplier_name || 'N/A', // ชื่อซัพพลายเออร์
+    phone: item.phone || 'N/A',        // เบอร์โทร
+    email: item.email || 'N/A',        // อีเมล
+    address: item.address || 'N/A',    // ที่อยู่
   }));
 }
 

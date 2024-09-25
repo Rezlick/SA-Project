@@ -86,9 +86,6 @@ func SetupDatabase() {
    GenderFemale := entity.Gender{Name: "หญิง"}
    GenderOther := entity.Gender{Name: "อื่นๆ"}
 
-   coupoun1 := entity.Coupon{Code: "DISCOUNT10",Discount: 10}
-   coupoun2 := entity.Coupon{Code: "DISCOUNT20",Discount: 20}
-
    status1 := entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"}
 	status2 := entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"}
 
@@ -96,7 +93,7 @@ func SetupDatabase() {
    PositionRestaurantManager := entity.Position{Name: "ผู้จัดการร้าน"}
    PositionOrderManager := entity.Position{Name: "จัดการออร์เดอร์"}
    PositionFoodServerManager := entity.Position{Name: "เสิร์ฟ"}
-   PositionCounterServiceManager := entity.Position{Name: "แคชเชียร"}
+   PositionCounterServiceManager := entity.Position{Name: "แคชเชียร์"}
    PositionStockManager := entity.Position{Name: "จัดการสินค้า"}
 
    RankBronze := entity.Rank{Name: "Bronze", Discount: 0.03 , PointToUpgrade: 20}
@@ -164,7 +161,7 @@ func SetupDatabase() {
    db.FirstOrCreate(&PositionRestaurantManager, &entity.Position{Name: "ผู้จัดการร้าน"})
    db.FirstOrCreate(&PositionOrderManager, &entity.Position{Name: "จัดการออร์เดอร์"})
    db.FirstOrCreate(&PositionFoodServerManager, &entity.Position{Name: "เสิร์ฟ"})
-   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "แคชเชียร"})
+   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "แคชเชียร์"})
    db.FirstOrCreate(&PositionStockManager, &entity.Position{Name: "จัดการสินค้า"})
 
    db.FirstOrCreate(&TableFourSeat1, &entity.Table{TableName: "F1"})
@@ -196,9 +193,6 @@ func SetupDatabase() {
    db.FirstOrCreate(&Package_pork_chicken, &entity.Package{Name: "หมู,ไก่"})
    db.FirstOrCreate(&Package_seafood, &entity.Package{Name: "ทะเล"})
    db.FirstOrCreate(&Package_beef, &entity.Package{Name: "เนื้อ"})
-
-   db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
-   db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
 
    hashedPassword, _ := HashPassword("12345")
 

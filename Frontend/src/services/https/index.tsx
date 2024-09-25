@@ -11,6 +11,7 @@ import { ReceiptInterface } from "../../interfaces/Receipt";
 import axios from "axios";
 import { StockInterface } from "../../interfaces/Stock";
 import { OrderProductInterface } from "../../interfaces/OrderProduct";
+import { CouponInterface } from "../../interfaces/Coupon";
 
 const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
@@ -235,6 +236,20 @@ async function DeleteBookingAfterPay(id: string | undefined) {
 }
 
 // Coupon
+
+async function GetCoupon() {
+  return await axios
+  .get(`${apiUrl}/coupon`, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
+async function CreateCoupon(data: CouponInterface) {
+  return await axios
+    .post(`${apiUrl}/coupon`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
 
 async function CheckCoupons(code: string) {
   return await axios
@@ -551,6 +566,8 @@ export {
   GetMemberCountForCurrentMonth,
   GetReceipts,
   CreateReceipt,
+  CreateCoupon,
+  GetCoupon,
   CheckCoupons,
   GetTypePayment,
   CheckBooking,

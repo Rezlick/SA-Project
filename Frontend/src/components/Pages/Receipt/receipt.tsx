@@ -288,9 +288,9 @@ function Receipt() {
             </Col>
           </Row>
         </Card>
-        <Card style={{ borderRadius: '20px', height: 'auto' }}>
+        <Card style={{ borderRadius: '20px', height: 'auto' , background:'#434343'}}>
           <Col xs={24}>
-            <Card className="card">
+            <Card className="card" >
               {loading ? (
                 <Spin tip="Loading..." className="spinContainer" />
               ) : tables.length === 0 ? (

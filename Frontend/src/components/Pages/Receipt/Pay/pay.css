@@ -120,7 +120,7 @@
 .centered-input {
   font-size: 20px; /* ขนาดตัวอักษรของ input field */
   height: 50px; /* ความสูงของ input field */
-  border: 3px solid #000000; /* ขอบ */
+  border: 3px solid #434343; /* ขอบ */
   margin-bottom: 0px; /* ไม่มีช่องว่างด้านล่าง */
   font-weight: bold;
   text-align: center;
@@ -138,7 +138,7 @@
   justify-content: center; 
   align-items: center; 
 
-  border: 3px solid #000000;
+  border: 3px solid #434343;
 
   font-size:20px;
   font-weight: bold;
@@ -186,34 +186,34 @@
 }
 
 .checkbox-payment .ant-checkbox:hover .ant-checkbox-inner {
-  border-color: #000000; 
+  border-color: #434343; 
 }
 
 .checkbox-payment .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #000000; 
-  border-color: #000000; 
+  background-color: #434343; 
+  border-color: #434343; 
 }
 
 .checkbox-payment .ant-checkbox-wrapper:hover .ant-checkbox-inner {
-  border-color: #000000 !important; 
+  border-color: #434343 !important; 
   background-color: #ffffff !important; 
 }
 
 .checkbox-payment .ant-checkbox-checked:hover .ant-checkbox-inner {
-  border-color: #000000 !important; 
-  background-color: #000000 !important; 
+  border-color: #434343 !important; 
+  background-color: #434343 !important; 
 }
 
 .checkbox-payment .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #000000 !important; 
-  border-color: #000000 !important; 
+  background-color: #434343 !important; 
+  border-color: #434343 !important; 
 }
 
 .checkbox-payment {
   display: flex;
   justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
   margin-left: 40px;       /* กำหนด margin ซ้ายตามที่ต้องการ */
-  border: 3px solid #000000;
+  border: 3px solid #434343;
   padding: 8px;
   border-radius: 6px;
   font-size: 20px;

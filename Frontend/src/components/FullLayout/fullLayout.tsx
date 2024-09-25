@@ -13,8 +13,11 @@ import ITSider from "../Sider/ITSider";
 import ManagerSider from "../Sider/ManagerSider";
 import CommonSider from "../Sider/sider";
 import ProfileEdit from "../Pages/ProfileEdit/profileEdit";
+
 import Receipt from "../Pages/Receipt/receipt";
 import Pay from "../Pages/Receipt/Pay/pay";
+import Coupon from "../Pages/Coupon/coupon";
+
 import ChangePassword from "../Pages/ProfileEdit/changePassword";
 import Table from "../Pages/Booking/booking";
 import TableBooking from "../Pages/Booking/Create/createBooking";
@@ -92,8 +95,11 @@ const FullLayout: React.FC = () => {
                 <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
                 <Route path="/profileEdit" element={<ProfileEdit />} />
                 <Route path="/changePassword" element={<ChangePassword />} />
+
                 <Route path="/receipt" element={<Receipt />} />
                 <Route path="/receipt/pay" element={<Pay />} />
+                <Route path="/coupon" element={<Coupon/>} />
+                
                 <Route path="/booking" element={<Table />} />
                 <Route path="/booking/create" element={<TableBooking />} />
                 <Route path="/booking/edit/:id" element={<EditBookingTable />} />

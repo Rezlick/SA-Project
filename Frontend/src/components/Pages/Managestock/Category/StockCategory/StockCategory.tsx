@@ -578,14 +578,16 @@ export default function StockCategory({
                 <Form.Item
                   label="จำนวน"
                   name="quantity"
-                  rules={[
-                    { required: true, message: "กรุณากรอกจำนวน" },]}
+                  rules={[{ required: true, message: "กรุณากรอกจำนวน" }]}
                 >
-                  <Input type="number" min={1} placeholder="กรอกจำนวน" 
+                  <Input
+                    type="number"
+                    min={1}
+                    placeholder="กรอกจำนวน"
                     onChange={(e) => {
                       const value = e.target.value;
                       if (value < 1) {
-                        form.setFieldsValue({ quantity: "" }); 
+                        form.setFieldsValue({ quantity: "" });
                       }
                     }}
                   />
@@ -596,11 +598,14 @@ export default function StockCategory({
                   name="price"
                   rules={[{ required: true, message: "กรุณากรอกราคา" }]}
                 >
-                  <Input type="number" min={1} placeholder="กรอกราคา (บาท)" 
+                  <Input
+                    type="number"
+                    min={1}
+                    placeholder="กรอกราคา (บาท)"
                     onChange={(e) => {
                       const value = e.target.value;
                       if (value < 1) {
-                        form.setFieldsValue({ price: "" }); 
+                        form.setFieldsValue({ price: "" });
                       }
                     }}
                   />
@@ -672,7 +677,20 @@ export default function StockCategory({
           okText="บันทึก"
           cancelText="ยกเลิก"
         >
-          <p>บางฟิลด์ไม่สามารถแก้ไขได้ ต้องการบันทึกข้อมูลหรือไม่?</p>
+          <p>รหัสสินค้า: {form.getFieldValue("code")}</p>
+          <p>ชื่อสินค้า: {form.getFieldValue("name")}</p>
+          <p>จำนวน: {form.getFieldValue("quantity")}</p>
+          <p>ราคา (บาท): {form.getFieldValue("price")}</p>
+          <p>ผู้จัดจำหน่าย: {form.getFieldValue("supplier")}</p>
+          <p>
+            วันที่นำเข้า:{" "}
+            {form.getFieldValue("importDate")?.format("MM/DD/YYYY HH:mm:ss")}
+          </p>
+          <p>
+            วันหมดอายุ:{" "}
+            {form.getFieldValue("expiryDate")?.format("MM/DD/YYYY HH:mm:ss")}
+          </p>
+          <p><strong>บางฟิลด์ไม่สามารถแก้ไขได้ ต้องการบันทึกข้อมูลหรือไม่?</strong></p>
         </Modal>
       </Content>
     </Layout>

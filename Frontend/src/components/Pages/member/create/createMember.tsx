@@ -83,6 +83,7 @@ function MemberCreate() {
     }
 
     values.EmployeeID = parseInt(employeeID || '', 10);
+    values.RankID = 1;
     const res = await CreateMember(values);
 
     if (res.status === 201) {
@@ -156,22 +157,6 @@ function MemberCreate() {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="ระดับสมาชิก"
-                name="RankID"
-                rules={[{ required: true, message: "กรุณาเลือกระดับสมาชิก!" }]}
-              >
-                <Select
-                  placeholder="เลือกระดับสมาชิก"
-                  style={{ width: "100%" }}
-                  options={ranks.map((rank) => ({
-                    value: rank.ID,
-                    label: rank.Name,
-                  }))}
-                />
-              </Form.Item>
-            </Col>
           </Row>
 
           <Row justify="center">

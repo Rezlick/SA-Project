@@ -100,22 +100,58 @@ function Customer() {
     };
 
     const handleAddToCart = () => {
-        if (!selectedItem) return; // Ensure an item is selected
-        const data = {
-            productId: selectedItem.code_id, // Use the code_id as productCodeId
-            productName: selectedItem.product_name,
-            quantity: quantity,
-        };
+        if (!selectedItem) return;
 
         const existingCart = JSON.parse(localStorage.getItem('cartData')) || [];
-        const updatedCart = [...existingCart, data];
+        const existingProductIndex = existingCart.findIndex(
+            (product) => product.productId === selectedItem.code_id
+        );
+
+        let updatedCart;
+        if (existingProductIndex !== -1) {
+            const existingProduct = existingCart[existingProductIndex];
+            const newQuantity = existingProduct.quantity + quantity;
+
+            // ตรวจสอบว่า sum(quantity) ต้องไม่เกิน 50
+            if (newQuantity > 50) {
+                message.error("จำนวนสินค้าเกินกำหนด (สูงสุด 50 ต่อสินค้า)");
+                return;
+            }
+
+            updatedCart = [...existingCart];
+            updatedCart[existingProductIndex] = {
+                ...existingProduct,
+                quantity: newQuantity,
+            };
+        } else {
+            // ตรวจสอบว่า quantity ไม่เกิน 50
+            if (quantity > 50) {
+                message.error("จำนวนสินค้าเกินกำหนด (สูงสุด 50 ต่อสินค้า)");
+                return;
+            }
+
+            const newProduct = {
+                productId: selectedItem.code_id,
+                productName: selectedItem.product_name,
+                quantity: quantity,
+            };
+
+            updatedCart = [...existingCart, newProduct];
+        }
 
         localStorage.setItem('cartData', JSON.stringify(updatedCart));
         setCartData(updatedCart);
-        console.log('ข้อมูลถูกเก็บในตะกร้า:', updatedCart);
+        message.success("เพิ่มไปยังตะกร้าแล้ว!");
         handleCancel();
     };
 
+    // ดึงจำนวนสินค้าที่มีอยู่ใน localStorage เพื่อตรวจสอบว่ามีอยู่แล้วเท่าไร
+    const getMaxQuantity = () => {
+        const existingCart = JSON.parse(localStorage.getItem('cartData')) || [];
+        const existingProduct = existingCart.find((product) => product.productId === selectedItem?.code_id);
+        const existingQuantity = existingProduct ? existingProduct.quantity : 0;
+        return Math.max(0, 50 - existingQuantity);  // จำนวนสูงสุดที่สามารถเพิ่มได้ แต่ต้องไม่ติดลบ
+    };
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -123,7 +159,7 @@ function Customer() {
     };
 
     const increaseQuantity = () => {
-        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, 10));
+        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, 50));
     };
 
     const decreaseQuantity = () => {
@@ -297,27 +333,55 @@ function Customer() {
                                             style={{ fontSize: '24px', color: quantity <= 1 ? 'gray' : '#1890ff', cursor: 'pointer' }}
                                             disabled={quantity <= 1}
                                         />
-                                        <span style={{ margin: '0 10px', fontSize: '18px' }}>{quantity}</span>
+                                        <input
+                                            type="number"
+                                            value={quantity === 0 ? '' : quantity}
+                                            onChange={(e) => {
+                                                const value = parseInt(e.target.value, 10);
+                                                const maxQuantity = getMaxQuantity();  // ดึงค่าสูงสุดที่สามารถสั่งได้
+
+                                                if (isNaN(value)) {
+                                                    setQuantity(0);
+                                                } else if (value >= 0 && value <= maxQuantity) {
+                                                    setQuantity(value);
+                                                } else if (value > maxQuantity) {
+                                                    message.error("จำนวนสินค้าต้องไม่เกิน 50 หน่วยต่อสินค้า");  // แจ้งเตือนเมื่อกรอกเกิน 50
+                                                }
+                                            }}
+                                            style={{ margin: '0 10px', width: '60px', textAlign: 'center', fontSize: '18px' }}
+                                        />
                                         <PlusCircleOutlined
-                                            onClick={increaseQuantity}
-                                            style={{ fontSize: '24px', color: quantity >= 10 ? 'gray' : '#1890ff', cursor: 'pointer' }}
-                                            disabled={quantity >= 10}
+                                            onClick={() => {
+                                                const maxQuantity = getMaxQuantity();  // ดึงค่าสูงสุดที่สามารถสั่งได้
+                                                if (quantity < maxQuantity) {
+                                                    setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
+                                                } else {
+                                                    message.error("จำนวนสินค้าต้องไม่เกิน 50 หน่วยต่อสินค้า");  // แจ้งเตือนเมื่อพยายามเพิ่มเกิน 50
+                                                }
+                                            }}
+                                            style={{ fontSize: '24px', color: quantity >= getMaxQuantity() ? 'gray' : '#1890ff', cursor: 'pointer' }}
+                                            disabled={quantity >= getMaxQuantity()}  // เปลี่ยนเป็น disabled เมื่อ quantity เท่ากับ maxQuantity
                                         />
                                     </div>
                                     <Button
                                         type="primary"
                                         block
                                         onClick={() => {
-                                            handleAddToCart();  // เรียกใช้ฟังก์ชันเพิ่มสินค้าลงในตะกร้า
-                                            message.success("เพิ่มไปยังตะกร้าแล้ว!");  // แสดงข้อความแจ้งเตือน
+                                            if (quantity === 0) {
+                                                setQuantity(1);
+                                            }
+                                            handleAddToCart();
                                         }}
+                                        disabled={quantity > getMaxQuantity()}  // ปุ่มจะถูกปิดถ้าเกินจำนวนที่อนุญาต
+                                        style={{ backgroundColor: quantity > getMaxQuantity() ? 'gray' : '#1890ff', borderColor: quantity > getMaxQuantity() ? 'gray' : '#1890ff' }}
                                     >
                                         เพิ่มไปยังตะกร้า
                                     </Button>
-
                                 </div>
                             )}
                         </Modal>
+
+
                     </Card>
                 </Col>
             </Row>

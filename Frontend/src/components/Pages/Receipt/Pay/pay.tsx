@@ -108,11 +108,15 @@ function Pay() {
             message.success("Coupon ถูกต้อง");
             setCouponDiscount(res.data.discount)
             setCouponID(res.data.couponID)
-          } else {
+          } else if (res.data.isExpire) {
+            message.error("Coupon หมดอายุแล้ว");
+            setCouponDiscount(0)
+            setCouponID(0)
+        } else {
             message.error("Coupon ไม่ถูกต้อง");
             setCouponDiscount(0)
             setCouponID(0)
-          }
+        }
     }
 
     const CheckPhone = async () => {
@@ -218,11 +222,13 @@ function Pay() {
                 }
             
                 setTimeout(() => {
-                            navigate("/receipt");
-                        }, 2000);
-                    } else {
-                        message.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-                    }
+                    navigate("/receipt");
+                }, 2000);
+
+                } else {
+                    message.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+                }
+
                 } catch (error) {
                     message.error("ไม่สามารถบันทึกข้อมูลได้");
                 }

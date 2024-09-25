@@ -11,7 +11,7 @@ import {
   MenuFoldOutlined,
   TeamOutlined,
   OrderedListOutlined,
-  CodeOutlined
+  CodeOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
@@ -24,6 +24,7 @@ function ITSider() {
   const { Sider } = Layout;
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -74,6 +75,16 @@ function ITSider() {
 
   useEffect(() => {
     getEmployeeById();
+
+    // Set interval to update the time every second
+    const interval = setInterval(() => {
+      const current = new Date();
+      const formattedTime = current.toLocaleTimeString();
+      setCurrentTime(formattedTime);
+    }, 1000);
+
+    // Clean up the interval when component unmounts
+    return () => clearInterval(interval);
   }, []);
 
   const setCurrentPage = (val: string) => {
@@ -141,6 +152,10 @@ function ITSider() {
                 </Link>
               </span>
             </div>
+            <div className="current-time">
+              <span>เวลา: </span>
+              <span className="time-display">{currentTime}</span>
+            </div>
 
             <Menu
               className="menu"
@@ -181,10 +196,9 @@ function ITSider() {
                   <span>ชำระเงิน</span>
                 </Link>
               </Menu.Item>
-
               <Menu.Item key="coupon" onClick={() => setCurrentPage("coupon")}>
                 <Link to="/coupon">
-                  <CodeOutlined  />
+                  <CodeOutlined />
                   <span>คูปอง</span>
                 </Link>
               </Menu.Item>

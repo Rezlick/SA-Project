@@ -23,6 +23,7 @@ function ManagerSider() {
   const { Sider } = Layout;
   const [messageApi, contextHolder] = message.useMessage();
   const [collapsed, setCollapsed] = useState(false);
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -74,6 +75,18 @@ function ManagerSider() {
 
   useEffect(() => {
     getEmployeeById();
+
+    // อัปเดตเวลาทุกวินาที
+    const updateTime = () => {
+      const current = new Date();
+      setCurrentTime(current.toLocaleTimeString()); // อัปเดตเวลาในฟอร์แมตที่เข้าใจได้ง่าย
+    };
+
+    // ตั้งค่า interval เพื่ออัปเดตเวลา
+    const interval = setInterval(updateTime, 1000);
+
+    // Cleanup function เมื่อ component ถูก unmount
+    return () => clearInterval(interval);
   }, []);
 
   const setCurrentPage = (val: string) => {
@@ -113,7 +126,7 @@ function ManagerSider() {
               <img
                 src={profile}
                 alt="Profile"
-                className={`profile-image ${collapsed ? "small" : "large"}`} // Apply class for styling
+                className={`profile-image ${collapsed ? "small" : "large"}`}
                 style={{
                   width: collapsed ? "50px" : "100px",
                   height: collapsed ? "50px" : "100px",
@@ -131,6 +144,10 @@ function ManagerSider() {
                   แก้ไขโปรไฟล์
                 </Link>
               </span>
+            </div>
+            <div className="current-time">
+              <span>เวลา: </span>
+              <span className="time-display">{currentTime}</span>
             </div>
 
             <Menu

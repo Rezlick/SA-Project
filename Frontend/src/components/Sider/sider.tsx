@@ -24,6 +24,8 @@ function Sider() {
   const [lastName, setLastName] = useState("");
   const [positionName, setPositionName] = useState("");
   const [profile, setProfile] = useState("");
+  const [currentTime, setCurrentTime] = useState<string>("");
+
   const employeeID = localStorage.getItem("employeeID");
 
   const getEmployeeById = async () => {
@@ -70,6 +72,14 @@ function Sider() {
 
   useEffect(() => {
     getEmployeeById();
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString();
+      setCurrentTime(formattedTime);
+    }, 1000); // Update time every second
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
   const setCurrentPage = (val: string) => {
@@ -136,6 +146,11 @@ function Sider() {
                   แก้ไขโปรไฟล์
                 </Link>
               </span>
+            </div>
+
+            <div className="current-time">
+              <span>เวลา: </span>
+              <span className="time-display">{currentTime}</span>
             </div>
 
             <Menu

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message, Divider, Empty, Card } from "antd";
+import { Table, Row, Col, Spin, message, Divider, Empty, Card } from "antd";
 import { CheckCircleOutlined, LoadingOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetOrderByBookingID } from "../../../../services/https";
@@ -118,7 +118,7 @@ function CustomerStatus() {
                                 dataSource={orders}
                                 columns={columns}
                                 pagination={false}
-                                scroll={{ y: 400 }} // Enables vertical and horizontal scroll
+                                scroll={{ y: 420 }} // Enables vertical and horizontal scroll
                             />
 
                         ) : (

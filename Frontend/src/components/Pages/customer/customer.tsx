@@ -17,7 +17,7 @@ import Shrimp from "../../../assets/imagesCustomer/shrimp.webp";
 import Shell from "../../../assets/imagesCustomer/0zvuqr.jpg";
 import chocolate from "../../../assets/imagesCustomer/ice-cream-choccolate.webp";
 import strawBerry from "../../../assets/imagesCustomer/ice-cream-strawberry.webp";
-import Coke from "../../../assets/imagesCustomer/coke.webp";
+import LodChong from "../../../assets/imagesCustomer/LodChong.webp";
 
 function Customer() {
     const { id } = useParams<{ id: string }>();
@@ -103,7 +103,7 @@ function Customer() {
         { productCode: 'M002', image: Brisket, category: 'เนื้อ' },
         { productCode: 'M003', image: PorkSlice, category: 'หมู' },
         { productCode: 'M004', image: PorkBelly, category: 'หมู' },
-        { productCode: 'B001', image: Coke, category: 'ของหวาน' },
+        { productCode: 'B005', image: LodChong, category: 'ของหวาน' },
         { productCode: 'B003', image: chocolate, category: 'ของหวาน' },
         { productCode: 'B004', image: strawBerry, category: 'ของหวาน' },
         { productCode: 'V001', image: V1, category: 'ผัก' },

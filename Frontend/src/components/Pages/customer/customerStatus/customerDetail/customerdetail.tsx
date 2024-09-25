@@ -89,31 +89,39 @@ function CustomerDetail() {
 
     return (
         <>
-            <Row>
-                <Col span={24} style={{ marginTop: "-20px" }}>
-                    <Card>
-                        <h2>รายละเอียดออเดอร์</h2>
-                    </Card>
-                </Col>
-            </Row>
-            <Divider />
-            <Row>
-                <Col span={24} style={{ marginTop: "20px" }}>
-                    {/* Conditional rendering for loading state */}
-                    {loading ? (
-                        <Spin tip="กำลังโหลดข้อมูล..." size="large" />
-                    ) : (
-                        <Table dataSource={orderproduct} columns={column} pagination={{ pageSize: 5 }} />
-                    )}
-                </Col>
-            </Row>
-            <Row justify="space-between">
-                <Col>
-                    <Link to={`/customer/status/${bookingID}`}>
-                        <Button type="primary" style={{ height: '40px', width: '80px' }}>ย้อนกลับ</Button>
-                    </Link>
-                </Col>
-            </Row>
+            <Card style={{ marginTop: '20px', backgroundColor: '#2C2C2C',border: '3px solid #FFD700' }}>
+                <Row>
+                    <Col span={12} style={{ marginTop: "-10px", marginBottom:'-10px' }}>
+                        <h2 style={{ color:'white'}}>รายละเอียดออเดอร์</h2>
+                    </Col>
+                </Row>
+                <Divider style={{ borderColor: '#FFD700', color: '#FFD700' }} />
+                <Row>
+                    <Col span={24} style={{ marginTop: "20px" }}>
+                        {/* Conditional rendering for loading state */}
+                        {loading ? (
+                            <Spin tip="กำลังโหลดข้อมูล..." size="large" />
+                        ) : (
+                            <Table
+                                dataSource={orderproduct}
+                                columns={column} pagination={false} scroll={{ y: 350 }} />
+                        )}
+                    </Col>
+                </Row>
+                <Row justify="space-between">
+                    <Col>
+                        <Link to={`/customer/status/${bookingID}`}>
+                            <Button
+                                type="primary"
+                                style={{ height: '50px', width: '100px', fontSize: '18px', marginTop:'20px' }} // Adjust height, width, and font size
+                            >
+                                ย้อนกลับ
+                            </Button>
+                        </Link>
+
+                    </Col>
+                </Row>
+            </Card>
         </>
     );
 }

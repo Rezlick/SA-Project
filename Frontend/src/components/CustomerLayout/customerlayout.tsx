@@ -18,7 +18,7 @@ const CustomerLayout: React.FC = () => {
     return (
         <>
             {contextHolder}
-            <Layout style={{ height: "100vh", maxWidth: '100vh' }}>
+            <Layout style={{ height: "100vh", maxWidth: '70vh' }}>
                 <Layout style={{ height: "100vh", width: '70vh' }}>
                     <Content>
                         <div style={{ position: "relative" }}>
@@ -41,9 +41,10 @@ const CustomerLayout: React.FC = () => {
                                 style={{
                                     zIndex: 2, // เพิ่มค่า z-index ให้มากกว่า Card
                                     position: "absolute",
-                                    top: "20px", // ปรับตำแหน่งจากด้านบน
-                                    width: '100px',
-                                    height: '100px'
+                                    top: "10px",
+                                    width: '120px',
+                                    height: '120px',
+                                    left: '26vh'
                                 }}
                             />
                         </div>

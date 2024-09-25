@@ -50,13 +50,13 @@ p {
 
 .sider {
   background-color: #fffae3 !important; /* Soft, creamy yellow background for warmth */
-  color: #D4AF37 !important; /* Slightly darker gray for better contrast */
+  color: #d4af37 !important; /* Slightly darker gray for better contrast */
 }
 
 .profile-image {
   object-fit: cover !important;
   border-radius: 50% !important;
-  border: 2px solid rgb(199, 120, 0) !important;
+  border: 2px solid rgb(218, 165, 32) !important;
   background-color: white !important;
   /* Removed transition for width and height */
 }
@@ -86,22 +86,22 @@ p {
 
 .menu-item:hover {
   background-color: #ffe0b2 !important; /* Soft pastel orange for hover */
-  color: #D4AF37 !important; /* Dark gray text color for hover */
+  color: #d4af37 !important; /* Dark gray text color for hover */
 }
 
 .menu-item.active {
   background-color: #ffffff !important; /* เปลี่ยนพื้นหลังเป็นสีขาวเมื่อคลิก */
-  color: #D4AF37 !important; /* สีทองสำหรับข้อความเมื่อคลิก */
+  color: #d4af37 !important; /* สีทองสำหรับข้อความเมื่อคลิก */
 }
 
 .menu-item:focus {
   outline: none !important; /* Remove default outline */
   background-color: #ffb74d !important; /* Slightly darker orange for focus */
-  color: #D4AF37 !important; /* Black text color for focus */
+  color: #d4af37 !important; /* Black text color for focus */
 }
 
 .ant-menu-item-selected {
-  color: #D4AF37 !important; /* สีทอง */
+  color: #d4af37 !important; /* สีทอง */
   background-color: #ffffff !important; /* สีพื้นหลังเป็นสีขาว */
 }
 
@@ -114,22 +114,26 @@ p {
 
 .custom-sider {
   background-color: #ffe0b2 !important; /* Soft pastel orange background */
-  color: #D4AF37 !important; /* Darker gray for contrast */
+  color: #d4af37 !important; /* Darker gray for contrast */
 }
 
 .ant-layout-sider.custom-sider {
-  background-color: rgb(232, 232, 232) !important; /* Apply soft orange background */
-  color: #D4AF37 !important; /* Darker gray for contrast */
+  background-color: rgb(
+    232,
+    232,
+    232
+  ) !important; /* Apply soft orange background */
+  color: #d4af37 !important; /* Darker gray for contrast */
 }
 
 .profile-name {
   font-size: large !important;
-  color: #D4AF37 !important; /* Dark gray for better visibility */
+  color: #d4af37 !important; /* Dark gray for better visibility */
 }
 
 .profile-position {
   font-size: default !important;
-  color: #D4AF37 !important; /* Dark gray for better visibility */
+  color: #d4af37 !important; /* Dark gray for better visibility */
 }
 
 .edit-profile-link {

@@ -67,7 +67,7 @@ function Booking() {
     const tableCapacityID = table.table_capacity_id;
 
     if (!tableID || !tableCapacityID) {
-      message.warning("Table ID or Table capacity ID is not defined!");
+      message.warning("รหัสโต๊ะหรือรหัสความจุของโต๊ะยังไม่ได้กำหนด!");
       return;
     }
 
@@ -76,11 +76,11 @@ function Booking() {
     )?.status;
 
     if (status === "Occupied") {
-      message.warning("This table is not available for booking!");
+      message.warning("โต๊ะนี้ไม่ว่าง กำลังใช้งานอยู่");
       return;
     }
     if (status === "Cleaning") {
-      message.warning("This table is currently being cleaned!");
+      message.warning("โต๊ะนี้กำลังทำความสะอาด");
       return;
     }
 
@@ -89,12 +89,25 @@ function Booking() {
         `/booking/create?tableId=${tableID}&tableName=${table.table_name}&tableCapacityId=${tableCapacityID}`
       );
     } else {
-      message.warning("This table does not have a defined type!");
+      message.warning("โต๊ะนี้ยังไม่ได้กำหนดประเภท!");
     }
   };
 
   const goToBookingList = () => {
     navigate("/booking/booking_list");
+  };
+
+  const getStatusClass = (status: string): string => {
+    switch (status) {
+      case "Available":
+        return "button-available";
+      case "Occupied":
+        return "button-occupied";
+      case "Cleaning":
+        return "button-cleaning";
+      default:
+        return "button-default";
+    }
   };
 
   const getStatusColor = (status: string): string => {
@@ -139,7 +152,9 @@ function Booking() {
                   <Col key={table.ID} xs={24} sm={12} md={8} lg={6}>
                     <Button
                       type="default"
-                      className="tableButton"
+                      className={`tableButton ${getStatusClass(
+                        status?.status ?? "Unknown"
+                      )}`}
                       onClick={() => handleButtonClick(table)}
                       style={{
                         width: "100%",
@@ -175,18 +190,11 @@ function Booking() {
             </Row>
           )}
           <Row justify="center" style={{ marginTop: 16 }}>
-            <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={4}>
               <Button
                 type="primary"
                 onClick={goToBookingList}
-                style={{
-                  backgroundColor: "#DAA520",
-                  borderColor: "#DAA520",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%",
-                  marginTop: 20,
-                }}
+                className="button-style"
               >
                 รายการจองโต๊ะ
               </Button>

@@ -91,11 +91,11 @@ function CustomerDetail() {
         <>
             <Card style={{ marginTop: '20px', backgroundColor: '#2C2C2C',border: '3px solid #FFD700' }}>
                 <Row>
-                    <Col xs={24} style={{ marginTop: "-20px" }}>
-                        <h2>รายละเอียดออเดอร์</h2>
+                    <Col span={12} style={{ marginTop: "-10px", marginBottom:'-10px' }}>
+                        <h2 style={{ color:'white'}}>รายละเอียดออเดอร์</h2>
                     </Col>
                 </Row>
-                <Divider />
+                <Divider style={{ borderColor: '#FFD700', color: '#FFD700' }} />
                 <Row>
                     <Col span={24} style={{ marginTop: "20px" }}>
                         {/* Conditional rendering for loading state */}

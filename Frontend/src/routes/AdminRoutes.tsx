@@ -245,6 +245,7 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
     ] : []),
     ],
   };
+  
 };
 
 export default AdminRoutes;

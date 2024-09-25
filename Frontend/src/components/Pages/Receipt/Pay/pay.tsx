@@ -1,6 +1,6 @@
 import { useState , useEffect } from "react";
 import { Link , useNavigate } from 'react-router-dom';
-import { QrcodeOutlined } from "@ant-design/icons";
+import { QrcodeOutlined , CheckCircleOutlined , LeftCircleOutlined , IdcardOutlined , PhoneOutlined , WalletOutlined } from "@ant-design/icons";
 import { message , Card , Row , Col , Form , Input , Button , Checkbox , Select , Modal } from "antd";
 import { GetBookingByID , CheckCoupons , CreateReceipt , CheckMembers , AddPointsToMember , CheckBooking , GetTypePayment, DeleteBookingAfterPay} from "../../../../services/https";
 import  PromtPay  from "../../../../assets/PromptPay-logo.png"
@@ -208,14 +208,14 @@ function Pay() {
                 // ลบข้อมูลการจองหลังจากสร้างใบเสร็จแล้ว
                 const deleteRes = await DeleteBookingAfterPay(BookID);
                 if (deleteRes.status === 200) {
-                    message.success("ลบข้อมูลการจองสำเร็จ");
+                    message.success("ลบข้อมูลการจองโต๊ะสำเร็จ");
                 } else {
                     message.error("เกิดข้อผิดพลาดในการลบข้อมูลการจอง");
                 }
     
                 if (MemberID != 0) {
-                            AddPointsToMember(String(MemberID), Point);
-                        }
+                    AddPointsToMember(String(MemberID), Point);
+                }
             
                 setTimeout(() => {
                             navigate("/receipt");
@@ -235,7 +235,6 @@ function Pay() {
     const handleEnterPressCoupon = (e: { preventDefault: () => void; }) => {
         e.preventDefault(); // ยกเลิกการ submit ฟอร์ม
 
-        // ถ้าอยู่ในช่วง cooldown ไม่ให้เรียก CheckCoupon
         if (cooldown) {
             message.warning("กรุณารอซักครู่");
             return;
@@ -245,10 +244,9 @@ function Pay() {
         setCooldown(true);
         CheckCoupon(); // เรียกฟังก์ชันตรวจสอบคูปอง
 
-        // ตั้งค่า timeout ให้ cooldown หายไปหลังจาก 3 วินาที
         setTimeout(() => {
             setCooldown(false); // ล้างสถานะ cooldown
-        }, 2000); // หน่วงเวลา 3 วินาที (3000 มิลลิวินาที)
+        }, 2000); 
     };
 
     const handleEnterPressPhone = (e: { preventDefault: () => void; }) => {
@@ -277,7 +275,7 @@ function Pay() {
         }
         if (Soups.length >= 2) {
             return(
-                <Row gutter={[5,0]}>
+                <Row gutter={[15,0]}>
                     {Soups.map((soup, index) => (
                             <Col key={index} lg={1} xl={12}>
                                 <Card className="card-payment">{"\" "}{soup.name}{" \" ราคา : "}{soup.price}{" บาท"}</Card>
@@ -296,14 +294,15 @@ function Pay() {
     return (
         <>
         <Row>
-            <Col xs={24} sm={24} md={16} lg={12} xl={showQR ? 18 : 24}>
+            <Col xs={24} sm={24} md={16} lg={12} xl={showQR ? 17 : 24}>
                 <Card style={{
                     borderRadius: '10px',
+                    height: '88vh',
+                    background: 'linear-gradient(45deg, #FFFFFF, #E0E0E0)',
                 }}>
-                    {/* ปุ่มกลับ */}
                     <Row style={{marginBottom:"20px"}}>
                         <Link to="/receipt">
-                            <Button className="button">
+                            <Button className="back-button" icon={<LeftCircleOutlined />}>
                                 กลับ
                             </Button>
                         </Link>
@@ -328,9 +327,12 @@ function Pay() {
                         {/* ส่วนหลักของข้อมูล */}
                         <Card style={{
                             borderRadius: '10px',
-                            marginBottom: '10px',
+                            marginBottom: '40px',
+                            background: 'linear-gradient(45deg, #D3D3D3, #F5F5F5)',
+                            border: '3px solid #000000',
+
                         }}>
-                            <Row gutter={[5,0]}> 
+                            <Row gutter={[15,0]}> 
                                 <Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                     <Card className="card-payment">{"หมายเลขโต๊ะ : "}{Table}</Card>
                                 </Col>
@@ -342,9 +344,9 @@ function Pay() {
                                 </Col>
                                 { checked && (<Col xs={24} sm={24} md={16} lg={12} xl={6}>
                                     <Form.Item
-                                        label="Phone"
+                                        label="เบอร์โทร"
                                         name="input_phone"
-                                        className="custom-form"
+                                        className="custom-form-pay"
                                         >
                                     <Input 
                                         className="centered-input" 
@@ -361,7 +363,7 @@ function Pay() {
                                                 event.preventDefault();
                                             }
                                             }}
-                                        style={{ border: "1px solid #ff8001" , marginBottom:"0px"}}
+                                        style={{ border: "3px solid #000000" , marginBottom:"0px" ,  height: "50px"}}
                                         />
                                     </Form.Item>
                                 </Col>)}
@@ -379,7 +381,7 @@ function Pay() {
                                     <Form.Item
                                         label="คูปอง"
                                         name="input_coupon"
-                                        className="custom-form"
+                                        className="custom-form-pay"
                                         >
                                     <Input 
                                         className="centered-input" 
@@ -387,7 +389,7 @@ function Pay() {
                                         value={coupon}
                                         onChange={(e) => setCoupon(e.target.value)}
                                         onPressEnter={handleEnterPressCoupon}
-                                        style={{ border: "1px solid #ff8001" }}
+                                        style={{ border: "3px solid #000000" , marginBottom:"0px" ,  height: "50px" }}
                                     />
                                     </Form.Item>
                                 </Col>
@@ -414,22 +416,13 @@ function Pay() {
                                 </Col>
                             </Row>
                         </Card>
-                        {/* {showPopup && (<Card className="popup-overlay" style={{zIndex:1}}>
-                                <div className="popup">
-                                    <h2>ยืนยันการชำระเงิน</h2>
-                                    <div className="popup-buttons">
-                                        <Button className="confirm-button" htmlType="submit" >ยืนยัน</Button>
-                                        <Button className="cancel-button" onClick={handleClosePopup}>ยกเลิก</Button>
-                                    </div>
-                                </div>
-                        </Card>)} */}
                         <Row justify="space-between" align="middle">
-                            <Col style={{ display: "flex", alignItems: "center" , marginBottom: "0px" }}>
+                            <Col style={{ display: "flex", alignItems: "center" , marginBottom: "px" }}>
                                 <Button icon={<QrcodeOutlined />} className="qr-button" onClick={handleQR}>
                                     แสดง QR
                                 </Button>
                             </Col>
-                            <Col xl={10} style={{  justifyContent: "center", alignItems: "center" }}>
+                            <Col xl={8} style={{  justifyContent: "center", alignItems: "center" }}>
                                 <Form.Item
                                     label="ช่องทางชำระเงิน"
                                     name="TypeID"
@@ -445,7 +438,8 @@ function Pay() {
                                     >
                                     <Select
                                         placeholder="กรุณาเลือกวิธีการชำระเงิน"
-                                        style={{ width: "100%" }}
+                                        style={{ width: "100%", fontSize: "30px" , fontWeight:"bolder"}}
+                                        dropdownClassName="custom-dropdown-FormType"
                                         options={TypePayment.map((typepayment) => ({
                                             value: typepayment.ID,
                                             label: typepayment.Name,
@@ -457,7 +451,14 @@ function Pay() {
                                 </Form.Item>
                             </Col>
                             <Col style={{ marginBottom: "0px" , display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                                <Button disabled={isSubmitting} type="primary" htmlType="submit" className="payment-button">
+                                <Button 
+                                loading={isSubmitting}
+                                disabled={isSubmitting}
+                                type="primary" 
+                                htmlType="submit" 
+                                className="payment-button"
+                                icon={<CheckCircleOutlined />}
+                                >
                                     ยืนยัน (การชำระเงิน)
                                 </Button>
                             </Col>
@@ -465,30 +466,51 @@ function Pay() {
                     </Form>
                 </Card>
             </Col>    
-            {showQR && (<Col xs={24} sm={24} md={16} lg={12} xl={6}>
+            {showQR && (<Col xs={24} sm={24} md={16} lg={12} xl={7}>
                 <Card
                     style={{
-                        borderRadius: '10px',
-                        justifyContent: 'center',
+                        background: 'linear-gradient(45deg, #E0E0E0, #FFFFFF)',
                         alignItems: 'center',
                         display: 'flex',
-                        flexDirection: 'column', // จัดแนวให้เป็นแนวตั้งเพื่อให้ img อยู่บนล่างกัน
-                        textAlign: 'center', // จัดข้อความ (และ img) ให้อยู่ตรงกลางแนวนอน
+                        flexDirection: 'column', // จัดเรียงรายการในแนวตั้ง
+                        justifyContent: 'center', // จัดให้อยู่ด้านบน
+                        textAlign: 'center', // จัดข้อความและ img ให้อยู่ตรงกลางในแนวนอน
+                        height: '88vh',
                     }}
                     >
-                    <img
-                        src={PromtPay}
-                        style={{ width: '200px', height: '70px' }} // เพิ่ม margin เพื่อเว้นระยะระหว่าง img สองตัว
-                    />
-                    <img
-                        src={`https://promptpay.io/0648312668/${NetTotal}`}
-                        style={{ width: '250px', height: '250px' }}
-                    />
-                    <Col xs={24} sm={24} md={16} lg={12} xl={24}>
-                        <Card className="card-promtpay">ชื่อบัญชี : นาย ธนวิทย์</Card>
-                        <Card className="card-promtpay">เบอร์ : 064 831 2668</Card>
-                        <Card className="card-promtpay">{"ยอดรวม : "}{NetTotal}{" บาท"}</Card>
-                    </Col>
+                    <Row gutter={[0,24]}>
+                        <Col xs={24} sm={24} md={16} lg={12} xl={24} style={{ justifyContent: 'flex-start'}}>
+                            <img
+                                src={PromtPay}
+                                style={{ width: '380px', height: '130px' }} // เพิ่ม margin เพื่อเว้นระยะระหว่าง img สองตัว
+                            />
+                        </Col>
+                        <Card className="custom-cardQR" style={{ marginLeft:'20px', border: '3px solid black', padding: 0}}>
+                            <Col xs={24} sm={24} md={16} lg={12} xl={24}>
+                                <img
+                                    src={`https://promptpay.io/0648312668/${NetTotal}`}
+                                    style={{ width: '363px', height: '363px' }}
+                                />
+                            </Col>
+                        </Card>
+                        <Col xs={24} sm={24} md={16} lg={12} xl={24}>
+                            <Card className="card-promtpay" >
+                                <div className="content-promtpay">
+                                    <IdcardOutlined className="large-icon" /> ชื่อบัญชี : นาย ธนวิทย์
+                                </div>
+                            </Card>
+                            <Card className="card-promtpay">
+                                <div className="content-promtpay">
+                                    <PhoneOutlined className="large-icon" /> เบอร์ : 064 831 2668
+                                </div>
+                            </Card>
+                            <Card className="card-promtpay">
+                                <div className="content-promtpay">
+                                    <WalletOutlined className="large-icon" />{"ยอดรวม : "}{NetTotal}{" บาท"}
+                                </div>
+                            </Card>
+                        </Col>
+                    </Row>
                 </Card>
             </Col>)}
         </Row>

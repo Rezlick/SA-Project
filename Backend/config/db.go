@@ -35,7 +35,6 @@ func SetupDatabase() {
       &entity.Coupon{},
       &entity.TypePayment{},
 
-
       &entity.Booking{},
       &entity.Soup{},
       &entity.BookingSoup{},
@@ -46,7 +45,6 @@ func SetupDatabase() {
       &entity.Status_Order{},
       &entity.Order{},
       &entity.Order_Product{},
-      
       
       &entity.Category{},
       &entity.Product{},
@@ -94,12 +92,12 @@ func SetupDatabase() {
    status1 := entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"}
 	status2 := entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"}
 
-   PositionAdmin := entity.Position{Name: "IT"}
-   PositionRestaurantManager := entity.Position{Name: "RestaurantManager"}
-   PositionOrderManager := entity.Position{Name: "OrderManager"}
-   PositionFoodServerManager := entity.Position{Name: "FoodServer"}
-   PositionCounterServiceManager := entity.Position{Name: "CounterService"}
-   PositionStockManager := entity.Position{Name: "StockManager"}
+   PositionAdmin := entity.Position{Name: "ไอที"}
+   PositionRestaurantManager := entity.Position{Name: "ผู้จัดการร้าน"}
+   PositionOrderManager := entity.Position{Name: "จัดการออร์เดอร์"}
+   PositionFoodServerManager := entity.Position{Name: "เสิร์ฟ"}
+   PositionCounterServiceManager := entity.Position{Name: "แคชเชียร"}
+   PositionStockManager := entity.Position{Name: "จัดการสินค้า"}
 
    RankBronze := entity.Rank{Name: "Bronze", Discount: 0.03 , PointToUpgrade: 20}
    RankSilver := entity.Rank{Name: "Silver", Discount: 0.065, PointToUpgrade: 40}
@@ -120,12 +118,12 @@ func SetupDatabase() {
 
    Soup1 := entity.Soup{Name: "ซุปน้ำใส"}
    Soup2 := entity.Soup{Name: "ซุปน้ำดำ"}
-   Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
-   Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
+   Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 39}
+   Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 39}
    
-   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 2}
-   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 3}
-   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 4}
+   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 199, Point: 2}
+   Package_seafood := entity.Package{Name: "ทะเล", Price: 289, Point: 3}
+   Package_beef := entity.Package{Name: "เนื้อ", Price: 349, Point: 4}
 
    StatusAvailable := entity.TableStatus{Status: "Available"}
    StatusReserved := entity.TableStatus{Status: "Occupied"}
@@ -162,12 +160,12 @@ func SetupDatabase() {
    db.FirstOrCreate(&GenderFemale, &entity.Gender{Name: "หญิง"})
    db.FirstOrCreate(&GenderOther, &entity.Gender{Name: "อื่นๆ"})
 
-   db.FirstOrCreate(&PositionAdmin, &entity.Position{Name: "IT"})
-   db.FirstOrCreate(&PositionRestaurantManager, &entity.Position{Name: "RestaurantManager"})
-   db.FirstOrCreate(&PositionOrderManager, &entity.Position{Name: "OrderManager"})
-   db.FirstOrCreate(&PositionFoodServerManager, &entity.Position{Name: "FoodServer"})
-   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "CounterService"})
-   db.FirstOrCreate(&PositionStockManager, &entity.Position{Name: "StockManager"})
+   db.FirstOrCreate(&PositionAdmin, &entity.Position{Name: "ไอที"})
+   db.FirstOrCreate(&PositionRestaurantManager, &entity.Position{Name: "ผู้จัดการร้าน"})
+   db.FirstOrCreate(&PositionOrderManager, &entity.Position{Name: "จัดการออร์เดอร์"})
+   db.FirstOrCreate(&PositionFoodServerManager, &entity.Position{Name: "เสิร์ฟ"})
+   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "แคชเชียร"})
+   db.FirstOrCreate(&PositionStockManager, &entity.Position{Name: "จัดการสินค้า"})
 
    db.FirstOrCreate(&TableFourSeat1, &entity.Table{TableName: "F1"})
    db.FirstOrCreate(&TableFourSeat2, &entity.Table{TableName: "F2"})
@@ -201,7 +199,6 @@ func SetupDatabase() {
 
    db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
    db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
-
 
    hashedPassword, _ := HashPassword("12345")
 

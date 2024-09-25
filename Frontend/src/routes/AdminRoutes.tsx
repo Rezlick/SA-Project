@@ -120,6 +120,45 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
     {
       path: "Meat", 
       element: <StockMeat />,
+    },
+    {
+      path: "Vegetable", 
+      element: <StockVegetable />,
+    },
+    {
+      path: "CondimentsAndSauce", 
+      element: <StockCondimentsAndSauce />,
+    },
+    {
+      path: "NoodlesAndDough", 
+      element: <StockNoodlesAndDough />,
+    },
+    {
+      path: "Seafood", 
+      element: <StockSeafood />,
+    },
+    {
+      path: "BeveragesAndDesserts", 
+      element: <StockBeveragesAndDesserts />,
+    }
+    ,
+    {
+      path: "Supplier", 
+      element: <Supplier />,
+    },
+
+
+  ]
+
+  const ManageStocksEdit =[
+    {
+      path: "", 
+      element: <ManageStock />,
+    }
+    ,
+    {
+      path: "Meat", 
+      element: <StockMeat />,
       children: [
         {
           path: "EditStock",
@@ -191,7 +230,7 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
     element: isLoggedIn ? <FullLayout /> : <MainPages />,
     children: [
       // Dashboard route
-      ...(role !== "Common" ? [dashboardRoute] : []),
+      ...(role !== "Common" ? [dashboardRoute] : [] ) , //[dashboardRoute]
 
       {
         path: "/profileEdit",
@@ -240,7 +279,18 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
       ...(role === "IT" ? [{
         path: "/employee",
         children: employeeRoutes,
-      }] : []),
+      },
+      {
+        path: "/ManageStock",
+        children: ManageStocksEdit, 
+      },
+    ] : []),
+    ...(role === "Manager" ? [
+    {
+      path: "/ManageStock",
+      children: ManageStocksEdit, 
+    },
+  ] : []),
     ],
   };
 };

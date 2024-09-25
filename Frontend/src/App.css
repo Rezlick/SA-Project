@@ -22,121 +22,118 @@ p {
   width: 100px;
   border-radius: 5%;
 }
-
 /* Sider style ------------------------------------------------------------------------ */
 @media (max-width: 768px) {
   .ant-layout {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 
   .ant-layout-sider {
-    min-width: 100px;
+    min-width: 100px !important;
   }
 
   .ant-layout-content {
-    margin: 0 10px;
+    margin: 0 10px !important;
   }
 }
 
 @media (max-width: 480px) {
   .ant-layout-content {
-    margin: 0 5px;
-    padding: 10px;
+    margin: 0 5px !important;
+    padding: 10px !important;
   }
 
   .ant-breadcrumb {
-    display: none; /* Hide breadcrumb on small screens */
+    display: none !important; /* Hide breadcrumb on small screens */
   }
 }
 
 .sider {
-  background-color: #fffae3; /* Soft, creamy yellow background for warmth */
-  color: #444; /* Slightly darker gray for better contrast */
+  background-color: #fffae3 !important; /* Soft, creamy yellow background for warmth */
+  color: #D4AF37 !important; /* Slightly darker gray for better contrast */
 }
 
 .profile-image {
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ffcc80; /* Light orange border */
-  background-color: white;
-  transition: width 0.3s ease, height 0.3s ease;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  border: 2px solid rgb(199, 120, 0) !important;
+  background-color: white !important;
+  /* Removed transition for width and height */
 }
 
 .profile-container {
-  display: flex;
-  justify-content: center;
-  margin: 50px 0 20px 0; /* Top, Right, Bottom, Left */
+  display: flex !important;
+  justify-content: center !important;
+  margin: 50px 0 20px 0 !important; /* Top, Right, Bottom, Left */
 }
 
 .profile-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 20px 0; /* Top and Bottom margin */
-  overflow-wrap: break-word;
-  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  margin: 20px 0 !important; /* Top and Bottom margin */
+  overflow-wrap: break-word !important;
+  text-align: center !important;
 }
 
 .menu {
-  background-color: transparent; /* Keep transparent for a modern look */
+  background-color: transparent !important; /* Keep transparent for a modern look */
 }
 
-/* Hover effect for menu items */
 .menu-item {
-  padding: 10px 15px; /* Increase padding for better clickability */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+  padding: 10px 15px !important; /* Increase padding for better clickability */
 }
 
 .menu-item:hover {
-  background-color: #ffe0b2; /* Soft pastel orange for hover */
-  color: #333; /* Dark gray text color for hover */
+  background-color: #ffe0b2 !important; /* Soft pastel orange for hover */
+  color: #D4AF37 !important; /* Dark gray text color for hover */
 }
 
-/* Active state for menu items */
 .menu-item.active {
-  background-color: #ffcc80; /* Warm light orange for active item */
-  color: #ff5722 !important; /* สีส้มสำหรับเมนูที่ active */
+  background-color: #ffffff !important; /* เปลี่ยนพื้นหลังเป็นสีขาวเมื่อคลิก */
+  color: #D4AF37 !important; /* สีทองสำหรับข้อความเมื่อคลิก */
 }
 
-/* Focus state for accessibility */
 .menu-item:focus {
-  outline: none; /* Remove default outline */
-  background-color: #ffb74d; /* Slightly darker orange for focus */
-  color: #000; /* Black text color for focus */
+  outline: none !important; /* Remove default outline */
+  background-color: #ffb74d !important; /* Slightly darker orange for focus */
+  color: #D4AF37 !important; /* Black text color for focus */
 }
 
-/* Button to toggle collapsed state */
+.ant-menu-item-selected {
+  color: #D4AF37 !important; /* สีทอง */
+  background-color: #ffffff !important; /* สีพื้นหลังเป็นสีขาว */
+}
+
 .toggle-button {
-  position: absolute;
-  top: 0;
-  right: -46px; /* Ensure visibility */
-  z-index: 1;
+  position: absolute !important;
+  top: 0 !important;
+  right: -46px !important; /* Ensure visibility */
+  z-index: 1 !important;
 }
 
-/* Custom styles for the sidebar */
 .custom-sider {
-  background-color: #ffe0b2; /* Soft pastel orange background */
-  color: #444; /* Darker gray for contrast */
+  background-color: #ffe0b2 !important; /* Soft pastel orange background */
+  color: #D4AF37 !important; /* Darker gray for contrast */
 }
 
-/* Ensure the custom sider takes precedence */
 .ant-layout-sider.custom-sider {
-  background-color: rgb(248 193 167); /* Apply soft orange background */
-  color: #444; /* Darker gray for contrast */
+  background-color: rgb(232, 232, 232) !important; /* Apply soft orange background */
+  color: #D4AF37 !important; /* Darker gray for contrast */
 }
 
 .profile-name {
-  font-size: large;
-  color: #444; /* Dark gray for better visibility */
+  font-size: large !important;
+  color: #D4AF37 !important; /* Dark gray for better visibility */
 }
 
 .profile-position {
-  font-size: default;
-  color: #444; /* Dark gray for better visibility */
+  font-size: default !important;
+  color: #D4AF37 !important; /* Dark gray for better visibility */
 }
 
 .edit-profile-link {
-  font-size: smaller;
-  color: #ff5722; /* Vibrant orange for links */
-  text-decoration: underline;
+  font-size: smaller !important;
+  color: #ff5722 !important; /* Vibrant orange for links */
+  text-decoration: underline !important;
 }

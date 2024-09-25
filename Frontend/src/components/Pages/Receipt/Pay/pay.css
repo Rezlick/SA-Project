@@ -1,205 +1,232 @@
-.button {
-    background-color: red;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .button:hover {
-    transform: scale(1.1);
-    background-color: #ff3333; /* สีของปุ่มเมื่อ hover */
-  }
-  
-  .payment-button {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .payment-button:hover {
-    transform: scale(1.1);
-    background-color: #28a745; /* สีของปุ่มเมื่อ hover */
-  }
-  
-  .qr-button {
-    background-color: #2f82ff;
-    color: #ffffff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: 1px solid #000;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .qr-button:hover {
-    transform: scale(1.1);
-    background-color: #418bfa; /* สีของปุ่มเมื่อ hover */
-  }
 
-  .popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(61, 61, 61, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Button กลับ  */
+
+.back-button {
+  background-color: #ff0000;
+  color: white;
+  padding: 20px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 10px;
+  border: 3px solid #ff0000;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.popup {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.back-button:hover {
+  transform: scale(1.05);
+  background-color: #ffffff !important; /* สลับเป็นพื้นหลังสีขาวเมื่อ hover */
+  color: #ff0000 !important; /* สลับเป็นฟอนต์สีแดงเมื่อ hover */
+  border-color: #ff0000 !important; /* ขอบยังคงเป็นสีแดงเมื่อ hover */
+}
+ 
+/* Button ยืนยัน(ชำระเงิน)  */
+
+.payment-button {
+  background-color: #28a745;
+  color: #ffffff;
+  padding: 20px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 10px;
+  border: 3px solid #28a745;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-
-.popup-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+.payment-button:hover {
+  transform: scale(1.05);
+  background-color: #ffffff !important; /* สลับเป็นพื้นหลังสีขาวเมื่อ hover */
+  color: #28a745 !important; /* สลับเป็นฟอนต์สีเขียวเมื่อ hover */
+  border-color: #28a745; /* ขอบยังคงเป็นสีเขียว */
 }
 
-.confirm-button, .cancel-button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
+/* Button แสดง QR  */
+
+.qr-button {
+  background-color: #418bfa;
+  color: #ffffff;
+  padding: 20px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 10px;
+  border: 3px solid #418bfa;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.confirm-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    margin-right: 10px;
+.qr-button:hover {
+  transform: scale(1.05);
+  background-color: #418bfa; /* สีของปุ่มเมื่อ hover */
 }
 
-.cancel-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
+/* Card แสดง QR  */
+.custom-cardQR .ant-card-body  {
+  padding: 5px !important; /* ลบ padding */
 }
 
-.confirm-button:hover, .cancel-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.confirm-button:active, .cancel-button:active {
-    transform: scale(0.95);
-}
-
-.centered-input {
-  text-align: center; /* จัดข้อความให้อยู่กลางภายใน Input */
-  font-size: 16px;
-}
+/* ช่องเลือกของ ช่องทางการชำระเงิน  */
 
 .form-type .ant-form-item-label > label {
-  font-size: 16px; /* ปรับขนาดตัวอักษร */
+  font-size:25px;
+  font-weight: bold;
   text-align: center; /* จัดตำแหน่งตรงกลาง */
 }
 
-.custom-form .ant-form-item-label > label {
-  font-size: 18px; /* ปรับขนาดตัวอักษร */
-  text-align: center; /* จัดตำแหน่งตรงกลาง */
+/* ปรับความสูงของ selector */
+.custom-form-type .ant-select-selector {
+  height: 50px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.custom-form .ant-form-item {
+/* ปรับขนาดตัวอักษรและความหนาของข้อความที่ถูกเลือก */
+.custom-form-type .ant-select-selection-item {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  line-height: 50px !important; /* ให้แน่ใจว่าข้อความอยู่ตรงกลาง */
+}
+
+/* ปรับขนาดตัวอักษรของตัวเลือกใน dropdown */
+.custom-dropdown-FormType .ant-select-item-option-content {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+/* ช่องกรอกของ Phone , Coupon  */
+
+.custom-form-pay {
+  justify-content: center; 
+  align-items: center; 
   margin-bottom: 0;
 }
 
+.custom-form-pay .ant-form-item-label {
+  display: flex; 
+  align-items: center; 
+}
+
+.custom-form-pay .ant-form-item-label > label {
+  font-size: 22px ;
+  font-weight: bold;
+}
+
+.centered-input {
+  font-size: 20px; /* ขนาดตัวอักษรของ input field */
+  height: 50px; /* ความสูงของ input field */
+  border: 3px solid #000000; /* ขอบ */
+  margin-bottom: 0px; /* ไม่มีช่องว่างด้านล่าง */
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Card payment ช่องแสดงข้อความต่า */
+
 .card-payment {
-  height: 35px;
+  height: 50px;
   padding: 0;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
 
   display: flex;  
   justify-content: center; 
   align-items: center; 
 
-  border: 1px solid #ff8001;
+  border: 3px solid #000000;
 
-  font-size: 16px;
+  font-size:20px;
+  font-weight: bold;
+
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .card-promtpay {
-  height: 35px;
+  height: 50px;
   padding: 0;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
 
-  display: flex;  
-  justify-content: center; 
-  align-items: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  border: 2px solid #02387e;
+  border: 3px solid #02387e;
 
-  font-size: 16px;
+  font-size:20px;
+  font-weight: bold;
+
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* ปรับขนาดของ Checkbox */
+.content-promtpay {
+  display: flex;
+  align-items: center; /* จัดไอคอนและข้อความให้อยู่ตรงกลางแนวตั้ง */
+}
+
+.large-icon {
+  font-size: 30px; /* ขนาดที่ต้องการ */
+  margin-right: 10px;
+}
+
+/* Checkbox Member */
 .checkbox-payment .ant-checkbox-inner {
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
 }
 
-/* ปรับขนาดของเครื่องหมายถูก */
 .checkbox-payment .ant-checkbox-inner::after {
   width: 10px;
   height: 14px;
 }
 
-/* เปลี่ยนสีขอบเมื่อ hover */
 .checkbox-payment .ant-checkbox:hover .ant-checkbox-inner {
-  border-color: #ff8001; /* เปลี่ยนสีขอบเป็นสีดำเมื่อ hover */
+  border-color: #000000; 
 }
 
-/* เปลี่ยนสีขอบและพื้นหลังเมื่อ Checkbox ถูกเลือก (checked) */
 .checkbox-payment .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #ff8001; /* เปลี่ยนสีพื้นหลังเป็นสีดำเมื่อถูกเลือก */
-  border-color: #ff8001; /* เปลี่ยนสีขอบเป็นสีดำเมื่อถูกเลือก */
+  background-color: #000000; 
+  border-color: #000000; 
 }
 
-/* เปลี่ยนสีของเครื่องหมายถูก (checkmark) */
-.checkbox-payment .ant-checkbox-checked .ant-checkbox-inner::after {
-  border-color: #ffffff; /* เปลี่ยนสีของเครื่องหมายถูกเป็นสีขาว */
+.checkbox-payment .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+  border-color: #000000 !important; 
+  background-color: #ffffff !important; 
 }
 
-
-/* ป้องกันไม่ให้มีสีฟ้าเมื่อ Checkbox ถูก hover หลังจากการติ๊กเลือก */
 .checkbox-payment .ant-checkbox-checked:hover .ant-checkbox-inner {
-  border-color: #ff8001 !important; /* ใช้ !important เพื่อบังคับสีหลังจากถูกเลือก */
-  background-color: #ff8001 !important; /* ใช้ !important เพื่อบังคับพื้นหลังหลังจากถูกเลือก */
+  border-color: #000000 !important; 
+  background-color: #000000 !important; 
 }
 
+.checkbox-payment .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #000000 !important; 
+  border-color: #000000 !important; 
+}
 
 .checkbox-payment {
   display: flex;
   justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
-  align-items: center;     /* จัดให้อยู่ตรงกลางในแนวตั้ง (ถ้ากำหนดความสูงให้กับ container) */
-  margin-left: 20px;       /* กำหนด margin ซ้ายตามที่ต้องการ */
-  border: 2px solid #ff8001;
+  margin-left: 40px;       /* กำหนด margin ซ้ายตามที่ต้องการ */
+  border: 3px solid #000000;
   padding: 8px;
   border-radius: 6px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 
+/* Modal สำหรับยืนยันชำระเงิน */
+
 .custom-modal-payment .ant-modal-confirm-title {
-  font-size: 20px; /* ปรับขนาดฟอนต์ของ title */
+  font-size: 30px; /* ปรับขนาดฟอนต์ของ title */
 }
 
 .custom-modal-payment .ant-modal-confirm-content {
-  font-size: 18px; /* ปรับขนาดฟอนต์ของเนื้อหา */
+  font-size: 20px; /* ปรับขนาดฟอนต์ของเนื้อหา */
 }

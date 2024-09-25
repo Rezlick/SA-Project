@@ -8,6 +8,7 @@ import {
   Form,
   message,
   Modal,
+  Tooltip,
 } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -123,8 +124,8 @@ function CreateBookingTable() {
     }
 
     Modal.confirm({
-      title: "Confirm Booking",
-      content: "Are you sure you want to confirm this booking?",
+      title: "ยืนยันรายการ",
+      content: "คุณต้องการยืนยันการทำรายการนี้หรือไม่?",
       centered: true,
       onOk: async () => {
         const tableIdNumber = Number(tableId);
@@ -168,7 +169,7 @@ function CreateBookingTable() {
           }
 
           await updateTableStatus(tableIdNumber, 2);
-          message.success("Booking confirmed!");
+          message.success("ทำรายการสำเร็จ!");
           navigate("/booking/booking_list");
         } catch (error) {
           message.error("Booking failed! Please try again.");
@@ -279,16 +280,17 @@ function CreateBookingTable() {
                 </Col>
               </Row>
               <Row gutter={[16, 16]}>{renderSoupFields()}</Row>
-              <Row gutter={[16, 16]}></Row>
               <Row justify="space-between">
                 <Col>
-                  <Button
-                    type="default"
-                    onClick={handleBackButtonClick}
-                    className="back-button-style"
-                  >
-                    กลับ
-                  </Button>
+                  <Tooltip title="กลับไปยังหน้าเลือกโต๊ะ">
+                    <Button
+                      type="default"
+                      onClick={handleBackButtonClick}
+                      className="back-button-style"
+                    >
+                      กลับ
+                    </Button>
+                  </Tooltip>
                 </Col>
                 <Col>
                   <Button

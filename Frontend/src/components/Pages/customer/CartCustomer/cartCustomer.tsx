@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Table, Col, Row, Button, message, Modal } from 'antd';
+import { useEffect, useState } from "react";
+import { Table, Col, Row, Button, message, Modal, Card, Divider } from 'antd';
 import { useParams, useNavigate } from "react-router-dom";
 import { DeleteOutlined } from '@ant-design/icons';
 import { OrderInterface } from "../../../../interfaces/Order";
@@ -24,26 +24,26 @@ function CustomerCart() {
 
     const onFinish = async (id: string) => {
         Modal.confirm({
-            title: "Confirm Order",
-            content: "Are you sure you want to confirm this order?",
+            title: <span style={{ fontSize: '20px' }}>ยืนยันการสั่งอาหาร ?</span>, // Adjust title font size
+    content: <p style={{ fontSize: '16px' }}>คุณต้องการยืนยันการสั่งอาหารใช่หรือไม่ ?</p>, // Adjust content font size
             centered: true,
             onOk: async () => {
                 if (!id || isNaN(Number(id))) {
                     message.error("Invalid or missing booking ID.");
                     return;
                 }
-    
+
                 const orderPayload: OrderInterface = {
                     BookingID: id,
                 };
-    
+
                 try {
                     // Create Order
                     const orderRes = await CreateOrder(orderPayload.BookingID);
                     console.log("CreateOrder Response:", orderRes);  // Log the order creation response
                     const orderId = orderRes?.order_id;  // Make sure this matches the response
                     if (!orderId) throw new Error("Order ID is missing from the response");
-    
+
                     // Prepare the payload for order products
                     const orderProductPayload = cartData.map((item) => ({
                         OrderID: orderId,
@@ -51,35 +51,34 @@ function CustomerCart() {
                         Quantity: item.quantity,
                     }));
                     console.log("Order Product Payload:", orderProductPayload);  // Log the payload
-    
+
                     // Send order products request
                     await Promise.all(orderProductPayload.map(CreateOrderProducts));
-    
+
                     // Show success message
-                    message.success("Order and products confirmed!");
-    
+                    message.success("ยืนยันออเดอร์เสร็จสิ้น!");
+
                     // Clear cart data after successful order creation
                     setCartData([]);  // Clear table data
                     localStorage.removeItem('cartData');  // Clear localStorage data
-    
+
                     // Optionally add some delay before redirecting or showing additional messages
                     setTimeout(() => {
-                        message.success("Clearing cart data and navigating...");
+                        message.success("เคลียร์ข้อมูล");
                         // Redirect to the customer page or another location
                         navigate(`/customer/status/${id}`);
-                    }, 1500); // Delay 1.5 seconds before navigating
+                    },); // Delay 1.5 seconds before navigating
                 } catch (error) {
                     console.error("Error creating order or order products:", error);  // Log the error
                     message.error("Order or order-product creation failed! Please try again.");
                 }
             },
             onCancel: () => {
-                message.info("Order was cancelled.");
             },
         });
     };
-    
-    
+
+
 
     // Prepare the data source for the table
     const dataSource = cartData.map((item, index) => ({
@@ -91,22 +90,24 @@ function CustomerCart() {
         index: index,
     }));
 
-    // Define columns for the Table
     const columns = [
         {
             title: 'ลำดับ',
             dataIndex: 'ID',
             key: 'ID',
+            render: text => <span style={{ fontSize: '16px' }}>{text}</span>, // Font size applied here
         },
         {
             title: 'ชื่อสินค้า',
             dataIndex: 'productName',
             key: 'productName',
+            render: text => <span style={{ fontSize: '16px' }}>{text}</span>, // Font size applied here
         },
         {
             title: 'จำนวน',
             dataIndex: 'quantity',
             key: 'quantity',
+            render: text => <span style={{ fontSize: '16px' }}>{text}</span>, // Font size applied here
         },
         {
             title: 'จัดการ',
@@ -115,40 +116,45 @@ function CustomerCart() {
             render: (_, record) => (
                 <Button
                     type="danger"
-                    icon={<DeleteOutlined />}
+                    icon={<DeleteOutlined style={{ color: 'red' }} />}
                     danger
                     onClick={() => handleDelete(record.index)}
                 />
             ),
         },
     ];
+    
 
     return (
         <div>
-            <Row>
-                <h1>ตะกร้าสินค้าสำหรับลูกค้า {id}</h1> {/* Using id instead of undefined bookingId */}
-            </Row>
-            <Col xs={24} style={{ overflowY: 'auto' }}> {/* Adjust the height and enable vertical overflow */}
-                <Table
-                    dataSource={dataSource}
-                    columns={columns}
-                    pagination={false}
-                    scroll={{ y: 350 }} // Optional: set fixed height for the table body
-                />
-            </Col>
-
-            {cartData.length > 0 && (
-                <Row justify="center" style={{ marginTop: '20px' }}>
-                    <Button
-                        type="primary"
-                        onClick={async () => {
-                            await onFinish(id);  // Pass the id directly
-                        }}
-                    >
-                        ยืนยันการสั่งอาหาร
-                    </Button>
+            <Card style={{ marginTop: '20px', backgroundColor: '#2C2C2C',border: '3px solid #FFD700'}}>
+                <Row>
+                    <h2 style={{ color: 'white' }}>ตะกร้าสินค้าสำหรับลูกค้า {id}</h2> {/* Using id instead of undefined bookingId */}
                 </Row>
-            )}
+                <Divider style={{ borderColor: '#FFD700', color: '#FFD700' }} />
+                <Col xs={24} style={{ overflowY: 'auto' }}> {/* Adjust the height and enable vertical overflow */}
+                    <Table
+                        dataSource={dataSource}
+                        columns={columns}
+                        pagination={false}
+                        scroll={{ y: 350 }} 
+                    />
+                </Col>
+
+                {cartData.length > 0 && (
+                    <Row justify="center" style={{ marginTop: '20px' }}>
+                        <Button
+                            type="primary"
+                            style={{ width:'160px', height:'50px', fontSize:'17px'}}
+                            onClick={async () => {
+                                await onFinish(id);  
+                            }}
+                        >
+                            ยืนยันการสั่งอาหาร
+                        </Button>
+                    </Row>
+                )}
+            </Card>
         </div>
     );
 }

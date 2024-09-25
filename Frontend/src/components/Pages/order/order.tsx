@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message, Divider, Empty } from "antd";
+import { Table, Row, Col, Spin, message, Divider, Empty, Button } from "antd";
 import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetOrders } from "../../../services/https";
@@ -10,9 +10,10 @@ import dayjs from "dayjs";
 function Order() {
   const [order, setOrders] = useState<OrderInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
 
+  // Function to fetch order data
   const fetchOrderData = async () => {
-    setLoading(true);
     try {
       const res = await GetOrders();
       if (res.status === 200) {
@@ -27,10 +28,20 @@ function Order() {
     }
   };
 
-
   useEffect(() => {
+    // First data load
     fetchOrderData();
-  }, []);
+
+    // Set up auto-refresh every 30 seconds
+    const interval = setInterval(() => {
+      if (autoRefresh) {
+        fetchOrderData();  // Fetch new data without resetting the entire component
+      }
+    }, 20000);  // Set your interval time in milliseconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, [autoRefresh]);
 
   const columns: ColumnsType<OrderInterface> = [
     {
@@ -99,19 +110,19 @@ function Order() {
   return (
     <>
       <Row>
-        <Col span={12} style={{ marginTop: "-10px", marginBottom: "-15px"}}>
+        <Col span={12} style={{ marginTop: "-10px", marginBottom: "-15px" }}>
           <h2>รายการออเดอร์</h2>
         </Col>
       </Row>
       <Divider/>
       <Row>
-        <Col span={24} style={{ marginTop: "15px"}}>
-        {loading ? (
+        <Col span={24} style={{ marginTop: "15px" }}>
+          {loading ? (
             <Spin tip="กำลังโหลดข้อมูล..." size="large" />
           ) : order.length > 0 ? (
-            <Table dataSource={order} columns={columns} pagination={{ pageSize: 6 }} loading={loading} />
+            <Table dataSource={order} columns={columns} pagination={{ pageSize: 6 }} />
           ) : (
-            <Empty description="ไม่มีออเดอร์ที่ต้องแสดง" />  // เพิ่มข้อความเมื่อไม่มีข้อมูล
+            <Empty description="ไม่มีออเดอร์ที่ต้องแสดง" />
           )}
         </Col>
       </Row>

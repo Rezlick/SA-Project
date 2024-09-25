@@ -120,12 +120,12 @@ func SetupDatabase() {
 
    Soup1 := entity.Soup{Name: "ซุปน้ำใส"}
    Soup2 := entity.Soup{Name: "ซุปน้ำดำ"}
-   Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
-   Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
+   Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 39}
+   Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 39}
    
-   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 2}
-   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 3}
-   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 4}
+   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 199, Point: 2}
+   Package_seafood := entity.Package{Name: "ทะเล", Price: 289, Point: 3}
+   Package_beef := entity.Package{Name: "เนื้อ", Price: 349, Point: 4}
 
    StatusAvailable := entity.TableStatus{Status: "Available"}
    StatusReserved := entity.TableStatus{Status: "Occupied"}

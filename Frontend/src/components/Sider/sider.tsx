@@ -168,7 +168,7 @@ function Sider() {
             </Menu>
           </div>
 
-          <Menu style={{ backgroundColor: "transparent" }} mode="inline"> {/* Changed background color to transparent */}
+          <Menu style={{ backgroundColor: "#8c8c8c" }} mode="inline">
             <Menu.Item key="logout" onClick={Logout}>
               <LogoutOutlined />
               <span>ออกจากระบบ</span>

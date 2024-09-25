@@ -123,8 +123,8 @@ function CreateBookingTable() {
     }
 
     Modal.confirm({
-      title: "Confirm Booking",
-      content: "Are you sure you want to confirm this booking?",
+      title: "ยืนยันรายการ",
+      content: "คุณต้องการยืนยันการทำรายการนี้หรือไม่?",
       centered: true,
       onOk: async () => {
         const tableIdNumber = Number(tableId);
@@ -168,7 +168,7 @@ function CreateBookingTable() {
           }
 
           await updateTableStatus(tableIdNumber, 2);
-          message.success("Booking confirmed!");
+          message.success("ทำรายการสำเร็จ!");
           navigate("/booking/booking_list");
         } catch (error) {
           message.error("Booking failed! Please try again.");

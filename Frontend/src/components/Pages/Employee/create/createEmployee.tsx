@@ -21,10 +21,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { GenderInterface } from "../../../../interfaces/Gender";
 import { PositionInterface } from "../../../../interfaces/Position";
 
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function EmployeeCreate() {
   const navigate = useNavigate();
@@ -261,6 +259,7 @@ function EmployeeCreate() {
                     required: true,
                     message: "กรุณาเลือกกรอกรหัสผ่าน!",
                   },
+                  { min: 6, message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร" },
                 ]}
               >
                 <Input.Password />

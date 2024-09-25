@@ -1,13 +1,14 @@
 package controller
 
 import (
-    "time"
 	"net/http"
-    "golang.org/x/crypto/bcrypt"
+	"time"
+
 	"github.com/SA_Project/config"
 	"github.com/SA_Project/entity"
 	"github.com/gin-gonic/gin"
-    "gorm.io/gorm"
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func CreateEmployee(c *gin.Context) {
@@ -25,7 +26,7 @@ func CreateEmployee(c *gin.Context) {
 	var gender entity.Gender
 	db.First(&gender, employee.GenderID)
 	if gender.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "gender not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบเพศ"})
 		return
 	}
 
@@ -33,7 +34,7 @@ func CreateEmployee(c *gin.Context) {
     var position entity.Position
 	db.First(&position, employee.PositionID)
 	if position.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "position not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบตำแหน่ง"})
 		return
 	}
 
@@ -96,7 +97,7 @@ func UpdateEmployee(c *gin.Context) {
    db := config.DB()
    result := db.First(&employee, employeeID)
    if result.Error != nil {
-       c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
+       c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบพนักงาน"})
        return
    }
 
@@ -107,7 +108,7 @@ func UpdateEmployee(c *gin.Context) {
 
    result = db.Save(&employee)
    if result.Error != nil {
-       c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+       c.JSON(http.StatusBadRequest, gin.H{"error": "แก้ไขข้อมูลไม่สำเร็จ"})
        return
    }
 
@@ -121,7 +122,7 @@ func DeleteEmployee(c *gin.Context) {
 
     var employee entity.Employee
     if err := db.First(&employee, id).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Member not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบพนักงาน"})
         return
     }
 
@@ -146,7 +147,7 @@ func DeleteEmployee(c *gin.Context) {
     }
 
     if err := tx.Commit().Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to commit transaction"})
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "ลบข้อมูลไม่สำเร็จ"})
         return
     }
 
@@ -167,20 +168,20 @@ func ChangePassword(c *gin.Context) {
     db := config.DB()
     result := db.First(&employee, employeeID)
     if result.Error != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Employee ID not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบพนักงาน"})
         return
     }
 
     // Bind the incoming JSON to the payload struct
     if err := c.ShouldBindJSON(&payload); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
     }
 
     // Verify that old password is correct
     err := bcrypt.CompareHashAndPassword([]byte(employee.Password), []byte(payload.OldPassword))
     if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "รหัสผ่านไม่ถูกต้อง"})
+        c.JSON(http.StatusBadRequest, gin.H{"error": "รหัสผ่านเดิมไม่ถูกต้อง"})
         return
     }
 
@@ -193,14 +194,14 @@ func ChangePassword(c *gin.Context) {
     // Hash the new password
     hashedPassword, err := config.HashPassword(payload.NewPassword)
     if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash the new password"})
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "เข้ารหัส รหัสผ่านไม่สำเร็จ"})
         return
     }
 
     // Update the employee's password in the database
     result = db.Model(&employee).Update("password", hashedPassword)
     if result.Error != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update the password"})
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "เปลี่ยนรหัสผ่านไม่สำเร็จ"})
         return
     }
 

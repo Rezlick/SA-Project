@@ -141,11 +141,6 @@ function Booking() {
                       type="default"
                       className="tableButton"
                       onClick={() => handleButtonClick(table)}
-                      disabled={
-                        !table.table_name ||
-                        status?.status === "Occupied" ||
-                        status?.status === "Cleaning"
-                      }
                       style={{
                         width: "100%",
                         display: "flex",

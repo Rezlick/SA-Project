@@ -98,10 +98,10 @@ function CreateBookingTable() {
         table_status_id: statusId,
       });
       if (response.status !== 200) {
-        throw new Error("Failed to update table status.");
+        throw new Error("เกิดข้อผิดพลาดในการอัพเดทสถานะโต๊ะ");
       }
     } catch (error) {
-      message.error("Failed to update table status.");
+      message.error("เกิดข้อผิดพลาดในการอัพเดทสถานะโต๊ะ");
     }
   };
 
@@ -119,7 +119,7 @@ function CreateBookingTable() {
   const onFinish = async (values: any) => {
     const { min, max } = fetchTableCapacityLimits();
     if (values.number_of_customer < min || values.number_of_customer > max) {
-      message.error(`Number of customers must be between ${min} and ${max}!`);
+      message.error(`จำนวนลูกค้าต้องอยู่ในช่วง ${min} ถึง ${max}!`);
       return;
     }
 
@@ -251,7 +251,7 @@ function CreateBookingTable() {
                     ]}
                   >
                     <InputNumber
-                      placeholder="Customers"
+                      placeholder="จำนวนลูกค้า"
                       min={fetchTableCapacityLimits().min || 1}
                       max={fetchTableCapacityLimits().max || 10}
                       step={1}
@@ -264,11 +264,11 @@ function CreateBookingTable() {
                     label="แพ็กเกจ"
                     name="package_id"
                     rules={[
-                      { required: true, message: "Please select a package!" },
+                      { required: true, message: "กรุณาเลือกแพ็กเกจ!" },
                     ]}
                   >
                     <Select
-                      placeholder="Select a package"
+                      placeholder="เลือกแพ็กเกจ"
                       className="select-style"
                       options={packages.map((pkg) => ({
                         value: pkg.ID,
@@ -284,7 +284,7 @@ function CreateBookingTable() {
                 <Col>
                   <Tooltip title="กลับไปยังหน้าเลือกโต๊ะ">
                     <Button
-                      type="default"
+                      type="primary"
                       onClick={handleBackButtonClick}
                       className="back-button-style"
                     >

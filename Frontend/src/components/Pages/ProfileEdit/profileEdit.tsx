@@ -18,10 +18,8 @@ import { EmployeeInterface } from "../../../interfaces/Employee";
 import { GetEmployeeByID, UpdateEmployee } from "../../../services/https";
 import { useNavigate, Link } from "react-router-dom";
 
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import ImgCrop from "antd-img-crop";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 function ProfileEdit() {
   const navigate = useNavigate();

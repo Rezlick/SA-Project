@@ -22,9 +22,9 @@ func CreateMember(c *gin.Context) {
 
     // ค้นหา rank ด้วย id
 	var rank entity.Rank
-	db.First(&rank, member.RankID)
+	db.First(&rank, 1)
 	if rank.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "rank not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบระดับสมาชิก"})
 		return
 	}
 
@@ -32,7 +32,7 @@ func CreateMember(c *gin.Context) {
     var employee entity.Employee
     db.First(&employee, member.EmployeeID)
     if employee.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "employee not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบพนักงาน"})
         return
     }
 
@@ -41,7 +41,7 @@ func CreateMember(c *gin.Context) {
         FirstName:  member.FirstName,					
 	    LastName:   member.LastName,				
 	    PhoneNumber:member.PhoneNumber,					
-	    RankID:     member.RankID,		
+	    RankID:     1,		
 	    Rank:       rank,					
 	    EmployeeID: member.EmployeeID,				
         Employee:   employee,
@@ -92,7 +92,7 @@ func UpdateMember(c *gin.Context) {
 	db := config.DB()
 	result := db.First(&member, memberID)
 	if result.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบสมาชิก"})
 		return
 	}
 
@@ -103,7 +103,7 @@ func UpdateMember(c *gin.Context) {
 
 	result = db.Save(&member)
 	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "แก้ไขข้อมูลไม่สำเร็จ"})
 		return
 	}
 
@@ -117,7 +117,7 @@ func DeleteMember(c *gin.Context) {
 
     var member entity.Member
     if err := db.First(&member, id).Error; err != nil {
-        c.JSON(http.StatusNotFound, gin.H{"error": "Member not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "ไม่พบสมาชิก"})
         return
     }
 
@@ -142,7 +142,7 @@ func DeleteMember(c *gin.Context) {
     }
 
     if err := tx.Commit().Error; err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to commit transaction"})
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "ลบข้อมูลไม่สำเร็จ"})
         return
     }
 

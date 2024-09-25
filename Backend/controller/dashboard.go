@@ -67,6 +67,8 @@ func GetTranferIncomeForCurrentMonth(c *gin.Context) {
 func GetDashboardDataForMonth(c *gin.Context) {
 	var count int 
 	var income int 
+    var cashIncome int
+    var tranferIncome int
 
     // Get the month and year from query parameters
     month := c.Query("month") // Expects "MM" format
@@ -82,6 +84,8 @@ func GetDashboardDataForMonth(c *gin.Context) {
     // Select members created in the specified month and year
     query1 := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m', created_at) = ? AND deleted_at IS NULL"
 	query2 := "SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m', created_at) = ?"
+    query3 := "SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m', created_at) = ? AND type_payment_id == 1"
+    query4 := "SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m', created_at) = ? AND type_payment_id == 2"
 
     result1 := db.Raw(query1, year+"-"+month).Scan(&count)
     if result1.Error != nil {
@@ -95,15 +99,30 @@ func GetDashboardDataForMonth(c *gin.Context) {
         return
     }
 
+    result3 := db.Raw(query3, year+"-"+month).Scan(&cashIncome)
+	if result3.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result3.Error.Error()})
+        return
+    }
+    result4 := db.Raw(query4, year+"-"+month).Scan(&tranferIncome)
+	if result4.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result4.Error.Error()})
+        return
+    }
+
     c.JSON(http.StatusOK, gin.H{
 		"memberCount": count,
 		"netIncome":income,
+        "cashIncome": cashIncome,
+        "tranferIncome": tranferIncome,
 	})
 }
 
 func GetDashboardDataForDay(c *gin.Context) {
     var count int 
 	var income int
+    var cashIncome int
+    var tranferIncome int
 
     // Get the date from query parameters (expects "YYYY-MM-DD" format)
     day := c.Query("day")
@@ -118,6 +137,8 @@ func GetDashboardDataForDay(c *gin.Context) {
     // Select members created on the specified day
     query1 := "SELECT COUNT(id) FROM members WHERE strftime('%Y-%m-%d', created_at) = ? AND deleted_at IS NULL"
 	query2 := "SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = ?"
+    query3 := "SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = ? AND type_payment_id == 1"
+    query4 := "SELECT COALESCE(SUM(total_price), 0) FROM receipts WHERE strftime('%Y-%m-%d', created_at) = ? AND type_payment_id == 2"
 
     result1 := db.Raw(query1, day).Scan(&count)
     if result1.Error != nil {
@@ -131,9 +152,23 @@ func GetDashboardDataForDay(c *gin.Context) {
         return
     }
 
+    result3 := db.Raw(query3, day).Scan(&cashIncome)
+    if result3.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result3.Error.Error()})
+        return
+    }
+
+	result4 := db.Raw(query4, day).Scan(&tranferIncome)
+    if result4.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result4.Error.Error()})
+        return
+    }
+
     c.JSON(http.StatusOK, gin.H{
 		"memberCount": count,
-		"netIncome": income,
+		"netIncome":income,
+        "cashIncome": cashIncome,
+        "tranferIncome": tranferIncome,
 	})
 }
 

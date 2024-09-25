@@ -55,7 +55,7 @@ function Employee() {
       render: (record) => <>{record.Position?.Name || "N/A"}</>,
     },
     {
-      title: "",
+      title: "จัดการ",
       render: (record) => (
         <Dropdown
           menu={{
@@ -138,7 +138,7 @@ function Employee() {
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
             <Link to="/employee/create">
-              <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: "#FF7D29" }}>
+              <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: "rgb(218, 165, 32)" }}>
                 ลงทะเบียน
               </Button>
             </Link>

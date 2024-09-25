@@ -9,9 +9,21 @@ import moment from 'moment';
 interface DataType {
   MemberCount: string;
   NetIncome: string;
+  CashIncome: string;
+  TranferIncome: string;
 }
 
 const columns: ColumnsType<DataType> = [
+  {
+    title: "รายได้เงินสด",
+    dataIndex: "CashIncome",
+    key: "CashIncome",
+  },
+  {
+    title: "รายได้เงินโอน",
+    dataIndex: "TranferIncome",
+    key: "TranferIncome",
+  },
   {
     title: "รายได้สุทธิ",
     dataIndex: "NetIncome",
@@ -98,7 +110,12 @@ export default function Dashboard() {
       const formattedMonth = month.toString().padStart(2, "0");
       const res = await GetDashboardDataForMonth(formattedMonth, year.toString());
       if (res.status === 200) {
-        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท" }]);
+        setData([{ 
+          MemberCount: res.data.memberCount.toString() + " ท่าน", 
+          NetIncome: res.data.netIncome + " บาท" ,
+          CashIncome: res.data.cashIncome + " บาท" ,
+          TranferIncome: res.data.tranferIncome + " บาท" ,
+        }]);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -111,7 +128,12 @@ export default function Dashboard() {
     try {
       const res = await GetDashboardDataForDay(date);
       if (res.status === 200) {
-        setData([{ MemberCount: res.data.memberCount.toString() + " ท่าน", NetIncome: res.data.netIncome + " บาท" }]);
+        setData([{ 
+          MemberCount: res.data.memberCount.toString() + " ท่าน", 
+          NetIncome: res.data.netIncome + " บาท" ,
+          CashIncome: res.data.cashIncome + " บาท" ,
+          TranferIncome: res.data.tranferIncome + " บาท" ,
+        }]);
       } else {
         message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
@@ -135,6 +157,12 @@ export default function Dashboard() {
       }
     } else {
       setSelectedDate(null);
+      setData([{
+        MemberCount: "0 ท่าน",
+        NetIncome: "0 บาท",
+        CashIncome: "0 บาท",
+        TranferIncome: "0 บาท",
+      }]);
     }
   };
 
@@ -142,6 +170,12 @@ export default function Dashboard() {
     setIsDayMode(e.target.value === "day");
     setMode(e.target.value);
     form.resetFields(['MonthID']);
+    setData([{
+      MemberCount: "0 ท่าน",
+      NetIncome: "0 บาท",
+      CashIncome: "0 บาท",
+      TranferIncome: "0 บาท",
+    }]);
   };
 
   useEffect(() => {
@@ -193,7 +227,7 @@ export default function Dashboard() {
               <Radio.Button
                 value="month"
                 style={{
-                  backgroundColor: mode === 'month' ? '#FF7D29' : '', // Apply color if selected
+                  backgroundColor: mode === 'month' ? 'rgb(218, 165, 32)' : '', // Apply color if selected
                   color: mode === 'month' ? '#fff' : '', // Ensure text is white on the selected button
                 }}
               >
@@ -202,7 +236,7 @@ export default function Dashboard() {
               <Radio.Button
                 value="day"
                 style={{
-                  backgroundColor: mode === 'day' ? '#FF7D29' : '', // Apply color if selected
+                  backgroundColor: mode === 'day' ? 'rgb(218, 165, 32)' : '', // Apply color if selected
                   color: mode === 'day' ? '#fff' : '', // Ensure text is white on the selected button
                 }}
               >

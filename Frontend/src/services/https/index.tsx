@@ -67,9 +67,9 @@ async function DeleteEmployeeByID(id: string | undefined) {
 
 async function CheckEmail(email: string) {
   return await axios
-  .post(`${apiUrl}/checkEmail/${email}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/checkEmail/${email}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 async function GetGenders() {
   return await axios
@@ -103,37 +103,37 @@ async function GetMembers() {
 
 async function CheckMembers(PhoneNumber: string) {
   return await axios
-  .post(`${apiUrl}/api/check-member/${PhoneNumber}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/api/check-member/${PhoneNumber}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function CheckPhone(phoneNumber: string) {
   return await axios
-  .post(`${apiUrl}/checkPhone/${phoneNumber}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/checkPhone/${phoneNumber}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetMemberByID(id: string | undefined) {
   return await axios
-  .get(`${apiUrl}/member/${id}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/member/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function UpdateMember(id: string | undefined, data: MemberInterface) {
   return await axios
-  .patch(`${apiUrl}/member/${id}`, data, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .patch(`${apiUrl}/member/${id}`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function DeleteMemberByID(id: string | undefined) {
   return await axios
-  .delete(`${apiUrl}/member/${id}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .delete(`${apiUrl}/member/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetMemberCountByReceiptToday() {
@@ -142,12 +142,12 @@ async function GetMemberCountByReceiptToday() {
     .then((res) => res)
     .catch((e) => e.response);
 }
-  
+
 async function GetMemberCountForToday() {
-    return await axios
-      .get(`${apiUrl}/memberCountForToday`, requestOptions)
-      .then((res) => res)
-      .catch((e) => e.response);
+  return await axios
+    .get(`${apiUrl}/memberCountForToday`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetNetIncomeByMemberToday() {
@@ -156,16 +156,16 @@ async function GetNetIncomeByMemberToday() {
     .then((res) => res)
     .catch((e) => e.response);
 }
-  
+
 async function GetRanks() {
-    return await axios
+  return await axios
     .get(`${apiUrl}/ranks`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
 
 // Dashboard functions
-  
+
 async function GetMemberCountForCurrentMonth() {
   return await axios
     .get(`${apiUrl}/memberCountForCurrentMonth`, requestOptions)
@@ -189,7 +189,10 @@ async function GetTranferIncomeForCurrentMonth() {
 
 async function GetDashboardDataForMonth(month: string, year: string) {
   return await axios
-    .get(`${apiUrl}/dashboardDataForMonth?month=${month}&year=${year}`, requestOptions)
+    .get(
+      `${apiUrl}/dashboardDataForMonth?month=${month}&year=${year}`,
+      requestOptions
+    )
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -200,8 +203,6 @@ async function GetDashboardDataForDay(date: string) {
     .then((res) => res)
     .catch((e) => e.response);
 }
-
-
 
 async function GetNetIncomeForCurrentMonth() {
   return await axios
@@ -214,9 +215,9 @@ async function GetNetIncomeForCurrentMonth() {
 
 async function GetReceipts() {
   return await axios
-  .get(`${apiUrl}/receipt`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/receipt`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function CreateReceipt(data: ReceiptInterface) {
@@ -237,36 +238,35 @@ async function DeleteBookingAfterPay(id: string | undefined) {
 
 async function CheckCoupons(code: string) {
   return await axios
-  .post(`${apiUrl}/api/check-coupon/${code}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/api/check-coupon/${code}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 // TypePayment
 
 async function GetTypePayment() {
   return await axios
-  .get(`${apiUrl}/typepayment`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
-}
-
-async function AddPointsToMember(memberID: string, points: number) {
-  return await axios
-    .patch(
-      `${apiUrl}/member/${memberID}/addPoints`,
-      { points }, 
-      requestOptions
-    )
+    .get(`${apiUrl}/typepayment`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
 
-async function changePassword(employeeID: string, payload: ChangePasswordInterface) {
+async function AddPointsToMember(memberID: string, points: number) {
+  return await axios
+    .patch(`${apiUrl}/member/${memberID}/addPoints`, { points }, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function changePassword(
+  employeeID: string,
+  payload: ChangePasswordInterface
+) {
   return await axios
     .patch(
-      `${apiUrl}/employee/${employeeID}/changePassword`, 
-      payload, 
+      `${apiUrl}/employee/${employeeID}/changePassword`,
+      payload,
       requestOptions
     )
     .then((res) => res)
@@ -275,119 +275,125 @@ async function changePassword(employeeID: string, payload: ChangePasswordInterfa
 
 async function GetBooking() {
   return await axios
-  .get(`${apiUrl}/booking`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/booking`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
-
 
 async function CreateBooking(data: BookingInterface) {
   try {
-      const response = await axios.post(`${apiUrl}/booking`, data, requestOptions);
-      console.log("CreateBooking Response:", response.data);
-      return response.data;
+    const response = await axios.post(
+      `${apiUrl}/booking`,
+      data,
+      requestOptions
+    );
+    console.log("CreateBooking Response:", response.data);
+    return response.data;
   } catch (error) {
-      if (axios.isAxiosError(error)) {
-          console.error("Axios Error Response:", error.response?.data);
-          return error.response?.data; 
-      }
-      console.error("An unexpected error occurred:", error);
-      return { error: "An unexpected error occurred" };
+    if (axios.isAxiosError(error)) {
+      console.error("Axios Error Response:", error.response?.data);
+      return error.response?.data;
+    }
+    console.error("An unexpected error occurred:", error);
+    return { error: "An unexpected error occurred" };
   }
 }
 
 async function CheckBooking(name: string) {
   return await axios
-  .post(`${apiUrl}/api/check-booking/${name}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/api/check-booking/${name}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetBookingByID(id: string) {
   return await axios
-  .get(`${apiUrl}/booking/${id}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/booking/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function UpdateBooking(id: string | undefined, data: BookingInterface) {
   return await axios
-  .patch(`${apiUrl}/booking/${id}`, data, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .patch(`${apiUrl}/booking/${id}`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function DeleteBookingByID(id: string | undefined) {
   return await axios
-  .delete(`${apiUrl}/booking/${id}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .delete(`${apiUrl}/booking/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 // Table functions
 async function GetTables() {
   return await axios
-  .get(`${apiUrl}/tables`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/tables`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function UpdateTableStatus(id: number | undefined, data: TableInterface) {
   return await axios
-  .patch(`${apiUrl}/tables/${id}`, data, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .patch(`${apiUrl}/tables/${id}`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetTableCapacity() {
   return await axios
-  .get(`${apiUrl}/table_capacity`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/table_capacity`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetTableStatus() {
   return await axios
-  .get(`${apiUrl}/table_status`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/table_status`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 // Soup functions
 async function GetSoups() {
   return await axios
-  .get(`${apiUrl}/soups`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/soups`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 // Package functions
 async function GetPackages() {
   return await axios
-  .get(`${apiUrl}/packages`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/packages`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function CreateBookingSoup(data: BookingSoupInterface) {
   return await axios
-  .post(`${apiUrl}/booking_soups`, data, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/booking_soups`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetBookingSoupByID(id: string) {
   return await axios
-  .get(`${apiUrl}/booking_soups/${id}`, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .get(`${apiUrl}/booking_soups/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
-async function UpdateBookingSoups(id: string | undefined, data: BookingSoupInterface[]) {
+async function UpdateBookingSoups(
+  id: string | undefined,
+  data: BookingSoupInterface[]
+) {
   return await axios
-      .put(`${apiUrl}/booking_soups/${id}`, data, requestOptions)
-      .then((res) => res)
-      .catch((e) => e.response);
+    .put(`${apiUrl}/booking_soups/${id}`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetStatusOrders() {
@@ -399,16 +405,19 @@ async function GetStatusOrders() {
 
 async function CreateOrder(id: string) {
   try {
-      const response = await axios.post(`${apiUrl}/createorder/${id}`, requestOptions);
-      console.log("CreateOrder Response:", response.data);
-      return response.data;
+    const response = await axios.post(
+      `${apiUrl}/createorder/${id}`,
+      requestOptions
+    );
+    console.log("CreateOrder Response:", response.data);
+    return response.data;
   } catch (error) {
-      if (axios.isAxiosError(error)) {
-          console.error("Axios Error Response:", error.response?.data);
-          return error.response?.data; 
-      }
-      console.error("An unexpected error occurred:", error);
-      return { error: "An unexpected error occurred" };
+    if (axios.isAxiosError(error)) {
+      console.error("Axios Error Response:", error.response?.data);
+      return error.response?.data;
+    }
+    console.error("An unexpected error occurred:", error);
+    return { error: "An unexpected error occurred" };
   }
 }
 
@@ -435,20 +444,16 @@ async function GetOrderByBookingID(id: string | undefined) {
 
 async function UpdateOrder(id: string | undefined, data: OrderInterface) {
   return await axios
-    .patch(
-      `${apiUrl}/order/${id}`, 
-      data, 
-      requestOptions
-    )
+    .patch(`${apiUrl}/order/${id}`, data, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
 
-async function CreateOrderProducts( data: OrderProductInterface) {
+async function CreateOrderProducts(data: OrderProductInterface) {
   return await axios
-  .post(`${apiUrl}/createorderproduct`, data, requestOptions)
-  .then((res) => res)
-  .catch((e) => e.response);
+    .post(`${apiUrl}/createorderproduct`, data, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
 }
 
 async function GetOrderProducts() {
@@ -526,7 +531,6 @@ async function GetProductByCodeID(Product_code_id: string) {
     .then((res) => res)
     .catch((e) => e.response);
 }
-
 
 export {
   SignIn,

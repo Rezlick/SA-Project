@@ -53,7 +53,7 @@ export default function Member() {
         return (
           <div style={{ width: 300 }}>
             <Progress
-              strokeColor="#FF7D29"
+              strokeColor="rgb(218, 165, 32)"
               percent={percentage}
               format={() => (currentRank === "Gold" || currentRank === "ไม่มี") ? `${currentPoints}` : `${currentPoints}/${maxPoints}`}
               size={[300, 20]}
@@ -69,7 +69,7 @@ export default function Member() {
       render: (record) => <>{record.Employee?.FirstName || "ไม่มี"}</>,
     },
     {
-      title: "",
+      title: "จัดการ",
       render: (record) => (
         <Dropdown
           menu={{
@@ -195,7 +195,7 @@ export default function Member() {
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
             <Link to="/member/create">
-              <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: "#FF7D29" }}>
+              <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: "rgb(218, 165, 32)" }}>
                 สมัครสมาชิก
               </Button>
             </Link>

@@ -269,7 +269,7 @@ function EmployeeEdit() {
               <Form.Item>
                 <Space>
                   <Link to="/employee">
-                    <Button htmlType="button" style={{ marginRight: "10px" }}>
+                    <Button htmlType="button" style={{ marginRight: "10px" , backgroundColor:"#e0dede"}}>
                       ยกเลิก
                     </Button>
                   </Link>
@@ -277,7 +277,7 @@ function EmployeeEdit() {
                   <Button 
                     type="primary" 
                     htmlType="submit" 
-                    style={{backgroundColor:"#FF7D29"}} 
+                    style={{backgroundColor:"rgb(218, 165, 32)"}} 
                     loading={isSubmitting}
                     disabled={isSubmitting}
                   >

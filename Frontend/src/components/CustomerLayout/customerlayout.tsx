@@ -3,7 +3,9 @@ import { Layout, Card, message } from "antd";
 import { Routes, Route } from "react-router-dom";
 import Customer from "../Pages/customer/customer";
 import CustomerCart from "../Pages/customer/CartCustomer/cartCustomer";
-import CustomerSider from "../Sider/CustomerSider"; // Import CustomerSider ที่ถูกต้อง
+import CustomerSider from "../Sider/CustomerSider";
+import CustomerStatus from "../Pages/customer/customerStatus/customerstatus"
+import CustomerDetail from "../Pages/customer/customerStatus/customerDetail/customerdetail";
 import logo from "../../assets/logo.png";
 import Background from "../../assets/background_customer.webp";
 import "../../App.css";
@@ -16,12 +18,19 @@ const CustomerLayout: React.FC = () => {
     return (
         <>
             {contextHolder}
-            <Layout style={{ maxHeight: "100%", maxWidth:'100vh' }}>
-                <Layout style={{ backgroundColor: "#FEFFD2", maxHeight: "100%", maxWidth:'95vh'  }}>
+            <Layout style={{ maxHeight: "100%", maxWidth: '100vh' }}>
+                <Layout style={{ maxHeight: "100vh", maxWidth: '95vh' }}>
                     <Content>
                         <div style={{ position: "relative" }}>
                             <img
-                                style={{ zIndex: 1, maxHeight: "100vh", width: "590px", marginLeft:'-10px' }}
+                                style={{
+                                    zIndex: 1,
+                                    height: "99vh",
+                                    width: "71vh",
+                                    marginLeft: '-10px',
+                                    objectFit: 'cover', // ครอบรูปภาพให้เต็ม container
+                                    overflow: 'hidden' // ซ่อนส่วนที่เกินออกมา
+                                }}
                                 src={Background}
                                 alt="Background"
                             />
@@ -57,6 +66,8 @@ const CustomerLayout: React.FC = () => {
                                 <Routes>
                                     <Route path="/customer/:id" element={<Customer />} />
                                     <Route path="/customer/cart/:id" element={<CustomerCart />} />
+                                    <Route path="/customer/status/:id" element={<CustomerStatus />} />
+                                    <Route path="/customer/detail/:bookingID/:id" element={<CustomerDetail />} />
                                 </Routes>
                             </div>
                         </Card>

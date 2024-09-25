@@ -11,6 +11,7 @@ import {
   message,
   Select,
   Upload,
+  Modal, // Import Modal for image preview
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -33,30 +34,34 @@ function EmployeeCreate() {
   const [positions, setPositions] = useState<PositionInterface[]>([]);
   const [genders, setGenders] = useState<GenderInterface[]>([]);
   const [emailInvalid, setEmailInvalid] = useState(false); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // New state to handle preview modal
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList.slice(-1));
   };
 
+  // Updated onPreview function to handle image preview correctly
   const onPreview = async (file: UploadFile) => {
-    let src = file.url as string;
-    if (!src) {
-      src = await new Promise((resolve) => {
+    if (!file.url && !file.preview) {
+      file.preview = await new Promise((resolve) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj as FileType);
+        reader.readAsDataURL(file.originFileObj as Blob);
         reader.onload = () => resolve(reader.result as string);
       });
     }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
+    setPreviewImage(file.url || file.preview as string);
+    setPreviewVisible(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1));
   };
 
+  // Function to handle form submission
   const onFinish = async (values: EmployeeInterface) => {
     setIsSubmitting(true); // Start submitting process
 
@@ -94,6 +99,7 @@ function EmployeeCreate() {
     }
   };
 
+  // Fetch genders from API
   const getGenders = async () => {
     try {
       const res = await GetGenders(); // Fetch data from the API
@@ -110,6 +116,7 @@ function EmployeeCreate() {
     }
   };
 
+  // Fetch positions from API
   const getPositions = async () => {
     try {
       const res = await GetPositions(); // Fetch data from the API
@@ -126,6 +133,7 @@ function EmployeeCreate() {
     }
   };
 
+  // Check email validity from API
   const checkEmail = async (email: string) => {
     try {
       const res = await CheckEmail(email);
@@ -185,15 +193,17 @@ function EmployeeCreate() {
                     action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                     fileList={fileList}
                     onChange={onChange}
-                    onPreview={onPreview}
                     maxCount={1}
                     multiple={false}
                     listType="picture-card"
+                    onPreview={onPreview}
                   >
-                    <div>
-                      <PlusOutlined />
-                      <div style={{ marginTop: 8 }}>อัพโหลด</div>
-                    </div>
+                    {fileList.length === 0 && (
+                      <div>
+                        <PlusOutlined />
+                        <div style={{ marginTop: 8 }}>อัพโหลด</div>
+                      </div>
+                    )}
                   </Upload>
                 </ImgCrop>
               </Form.Item>
@@ -328,6 +338,16 @@ function EmployeeCreate() {
           </Row>
         </Form>
       </Card>
+
+      {/* Modal for previewing images */}
+      <Modal
+        visible={previewVisible}
+        title={previewTitle}
+        footer={null}
+        onCancel={() => setPreviewVisible(false)}
+      >
+        <img alt="profile" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
     </div>
   );
 }

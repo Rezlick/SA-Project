@@ -10,6 +10,7 @@ import {
   Card,
   message,
   Upload,
+  Modal,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -29,6 +30,9 @@ function ProfileEdit() {
 
   const [form] = Form.useForm();
 
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
@@ -37,18 +41,16 @@ function ProfileEdit() {
   };
 
   const onPreview = async (file: UploadFile) => {
-    let src = file.url as string;
-    if (!src) {
-      src = await new Promise((resolve) => {
+    if (!file.url && !file.preview) {
+      file.preview = await new Promise((resolve) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj as FileType);
+        reader.readAsDataURL(file.originFileObj as Blob);
         reader.onload = () => resolve(reader.result as string);
       });
     }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
+    setPreviewImage(file.url || file.preview as string);
+    setPreviewVisible(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1));
   };
 
   const getUserById = async (id: string) => {
@@ -205,6 +207,15 @@ function ProfileEdit() {
           </Row>
         </Form>
       </Card>
+
+      <Modal
+        visible={previewVisible}
+        title={previewTitle}
+        footer={null}
+        onCancel={() => setPreviewVisible(false)}
+      >
+        <img alt="profile" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
     </div>
   );
 }

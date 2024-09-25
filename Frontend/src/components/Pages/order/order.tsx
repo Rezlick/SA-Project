@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Row, Col, Spin, Button, message, Divider } from "antd";
+import { Table, Row, Col, Spin, Button, message, Divider, Empty } from "antd";
 import { CheckCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetOrders } from "../../../services/https";
@@ -106,7 +106,13 @@ function Order() {
       <Divider/>
       <Row>
         <Col span={24} style={{ marginTop: "15px"}}>
-          <Table dataSource={order} columns={columns} pagination={{ pageSize: 5 }} loading={loading} />
+        {loading ? (
+            <Spin tip="กำลังโหลดข้อมูล..." size="large" />
+          ) : order.length > 0 ? (
+            <Table dataSource={order} columns={columns} pagination={{ pageSize: 6 }} loading={loading} />
+          ) : (
+            <Empty description="ไม่มีออเดอร์ที่ต้องแสดง" />  // เพิ่มข้อความเมื่อไม่มีข้อมูล
+          )}
         </Col>
       </Row>
     </>

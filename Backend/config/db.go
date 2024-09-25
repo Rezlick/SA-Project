@@ -54,21 +54,14 @@ func SetupDatabase() {
       &entity.Stock{},
 	)
 
-   orderproduct1 := entity.Order_Product{Quantity: 3, OrderID:1, Product_Code_ID: "M001"}
-   orderproduct2 := entity.Order_Product{Quantity: 5, OrderID:1, Product_Code_ID: "M002"}
-   orderproduct3 := entity.Order_Product{Quantity: 1, OrderID:1, Product_Code_ID: "C002"}
-   orderproduct4 := entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M001"}
-   orderproduct5 := entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M002"}
-   orderproduct6 := entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "C002"}
-   orderproduct7 := entity.Order_Product{Quantity: 1, OrderID: 3, Product_Code_ID: "C002"}
 
    categories := []entity.Category{
-		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ (Meats)"},
-		{Category_Code_id: "V", CategoryName: "ผัก (Vegetables)"},
-		{Category_Code_id: "S", CategoryName: "อาหารทะเล (Seafood)"},
-		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง (Noodles and Dough)"},
-		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม (Condiments and sauce)"},
-		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน (Beverages and Desserts)"},
+		{Category_Code_id: "M", CategoryName: "เนื้อสัตว์ "},
+		{Category_Code_id: "V", CategoryName: "ผัก "},
+		{Category_Code_id: "S", CategoryName: "อาหารทะเล "},
+		{Category_Code_id: "N", CategoryName: "เส้นและแป้ง "},
+		{Category_Code_id: "C", CategoryName: "เครื่องปรุงรสและน้ำจิ้ม "},
+		{Category_Code_id: "B", CategoryName: "เครื่องดื่มและขนมหวาน "},
 	}
    suppliers := []entity.Supplier{
 		{SupplierName: "Supplier A", Phone: "012-345-6789", Email: "contact@suppliera.com", Address: "มทส"},
@@ -90,10 +83,6 @@ func SetupDatabase() {
 
    TypeCash := entity.TypePayment{Name: "เงินสด"}
    TypeScanQR := entity.TypePayment{Name: "โอนเงิน"}
-
-   order1 := entity.Order{BookingID: 1, Status_OrderID: 2}
-   order2 := entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1}
-   order3 := entity.Order{BookingID: 3, Status_OrderID: 2}
 
    GenderMale := entity.Gender{Name: "ชาย"}
    GenderFemale := entity.Gender{Name: "หญิง"}
@@ -131,12 +120,12 @@ func SetupDatabase() {
 
    Soup1 := entity.Soup{Name: "ซุปน้ำใส"}
    Soup2 := entity.Soup{Name: "ซุปน้ำดำ"}
-   Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 12}
-   Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 12}
+   Soup3 := entity.Soup{Name: "ซุปหม่าล่า", Price: 39}
+   Soup4 := entity.Soup{Name: "ซุปทงคัตสึ", Price: 39}
    
-   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 179, Point: 2}
-   Package_seafood := entity.Package{Name: "ทะเล", Price: 249, Point: 3}
-   Package_beef := entity.Package{Name: "เนื้อ", Price: 279, Point: 4}
+   Package_pork_chicken := entity.Package{Name: "หมู,ไก่", Price: 199, Point: 2}
+   Package_seafood := entity.Package{Name: "ทะเล", Price: 289, Point: 3}
+   Package_beef := entity.Package{Name: "เนื้อ", Price: 349, Point: 4}
 
    StatusAvailable := entity.TableStatus{Status: "Available"}
    StatusReserved := entity.TableStatus{Status: "Occupied"}
@@ -213,19 +202,6 @@ func SetupDatabase() {
    db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
    db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
 
-   db.FirstOrCreate(&order1, &entity.Order{BookingID: 1, Status_OrderID: 2})
-   db.FirstOrCreate(&order2, &entity.Order{BookingID: 2, EmployeeID: 1, Status_OrderID: 1})
-   db.FirstOrCreate(&order3, &entity.Order{BookingID: 3, Status_OrderID: 2})
-
-   db.FirstOrCreate(&orderproduct1, &entity.Order_Product{Quantity: 3, OrderID:1, Product_Code_ID: "M001"})
-   db.FirstOrCreate(&orderproduct2, &entity.Order_Product{Quantity: 5, OrderID:1, Product_Code_ID: "M002"})
-   db.FirstOrCreate(&orderproduct3, &entity.Order_Product{Quantity: 1, OrderID:1, Product_Code_ID: "C002"})
-   db.FirstOrCreate(&orderproduct4, &entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M001"})
-   db.FirstOrCreate(&orderproduct5, &entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "M002"})
-   db.FirstOrCreate(&orderproduct6, &entity.Order_Product{Quantity: 1, OrderID:2, Product_Code_ID: "C002"})
-   db.FirstOrCreate(&orderproduct7, &entity.Order_Product{Quantity: 1, OrderID: 3, Product_Code_ID: "C002"})
-
-
 
    hashedPassword, _ := HashPassword("12345")
 
@@ -243,7 +219,10 @@ func SetupDatabase() {
       Email: "testadmin@shabubuu.com",
    })
 }
-func parseDate(dateStr string) time.Time {
-	t, _ := time.Parse("2006-01-02 15:04", dateStr)
-	return t
+func parseDate(dateStr string) time.Time { 
+   // แปลงวันที่จาก string เป็น time.Time
+   t, _ := time.Parse("2006-01-02 15:04", dateStr)
+   // แปลงเวลาเป็น GMT+7
+   loc, _ := time.LoadLocation("Asia/Bangkok")
+   return t.In(loc)
 }

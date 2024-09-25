@@ -69,7 +69,7 @@ const FullLayout: React.FC = () => {
       <Layout style={{ minHeight: "100vh", backgroundColor: "#F5F5F5" }}>
         {renderSider()}
 
-        <Layout style={{ backgroundColor: "#ed642a", minHeight: "100vh" }}>
+        <Layout style={{ backgroundColor: "#434343", minHeight: "100vh" }}>
           <Content style={{ margin: "0 30px" }}>
             <Breadcrumb style={{ margin: "16px 0" }} />
             <div

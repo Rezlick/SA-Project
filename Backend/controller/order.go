@@ -4,8 +4,47 @@ import (
 	"github.com/SA_Project/config"
 	"github.com/SA_Project/entity"
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"net/http"
 )
+
+func CreateOrder(c *gin.Context) {
+	var order entity.Order
+
+	// Get the BookingID from the URL parameters (use "id" because route has ":id")
+	bookingIDParam := c.Param("id")
+
+	// Convert the BookingID from string to uint
+	bookingID, err := strconv.ParseUint(bookingIDParam, 10, 32)
+	if err != nil || bookingID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Booking ID"})
+		return
+	}
+
+	// Bind the JSON body to the Order struct
+	if err := c.ShouldBindJSON(&order); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input: " + err.Error()})
+		return
+	}
+
+	// Set the BookingID from the URL
+	order.BookingID = uint(bookingID)
+	order.Status_OrderID = 2 // Set Status_OrderID to 2 (order placed)
+
+	// Save the order in the database (OrderID will auto-increment)
+	db := config.DB()
+	if err := db.Create(&order).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create order: " + err.Error()})
+		return
+	}
+
+	// Respond with the newly created order's ID and booking reference
+	c.JSON(http.StatusCreated, gin.H{
+		"message":    "Order created successfully",
+		"order_id":   order.ID,
+		"booking_id": order.BookingID,
+	})
+}
 
 // GetOrders retrieves all orders with related data
 func GetOrders(c *gin.Context) {
@@ -41,6 +80,26 @@ func GetOrderByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, order)
+}
+
+func GetOrderByBookingID(c *gin.Context) {
+    bookingID := c.Param("id")
+    var orders []entity.Order 
+
+    db := config.DB()
+    results := db.Preload("Booking").Preload("Booking.Table").Preload("Status_Order").Where("booking_id = ?", bookingID).Find(&orders)  
+
+    if results.Error != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+        return
+    }
+
+    if len(orders) == 0 {  // ตรวจสอบว่าไม่มี order ถูกค้นพบ
+        c.JSON(http.StatusNoContent, gin.H{})
+        return
+    }
+
+    c.JSON(http.StatusOK, orders)  // ส่งกลับ orders ทั้งหมด
 }
 
 // UpdateOrder updates the EmployeeID and Status_OrderID for an order

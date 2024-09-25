@@ -3,25 +3,29 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #FEFFD2;
-
+    background-image: url('../../../assets/background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    flex-direction: row;
+    
 }
 
-.logo {
+.card-logo {
+    height: 400px;
+    width: 400px;
+    border-radius: 10px 0px 0px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for better visual effect */
     display: flex;
-    object-fit: fill;
-    width: 150px;
-    height: 150px;
-    border: 1px solid #FF7D29;
-    border-radius: 100%;
-    margin-top: -100px;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-login {
     background-color: white;
-    height: 380px;
+    height: 400px;
     width: 400px;
-    border-radius: 5%;
+    border-radius: 0px 10px 10px 0px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for better visual effect */
     display: flex;
     justify-content: center;
@@ -42,7 +46,6 @@
     background-color: #FF7D29 !important;
     border: 1px solid #FF7D29 !important;
     height: 40px;
-    max-width: 350px;
     width: 100%;
     border-radius: 50px;
     cursor: pointer;

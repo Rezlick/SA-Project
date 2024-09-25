@@ -10,6 +10,7 @@ import { ReceiptInterface } from "../../interfaces/Receipt";
 
 import axios from "axios";
 import { StockInterface } from "../../interfaces/Stock";
+import { OrderProductInterface } from "../../interfaces/OrderProduct";
 
 const apiUrl = "http://localhost:8000";
 const Authorization = localStorage.getItem("token");
@@ -396,6 +397,21 @@ async function GetStatusOrders() {
     .catch((e) => e.response);
 }
 
+async function CreateOrder(id: string) {
+  try {
+      const response = await axios.post(`${apiUrl}/createorder/${id}`, requestOptions);
+      console.log("CreateOrder Response:", response.data);
+      return response.data;
+  } catch (error) {
+      if (axios.isAxiosError(error)) {
+          console.error("Axios Error Response:", error.response?.data);
+          return error.response?.data; 
+      }
+      console.error("An unexpected error occurred:", error);
+      return { error: "An unexpected error occurred" };
+  }
+}
+
 async function GetOrders() {
   return await axios
     .get(`${apiUrl}/order`, requestOptions)
@@ -406,6 +422,13 @@ async function GetOrders() {
 async function GetOrderByID(id: string | undefined) {
   return await axios
     .get(`${apiUrl}/order/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetOrderByBookingID(id: string | undefined) {
+  return await axios
+    .get(`${apiUrl}/orderbybooking/${id}`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -421,6 +444,13 @@ async function UpdateOrder(id: string | undefined, data: OrderInterface) {
     .catch((e) => e.response);
 }
 
+async function CreateOrderProducts( data: OrderProductInterface) {
+  return await axios
+  .post(`${apiUrl}/createorderproduct`, data, requestOptions)
+  .then((res) => res)
+  .catch((e) => e.response);
+}
+
 async function GetOrderProducts() {
   return await axios
     .get(`${apiUrl}/order/detail`, requestOptions)
@@ -431,6 +461,13 @@ async function GetOrderProducts() {
 async function GetOrderProductsByOrderID(id: string | undefined) {
   return await axios
     .get(`${apiUrl}/order/detail/${id}`, requestOptions)
+    .then((res) => res)
+    .catch((e) => e.response);
+}
+
+async function GetAllOrderProducts() {
+  return await axios
+    .get(`${apiUrl}/allorderproduct`, requestOptions)
     .then((res) => res)
     .catch((e) => e.response);
 }
@@ -531,10 +568,14 @@ export {
   UpdateBooking,
   DeleteBookingByID,
   GetStatusOrders,
+  CreateOrder,
   GetOrders,
   GetOrderByID,
+  GetOrderByBookingID,
   UpdateOrder,
+  CreateOrderProducts,
   GetOrderProducts,
+  GetAllOrderProducts,
   GetOrderProductsByOrderID,
   GetProductsByID,
   CheckPhone,

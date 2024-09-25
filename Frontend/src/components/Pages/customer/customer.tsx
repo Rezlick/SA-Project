@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { List, Avatar, Row, Col, message, Card, Statistic, Button, Modal } from "antd";
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./customer.css";
 import { GetBookingByID, GetProductByCodeID } from "../../../services/https";
 import { BookingInterface } from "../../../interfaces/Booking";
@@ -14,7 +14,6 @@ import V2 from "../../../assets/imagesCustomer/veg2.png";
 import Chicken from "../../../assets/imagesCustomer/ChickenPepper.webp";
 
 function Customer() {
-    const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [booking, setBooking] = useState<BookingInterface | null>(null);
     const [tableName, setTableName] = useState<string>("");
@@ -78,20 +77,20 @@ function Customer() {
         );
         setProductData(updatedData); // Map the updated product data
     };
-    
+
 
     const data = [
-        { productCode: 'M005', image: SliceBeef, category: 'เนื้อ' },
-        { productCode: 'M006', image: Brisket, category: 'เนื้อ' },
-        { productCode: 'M003', image: PorkSlice, category: 'หมู' },
-        { productCode: 'M004', image: PorkBelly, category: 'หมู' },
-        { productCode: 'B001', image: 'https://path/to/icecream1.png', category: 'ของหวาน' },
-        { productCode: 'B002', image: 'https://path/to/drink2.png', category: 'ของหวาน' },
+        { productCode: 'M001', image: SliceBeef, category: 'เนื้อ' },
+        { productCode: 'M002', image: Brisket, category: 'เนื้อ' },
+        { productCode: 'M004', image: PorkSlice, category: 'หมู' },
+        { productCode: 'M005', image: PorkBelly, category: 'หมู' },
+        { productCode: 'B003', image: 'https://path/to/icecream1.png', category: 'ของหวาน' },
+        { productCode: 'B004', image: 'https://path/to/drink2.png', category: 'ของหวาน' },
         { productCode: 'V001', image: V1, category: 'ผัก' },
         { productCode: 'V002', image: V2, category: 'ผัก' },
         { productCode: 'S001', image: 'https://path/to/drink2.png', category: 'ซีฟู้ด' },
         { productCode: 'S002', image: 'https://path/to/drink2.png', category: 'ซีฟู้ด' },
-        { productCode: 'M007', image: Chicken, category: 'ไก่' },
+        { productCode: 'M003', image: Chicken, category: 'ไก่' },
     ];
 
     const showModal = (item) => {
@@ -101,22 +100,58 @@ function Customer() {
     };
 
     const handleAddToCart = () => {
-        if (!selectedItem) return; // Ensure an item is selected
-        const data = {
-            productId: selectedItem.code_id, // Use the code_id as productCodeId
-            productName: selectedItem.product_name,
-            quantity: quantity,
-        };
-    
+        if (!selectedItem) return;
+
         const existingCart = JSON.parse(localStorage.getItem('cartData')) || [];
-        const updatedCart = [...existingCart, data];
-    
+        const existingProductIndex = existingCart.findIndex(
+            (product) => product.productId === selectedItem.code_id
+        );
+
+        let updatedCart;
+        if (existingProductIndex !== -1) {
+            const existingProduct = existingCart[existingProductIndex];
+            const newQuantity = existingProduct.quantity + quantity;
+
+            // ตรวจสอบว่า sum(quantity) ต้องไม่เกิน 50
+            if (newQuantity > 50) {
+                message.error("จำนวนสินค้าเกินกำหนด (สูงสุด 50 ต่อสินค้า)");
+                return;
+            }
+
+            updatedCart = [...existingCart];
+            updatedCart[existingProductIndex] = {
+                ...existingProduct,
+                quantity: newQuantity,
+            };
+        } else {
+            // ตรวจสอบว่า quantity ไม่เกิน 50
+            if (quantity > 50) {
+                message.error("จำนวนสินค้าเกินกำหนด (สูงสุด 50 ต่อสินค้า)");
+                return;
+            }
+
+            const newProduct = {
+                productId: selectedItem.code_id,
+                productName: selectedItem.product_name,
+                quantity: quantity,
+            };
+
+            updatedCart = [...existingCart, newProduct];
+        }
+
         localStorage.setItem('cartData', JSON.stringify(updatedCart));
         setCartData(updatedCart);
-        console.log('ข้อมูลถูกเก็บในตะกร้า:', updatedCart);
+        message.success("เพิ่มไปยังตะกร้าแล้ว!");
         handleCancel();
     };
-    
+
+    // ดึงจำนวนสินค้าที่มีอยู่ใน localStorage เพื่อตรวจสอบว่ามีอยู่แล้วเท่าไร
+    const getMaxQuantity = () => {
+        const existingCart = JSON.parse(localStorage.getItem('cartData')) || [];
+        const existingProduct = existingCart.find((product) => product.productId === selectedItem?.code_id);
+        const existingQuantity = existingProduct ? existingProduct.quantity : 0;
+        return Math.max(0, 50 - existingQuantity);  // จำนวนสูงสุดที่สามารถเพิ่มได้ แต่ต้องไม่ติดลบ
+    };
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -124,7 +159,7 @@ function Customer() {
     };
 
     const increaseQuantity = () => {
-        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, 10));
+        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, 50));
     };
 
     const decreaseQuantity = () => {
@@ -151,7 +186,7 @@ function Customer() {
                 return item;
             });
     };
-    
+
 
     const handleCardClick = (cardName: string, codePrefix: string) => {
         setSelectedCard(cardName);
@@ -298,23 +333,55 @@ function Customer() {
                                             style={{ fontSize: '24px', color: quantity <= 1 ? 'gray' : '#1890ff', cursor: 'pointer' }}
                                             disabled={quantity <= 1}
                                         />
-                                        <span style={{ margin: '0 10px', fontSize: '18px' }}>{quantity}</span>
+                                        <input
+                                            type="number"
+                                            value={quantity === 0 ? '' : quantity}
+                                            onChange={(e) => {
+                                                const value = parseInt(e.target.value, 10);
+                                                const maxQuantity = getMaxQuantity();  // ดึงค่าสูงสุดที่สามารถสั่งได้
+
+                                                if (isNaN(value)) {
+                                                    setQuantity(0);
+                                                } else if (value >= 0 && value <= maxQuantity) {
+                                                    setQuantity(value);
+                                                } else if (value > maxQuantity) {
+                                                    message.error("จำนวนสินค้าต้องไม่เกิน 50 หน่วยต่อสินค้า");  // แจ้งเตือนเมื่อกรอกเกิน 50
+                                                }
+                                            }}
+                                            style={{ margin: '0 10px', width: '60px', textAlign: 'center', fontSize: '18px' }}
+                                        />
                                         <PlusCircleOutlined
-                                            onClick={increaseQuantity}
-                                            style={{ fontSize: '24px', color: quantity >= 10 ? 'gray' : '#1890ff', cursor: 'pointer' }}
-                                            disabled={quantity >= 10}
+                                            onClick={() => {
+                                                const maxQuantity = getMaxQuantity();  // ดึงค่าสูงสุดที่สามารถสั่งได้
+                                                if (quantity < maxQuantity) {
+                                                    setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
+                                                } else {
+                                                    message.error("จำนวนสินค้าต้องไม่เกิน 50 หน่วยต่อสินค้า");  // แจ้งเตือนเมื่อพยายามเพิ่มเกิน 50
+                                                }
+                                            }}
+                                            style={{ fontSize: '24px', color: quantity >= getMaxQuantity() ? 'gray' : '#1890ff', cursor: 'pointer' }}
+                                            disabled={quantity >= getMaxQuantity()}  // เปลี่ยนเป็น disabled เมื่อ quantity เท่ากับ maxQuantity
                                         />
                                     </div>
                                     <Button
                                         type="primary"
                                         block
-                                        onClick={handleAddToCart}
+                                        onClick={() => {
+                                            if (quantity === 0) {
+                                                setQuantity(1);
+                                            }
+                                            handleAddToCart();
+                                        }}
+                                        disabled={quantity > getMaxQuantity()}  // ปุ่มจะถูกปิดถ้าเกินจำนวนที่อนุญาต
+                                        style={{ backgroundColor: quantity > getMaxQuantity() ? 'gray' : '#1890ff', borderColor: quantity > getMaxQuantity() ? 'gray' : '#1890ff' }}
                                     >
                                         เพิ่มไปยังตะกร้า
                                     </Button>
                                 </div>
                             )}
                         </Modal>
+
+
                     </Card>
                 </Col>
             </Row>

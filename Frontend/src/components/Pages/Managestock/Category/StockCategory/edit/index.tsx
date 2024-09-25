@@ -75,7 +75,7 @@ export default function StockEdit() {
     <div>
       <div
         style={{
-          backgroundColor: "#fff",
+          // backgroundColor: "#fff",
           padding: "0 20px",
           display: "flex",
           justifyContent: "space-between",

@@ -1,24 +1,30 @@
-import { Col, Row, Button, Table, message, Modal } from "antd";
+import { Col, Row, Button, Table, message, Modal, Tooltip } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GetBooking, DeleteBookingByID } from "../../../../services/https";
 import { BookingInterface } from "../../../../interfaces/Booking";
-import { EditOutlined, DeleteOutlined, QrcodeOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  QrcodeOutlined,
+} from "@ant-design/icons";
 
 function TableList() {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState<BookingInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<string>("");
-  const [qrCodeUrl , setQrCodeUrl] = useState<string>("");
-  const [ bookingid, setBookingID] = useState<number>(0);
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const [bookingid, setBookingID] = useState<number>(0);
 
   const fetchQrcode = async (id: number) => {
-    setQrCodeUrl( `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-      window.location.origin + `/customer/${id}`
-    )}&choe=UTF-8`)
-  }
+    setQrCodeUrl(
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+        window.location.origin + `/customer/${id}`
+      )}&choe=UTF-8`
+    );
+  };
 
   const fetchBookingData = async () => {
     setLoading(true);
@@ -81,19 +87,19 @@ function TableList() {
           style={{
             marginTop: "10px",
             marginLeft: "-2px",
-            flexDirection: 'column',
-            minHeight: '200px',        
+            flexDirection: "column",
+            minHeight: "200px",
           }}
         >
           <img
             src={qrCodeUrl}
             alt={`QR Code for booking ${id}`}
-            style={{ width: '300px', height: '300px' }}
+            style={{ width: "300px", height: "300px" }}
           />
         </div>
       ),
       footer: (
-        <div style={{ textAlign: 'right', marginTop: "20px" }}>
+        <div style={{ textAlign: "right", marginTop: "20px" }}>
           <Button
             key="open"
             type="primary"
@@ -112,7 +118,6 @@ function TableList() {
       ),
     });
   };
-
   const columns: ColumnsType<BookingInterface> = [
     {
       title: "ID",
@@ -186,14 +191,15 @@ function TableList() {
       ),
     },
   ];
-
   return (
-    <div className="table-list-container">
+    <div
+      className="table-list-container"
+      style={{ position: "relative", minHeight: "100vh" }}
+    >
       <Row gutter={[16, 16]}>
         <Col xs={24}>
           <h1 className="heading-style">รายการจองโต๊ะ</h1>
         </Col>
-
         <Col xs={24}>
           <div className="current-time">
             <span>เวลา: </span>
@@ -211,17 +217,18 @@ function TableList() {
             rowClassName="custom-row"
           />
         </Col>
-
         <Col xs={24}>
-          <Row justify="center" style={{ marginTop: "20px" }}>
+          <Row justify="center" >
             <Col>
-              <Button
-                type="primary"
-                onClick={handleButtonClick}
-                className="back-button-style"
-              >
-                กลับ
-              </Button>
+              <Tooltip title="กลับไปยังหน้าเลือกโต๊ะ">
+                <Button
+                  type="primary"
+                  onClick={handleButtonClick}
+                  className="back-button-style"
+                >
+                  กลับ
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </Col>

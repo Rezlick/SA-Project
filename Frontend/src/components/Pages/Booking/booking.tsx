@@ -26,13 +26,12 @@ function Booking() {
   const [tables, setTables] = useState<TableInterface[]>([]);
   const [tableCaps, setTableCaps] = useState<TableCapacityInterface[]>([]);
   const [tableStatus, setTableStatus] = useState<TableStatusInterface[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const [tablesRes, statusRes, capsRes] = await Promise.all([
           GetTables(),
@@ -40,27 +39,10 @@ function Booking() {
           GetTableCapacity(),
         ]);
 
-        if (tablesRes.status === 200) {
-          setTables(tablesRes.data);
-        } else {
-          message.error(tablesRes.data.error || "Unable to fetch tables");
-        }
-
-        if (statusRes.status === 200) {
-          setTableStatus(statusRes.data);
-        } else {
-          message.error(
-            statusRes.data.error || "Unable to fetch table statuses"
-          );
-        }
-
-        if (capsRes.status === 200) {
-          setTableCaps(capsRes.data);
-        } else {
-          message.error(
-            capsRes.data.error || "Unable to fetch table capacities"
-          );
-        }
+        // Handle responses
+        handleResponse(tablesRes, setTables, "tables");
+        handleResponse(statusRes, setTableStatus, "table statuses");
+        handleResponse(capsRes, setTableCaps, "table capacities");
       } catch (error) {
         console.error("Error fetching data:", error);
         message.error("Error fetching data from the server");
@@ -72,8 +54,19 @@ function Booking() {
     fetchData();
   }, []);
 
+  const handleResponse = (response: any, setter: Function, entity: string) => {
+    if (response.status === 200) {
+      setter(response.data);
+    } else {
+      message.error(response.data.error || `Unable to fetch ${entity}`);
+    }
+  };
+
   const handleButtonClick = (table: TableInterface) => {
-    if (!table.ID || !table.table_capacity_id) {
+    const tableID = table.ID;
+    const tableCapacityID = table.table_capacity_id;
+
+    if (!tableID || !tableCapacityID) {
       message.warning("Table ID or Table capacity ID is not defined!");
       return;
     }
@@ -87,18 +80,14 @@ function Booking() {
       return;
     }
     if (status === "Cleaning") {
-      message.warning("This table is not already for booking!");
+      message.warning("This table is currently being cleaned!");
       return;
     }
 
     if (table.table_name) {
-      const params = new URLSearchParams({
-        tableId: table.ID.toString(),
-        tableName: table.table_name,
-        tableCapacityId: table.table_capacity_id.toString(),
-      }).toString();
-
-      window.location.href = `/booking/create?${params}`;
+      navigate(
+        `/booking/create?tableId=${tableID}&tableName=${table.table_name}&tableCapacityId=${tableCapacityID}`
+      );
     } else {
       message.warning("This table does not have a defined type!");
     }
@@ -172,7 +161,7 @@ function Booking() {
                           tableCapacity?.min,
                           tableCapacity?.max
                         )}
-                        valueStyle={{ color: "#FF7F50" }}
+                        valueStyle={{ color: "#DAA520" }}
                         prefix={<UserOutlined className="icon" />}
                       />
                       <Badge
@@ -196,12 +185,12 @@ function Booking() {
                 type="primary"
                 onClick={goToBookingList}
                 style={{
-                  backgroundColor: "#FF7F50",
-                  borderColor: "#FF7F50",
+                  backgroundColor: "#DAA520",
+                  borderColor: "#DAA520",
                   color: "#fff",
                   height: "40px",
-                  width: "100%", 
-                  marginTop: 20, 
+                  width: "100%",
+                  marginTop: 20,
                 }}
               >
                 รายการจองโต๊ะ

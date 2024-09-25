@@ -8,6 +8,7 @@ import {
   Form,
   message,
   Modal,
+  Tooltip,
 } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -279,16 +280,17 @@ function CreateBookingTable() {
                 </Col>
               </Row>
               <Row gutter={[16, 16]}>{renderSoupFields()}</Row>
-              <Row gutter={[16, 16]}></Row>
               <Row justify="space-between">
                 <Col>
-                  <Button
-                    type="default"
-                    onClick={handleBackButtonClick}
-                    className="back-button-style"
-                  >
-                    กลับ
-                  </Button>
+                  <Tooltip title="กลับไปยังหน้าเลือกโต๊ะ">
+                    <Button
+                      type="default"
+                      onClick={handleBackButtonClick}
+                      className="back-button-style"
+                    >
+                      กลับ
+                    </Button>
+                  </Tooltip>
                 </Col>
                 <Col>
                   <Button

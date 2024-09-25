@@ -3,7 +3,7 @@ import { Input, Button, Form, Select, Divider, notification } from "antd";
 import { useState, useEffect } from "react";
 import { UpdateStock } from "../../../../../../services/https";
 import { StockInterface } from "../../../../../../interfaces/Stock";
-import ColumnGroup from "antd/es/table/ColumnGroup";
+//import ColumnGroup from "antd/es/table/ColumnGroup";
 
 const { Option } = Select;
 
@@ -19,11 +19,12 @@ export default function StockEdit() {
       form.setFieldsValue(record);
     }
   }, [record, form]);
-
+  console.log("record",record);
   const handleFinish = async (values) => {
-    console.log("values",values);
+    console.log("values-handleFinish",values);
     const supplierData = suppliers.find(supplier => supplier.id === values.supplier);
-    const supplierID = supplierData ? supplierData.id : record.supplier;
+    const supplierID = supplierData ? supplierData.id : suppliers.find(supplier => supplier.name === record.supplier)?.id;
+
     console.log("supplierID",supplierID);
     
   
@@ -36,8 +37,9 @@ export default function StockEdit() {
   }
     
     
+    
     const updatedItem: StockInterface = {
-      stock_id: Number(record.key),
+      stock_id: record.stock,
       category_id: Number(categoryID),
       product_code_id: String(values.code),
       product_name: String(values.name),
@@ -49,6 +51,8 @@ export default function StockEdit() {
     
     try {
       await UpdateStock(updatedItem);
+      console.log("UpdateStock",updatedItem);
+      
       notification.success({
         message: "Success",
         description: "Product details updated successfully",

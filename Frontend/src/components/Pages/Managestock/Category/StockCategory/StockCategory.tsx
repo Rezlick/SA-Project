@@ -228,6 +228,8 @@ export default function StockCategory({
       title: "สถานะ",
       key: "status",
       render: (record) => {
+        console.log("record-new",record);
+        
         const isExpired = moment().isAfter(moment(record.expiryDate, "MM/DD/YYYY, HH:mm:ss"));
         return (
           <span

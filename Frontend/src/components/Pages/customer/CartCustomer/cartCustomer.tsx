@@ -66,7 +66,7 @@ function CustomerCart() {
                     setTimeout(() => {
                         message.success("Clearing cart data and navigating...");
                         // Redirect to the customer page or another location
-                        navigate(`/customer/${id}`);
+                        navigate(`/customer/status/${id}`);
                     }, 1500); // Delay 1.5 seconds before navigating
                 } catch (error) {
                     console.error("Error creating order or order products:", error);  // Log the error
@@ -117,7 +117,6 @@ function CustomerCart() {
                     type="danger"
                     icon={<DeleteOutlined />}
                     danger
-                    className="table-list-delete-button"
                     onClick={() => handleDelete(record.index)}
                 />
             ),

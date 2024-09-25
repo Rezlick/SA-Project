@@ -80,7 +80,7 @@ function Order() {
             ) : (
               <Spin
                 indicator={<LoadingOutlined style={{ fontSize: '20px' }} />}
-                tip="รอเสิร์ฟ..."
+                tip="รอเสิร์ฟ"
               >
                 <div style={{ height: 40 }}></div>
               </Spin>

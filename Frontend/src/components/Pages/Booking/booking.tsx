@@ -67,7 +67,7 @@ function Booking() {
     const tableCapacityID = table.table_capacity_id;
 
     if (!tableID || !tableCapacityID) {
-      message.warning("Table ID or Table capacity ID is not defined!");
+      message.warning("รหัสโต๊ะหรือรหัสความจุของโต๊ะยังไม่ได้กำหนด!");
       return;
     }
 
@@ -76,11 +76,11 @@ function Booking() {
     )?.status;
 
     if (status === "Occupied") {
-      message.warning("This table is not available for booking!");
+      message.warning("โต๊ะนี้ไม่ว่าง กำลังใช้งานอยู่");
       return;
     }
     if (status === "Cleaning") {
-      message.warning("This table is currently being cleaned!");
+      message.warning("โต๊ะนี้กำลังทำความสะอาด");
       return;
     }
 
@@ -89,7 +89,7 @@ function Booking() {
         `/booking/create?tableId=${tableID}&tableName=${table.table_name}&tableCapacityId=${tableCapacityID}`
       );
     } else {
-      message.warning("This table does not have a defined type!");
+      message.warning("โต๊ะนี้ยังไม่ได้กำหนดประเภท!");
     }
   };
 

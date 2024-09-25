@@ -56,7 +56,7 @@ p {
 .profile-image {
   object-fit: cover !important;
   border-radius: 50% !important;
-  border: 2px solid rgb(199, 120, 0) !important;
+  border: 2px solid rgb(218, 165, 32) !important;
   background-color: white !important;
   /* Removed transition for width and height */
 }

@@ -168,7 +168,7 @@ function MemberCreate() {
               <Form.Item>
                 <Space>
                   <Link to="/member">
-                    <Button htmlType="button" style={{ marginRight: "10px" }}>
+                    <Button htmlType="button" style={{ marginRight: "10px" , backgroundColor:"#e0dede"}}>
                       ยกเลิก
                     </Button>
                   </Link>
@@ -176,7 +176,7 @@ function MemberCreate() {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{ backgroundColor: "#FF7D29" }}
+                    style={{ backgroundColor: "rgb(218, 165, 32)" }}
                     loading={isSubmitting}
                     disabled={isSubmitting || phoneNumberInvalid} // Disable if submitting or phone is invalid
                   >

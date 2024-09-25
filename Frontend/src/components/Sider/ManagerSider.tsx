@@ -10,6 +10,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   OrderedListOutlined,
+  CodeOutlined
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { GetEmployeeByID, GetPositions } from "../../services/https";
@@ -163,6 +164,13 @@ function ManagerSider() {
                 <Link to="/receipt">
                   <DollarOutlined />
                   <span>ชำระเงิน</span>
+                </Link>
+              </Menu.Item>
+
+              <Menu.Item key="coupon" onClick={() => setCurrentPage("coupon")}>
+                <Link to="/coupon">
+                  <CodeOutlined />
+                  <span>คูปอง</span>
                 </Link>
               </Menu.Item>
 

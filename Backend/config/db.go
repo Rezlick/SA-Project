@@ -86,9 +86,6 @@ func SetupDatabase() {
    GenderFemale := entity.Gender{Name: "หญิง"}
    GenderOther := entity.Gender{Name: "อื่นๆ"}
 
-   coupoun1 := entity.Coupon{Code: "DISCOUNT10",Discount: 10}
-   coupoun2 := entity.Coupon{Code: "DISCOUNT20",Discount: 20}
-
    status1 := entity.Status_Order{Status_Order_name: "เสิร์ฟเรียบร้อย"}
 	status2 := entity.Status_Order{Status_Order_name: "รอเสิร์ฟ"}
 
@@ -196,9 +193,6 @@ func SetupDatabase() {
    db.FirstOrCreate(&Package_pork_chicken, &entity.Package{Name: "หมู,ไก่"})
    db.FirstOrCreate(&Package_seafood, &entity.Package{Name: "ทะเล"})
    db.FirstOrCreate(&Package_beef, &entity.Package{Name: "เนื้อ"})
-
-   db.FirstOrCreate(&coupoun1 ,&entity.Coupon{Code: "DISCOUNT10",Discount: 10})
-   db.FirstOrCreate(&coupoun2 ,&entity.Coupon{Code: "DISCOUNT20",Discount: 20})
 
    hashedPassword, _ := HashPassword("12345")
 

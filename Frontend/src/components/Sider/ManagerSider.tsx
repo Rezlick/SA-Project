@@ -104,10 +104,7 @@ function ManagerSider() {
           }}
         >
           <div style={{ position: "relative" }}>
-            <Button
-              onClick={toggleCollapsed}
-              className="toggle-button"
-            >
+            <Button onClick={toggleCollapsed} className="toggle-button">
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
 
@@ -127,9 +124,7 @@ function ManagerSider() {
               <span className="profile-name">
                 {firstName} {lastName}
               </span>
-              <span className="profile-position">
-                ({positionName})
-              </span>
+              <span className="profile-position">({positionName})</span>
               <span>
                 <Link to="/profileEdit" className="edit-profile-link">
                   แก้ไขโปรไฟล์
@@ -137,8 +132,16 @@ function ManagerSider() {
               </span>
             </div>
 
-            <Menu className="menu" defaultSelectedKeys={[page ? page : "dashboard"]} mode="inline" inlineCollapsed={collapsed}>
-              <Menu.Item key="dashboard" onClick={() => setCurrentPage("dashboard")}>
+            <Menu
+              className="menu"
+              defaultSelectedKeys={[page ? page : "dashboard"]}
+              mode="inline"
+              inlineCollapsed={collapsed}
+            >
+              <Menu.Item
+                key="dashboard"
+                onClick={() => setCurrentPage("dashboard")}
+              >
                 <Link to="/dashboard">
                   <DashboardOutlined />
                   <span>แดชบอร์ด</span>
@@ -159,7 +162,10 @@ function ManagerSider() {
                 </Link>
               </Menu.Item>
 
-              <Menu.Item key="payment" onClick={() => setCurrentPage("payment")}>
+              <Menu.Item
+                key="payment"
+                onClick={() => setCurrentPage("payment")}
+              >
                 <Link to="/receipt">
                   <DollarOutlined />
                   <span>ชำระเงิน</span>
@@ -182,12 +188,12 @@ function ManagerSider() {
             </Menu>
           </div>
 
-            <Menu className="menu" mode="inline">
-              <Menu.Item key="logout" onClick={Logout}>
-                <LogoutOutlined />
-                <span>ออกจากระบบ</span>
-              </Menu.Item>
-            </Menu>
+          <Menu className="menu" mode="inline">
+            <Menu.Item key="logout" onClick={Logout}>
+              <LogoutOutlined />
+              <span>ออกจากระบบ</span>
+            </Menu.Item>
+          </Menu>
         </div>
       </Sider>
     </>

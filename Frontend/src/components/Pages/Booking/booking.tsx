@@ -97,6 +97,19 @@ function Booking() {
     navigate("/booking/booking_list");
   };
 
+  const getStatusClass = (status: string): string => {
+    switch (status) {
+      case "Available":
+        return "button-available";
+      case "Occupied":
+        return "button-occupied";
+      case "Cleaning":
+        return "button-cleaning";
+      default:
+        return "button-default";
+    }
+  };
+
   const getStatusColor = (status: string): string => {
     switch (status) {
       case "Available":
@@ -139,7 +152,9 @@ function Booking() {
                   <Col key={table.ID} xs={24} sm={12} md={8} lg={6}>
                     <Button
                       type="default"
-                      className="tableButton"
+                      className={`tableButton ${getStatusClass(
+                        status?.status ?? "Unknown"
+                      )}`}
                       onClick={() => handleButtonClick(table)}
                       style={{
                         width: "100%",
@@ -175,18 +190,11 @@ function Booking() {
             </Row>
           )}
           <Row justify="center" style={{ marginTop: 16 }}>
-            <Col xs={24} sm={12} md={8}>
+            <Col xs={24} sm={12} md={4}>
               <Button
                 type="primary"
                 onClick={goToBookingList}
-                style={{
-                  backgroundColor: "#DAA520",
-                  borderColor: "#DAA520",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%",
-                  marginTop: 20,
-                }}
+                className="button-style"
               >
                 รายการจองโต๊ะ
               </Button>

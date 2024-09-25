@@ -85,39 +85,49 @@ function TableList() {
       content: (
         <div
           style={{
-            marginTop: "10px",
-            marginLeft: "-2px",
-            flexDirection: "column",
-            minHeight: "200px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "250px",
+            margin: "10px",
           }}
         >
           <img
             src={qrCodeUrl}
             alt={`QR Code for booking ${id}`}
-            style={{ width: "300px", height: "300px" }}
+            style={{
+              width: "300px",
+              height: "300px",
+              marginLeft: "-40px",
+              marginBottom: "20px",
+            }}
           />
         </div>
       ),
       footer: (
-        <div style={{ textAlign: "right", marginTop: "20px" }}>
-          <Button
-            key="open"
-            type="primary"
-            style={{ marginRight: 8 }}
-            onClick={() => {
-              Modal.destroyAll();
-              navigate(`/customer/${id}`);
-            }}
-          >
-            ไปยังหน้าสั่งอาหาร
-          </Button>
-          <Button key="ok" onClick={() => Modal.destroyAll()}>
-            OK
-          </Button>
-        </div>
+        <Row justify="space-between" style={{ width: "100%" }}>
+          <Col>
+            <Button key="cancel" onClick={() => Modal.destroyAll()}>
+              Cancel
+            </Button>
+          </Col>
+          <Col style={{ textAlign: "right" }}>
+            <Button
+              key="open"
+              type="primary"
+              onClick={() => {
+                Modal.destroyAll();
+                navigate(`/customer/${id}`);
+              }}
+            >
+              ไปยังหน้าสั่งอาหาร
+            </Button>
+          </Col>
+        </Row>
       ),
     });
   };
+
   const columns: ColumnsType<BookingInterface> = [
     {
       title: "ID",
@@ -192,48 +202,43 @@ function TableList() {
     },
   ];
   return (
-    <div
-      className="table-list-container"
-      style={{ position: "relative", minHeight: "100vh" }}
-    >
-      <Row gutter={[16, 16]}>
-        <Col xs={24}>
-          <h1 className="heading-style">รายการจองโต๊ะ</h1>
-        </Col>
-        <Col xs={24}>
-          <div className="current-time">
-            <span>เวลา: </span>
-            <span className="time-display">{currentTime}</span>
-          </div>
-          <Table
-            dataSource={bookingData}
-            columns={columns}
-            pagination={{ pageSize: 8 }}
-            bordered
-            title={() => "Booking List"}
-            loading={loading}
-            className="table-list"
-            rowKey="ID"
-            rowClassName="custom-row"
-          />
-        </Col>
-        <Col xs={24}>
-          <Row justify="center" >
-            <Col>
-              <Tooltip title="กลับไปยังหน้าเลือกโต๊ะ">
-                <Button
-                  type="primary"
-                  onClick={handleButtonClick}
-                  className="back-button-style"
-                >
-                  กลับ
-                </Button>
-              </Tooltip>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </div>
+    <Row gutter={[16, 16]}>
+      <Col xs={24}>
+        <h1 className="heading-style">รายการจองโต๊ะ</h1>
+      </Col>
+      <Col xs={24}>
+        <div className="current-time">
+          <span>เวลา: </span>
+          <span className="time-display">{currentTime}</span>
+        </div>
+        <Table
+          dataSource={bookingData}
+          columns={columns}
+          pagination={{ pageSize: 8 }}
+          bordered
+          title={() => "Booking List"}
+          loading={loading}
+          className="table-list"
+          rowKey="ID"
+          rowClassName="custom-row"
+        />
+      </Col>
+      <Col xs={24}>
+        <Row justify="center">
+          <Col>
+            <Tooltip title="กลับไปยังหน้าเลือกโต๊ะ">
+              <Button
+                type="primary"
+                onClick={handleButtonClick}
+                className="back-button-style"
+              >
+                กลับ
+              </Button>
+            </Tooltip>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
   );
 }
 

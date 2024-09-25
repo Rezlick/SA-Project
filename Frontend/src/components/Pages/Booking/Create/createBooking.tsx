@@ -263,9 +263,7 @@ function CreateBookingTable() {
                   <Form.Item
                     label="แพ็กเกจ"
                     name="package_id"
-                    rules={[
-                      { required: true, message: "กรุณาเลือกแพ็กเกจ!" },
-                    ]}
+                    rules={[{ required: true, message: "กรุณาเลือกแพ็กเกจ!" }]}
                   >
                     <Select
                       placeholder="เลือกแพ็กเกจ"

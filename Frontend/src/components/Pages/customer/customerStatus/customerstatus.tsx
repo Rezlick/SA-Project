@@ -118,7 +118,7 @@ function CustomerStatus() {
                                 dataSource={orders}
                                 columns={columns}
                                 pagination={false}
-                                scroll={{ y: 400 }} // Enables vertical and horizontal scroll
+                                scroll={{ y: 420 }} // Enables vertical and horizontal scroll
                             />
 
                         ) : (

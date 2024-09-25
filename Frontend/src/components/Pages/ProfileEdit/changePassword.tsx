@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Space, Button, Col, Row, Divider, Form, Input, Card, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { changePassword } from "../../../services/https";
@@ -7,16 +7,23 @@ function ChangePassword() {
   const navigate = useNavigate();
   const employeeID = localStorage.getItem("employeeID"); 
   const [messageApi, contextHolder] = message.useMessage();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form] = Form.useForm();
 
+  const handleOldPasswordChange = () => {
+    setIsSubmitting(false); 
+  };
+
+  const handleNewPasswordChange = () => {
+    setIsSubmitting(false); 
+  };
+
+  const handleConfirmPasswordChange = () => {
+    setIsSubmitting(false); 
+  };
+
   const onFinish = async (values: { OldPassword: string; NewPassword: string; ConfirmPassword: string }) => {
-    if (values.NewPassword !== values.ConfirmPassword) {
-      messageApi.open({
-        type: "error",
-        content: "รหัสผ่านใหม่และการยืนยันไม่ตรงกัน",
-      });
-      return;
-    }
+    setIsSubmitting(true)
 
     const payload = {
       old_password: values.OldPassword,
@@ -32,7 +39,7 @@ function ChangePassword() {
           content: res.data.message || "เปลี่ยนรหัสผ่านสำเร็จ",
         });
         setTimeout(() => {
-          navigate("/");
+          navigate("/profileEdit");
         }, 2000);
       } else {
         messageApi.open({
@@ -66,6 +73,16 @@ function ChangePassword() {
         <Divider />
         <Form form={form} layout="vertical" onFinish={onFinish} autoComplete="off">
           <Row gutter={[16, 0]}>
+            <Col xs={24} sm={24} md={24}>
+              <Form.Item
+                label="รหัสผ่านเดิม"
+                name="OldPassword"
+                rules={[{ required: true, message: "กรุณากรอกรหัสผ่านเดิม !" }]}
+              >
+                <Input.Password onChange={handleOldPasswordChange}/>
+              </Form.Item>
+            </Col>
+
             <Col xs={24} sm={24} md={12}>
               <Form.Item
                 label="รหัสผ่านใหม่"
@@ -75,7 +92,7 @@ function ChangePassword() {
                   { min: 6, message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร" },
                 ]}
               >
-                <Input.Password />
+                <Input.Password onChange={handleNewPasswordChange}/>
               </Form.Item>
             </Col>
 
@@ -85,19 +102,10 @@ function ChangePassword() {
                 name="ConfirmPassword"
                 rules={[{ required: true, message: "กรุณายืนยันรหัสผ่านใหม่ !" }]}
               >
-                <Input.Password />
+                <Input.Password onChange={handleConfirmPasswordChange}/>
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={12}>
-              <Form.Item
-                label="รหัสผ่านเดิม"
-                name="OldPassword"
-                rules={[{ required: true, message: "กรุณากรอกรหัสผ่านเดิม !" }]}
-              >
-                <Input.Password />
-              </Form.Item>
-            </Col>
           </Row>
 
           <Row justify="center">
@@ -110,7 +118,12 @@ function ChangePassword() {
                     </Button>
                   </Link>
 
-                  <Button type="primary" htmlType="submit" style={{ backgroundColor: "#FF7D29" }}>
+                  <Button 
+                    type="primary" 
+                    htmlType="submit" 
+                    style={{ backgroundColor: "#FF7D29" }}
+                    loading={isSubmitting}
+                    disabled={isSubmitting}>
                     บันทึก
                   </Button>
                 </Space>

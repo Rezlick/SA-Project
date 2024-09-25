@@ -261,6 +261,7 @@ function EmployeeCreate() {
                     required: true,
                     message: "กรุณาเลือกกรอกรหัสผ่าน!",
                   },
+                  { min: 6, message: "รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร" },
                 ]}
               >
                 <Input.Password />

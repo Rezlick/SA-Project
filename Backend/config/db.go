@@ -160,12 +160,12 @@ func SetupDatabase() {
    db.FirstOrCreate(&GenderFemale, &entity.Gender{Name: "หญิง"})
    db.FirstOrCreate(&GenderOther, &entity.Gender{Name: "อื่นๆ"})
 
-   db.FirstOrCreate(&PositionAdmin, &entity.Position{Name: "IT"})
-   db.FirstOrCreate(&PositionRestaurantManager, &entity.Position{Name: "RestaurantManager"})
-   db.FirstOrCreate(&PositionOrderManager, &entity.Position{Name: "OrderManager"})
-   db.FirstOrCreate(&PositionFoodServerManager, &entity.Position{Name: "FoodServer"})
-   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "CounterService"})
-   db.FirstOrCreate(&PositionStockManager, &entity.Position{Name: "StockManager"})
+   db.FirstOrCreate(&PositionAdmin, &entity.Position{Name: "ไอที"})
+   db.FirstOrCreate(&PositionRestaurantManager, &entity.Position{Name: "ผู้จัดการร้าน"})
+   db.FirstOrCreate(&PositionOrderManager, &entity.Position{Name: "จัดการออร์เดอร์"})
+   db.FirstOrCreate(&PositionFoodServerManager, &entity.Position{Name: "เสิร์ฟ"})
+   db.FirstOrCreate(&PositionCounterServiceManager, &entity.Position{Name: "แคชเชียร"})
+   db.FirstOrCreate(&PositionStockManager, &entity.Position{Name: "จัดการสินค้า"})
 
    db.FirstOrCreate(&TableFourSeat1, &entity.Table{TableName: "F1"})
    db.FirstOrCreate(&TableFourSeat2, &entity.Table{TableName: "F2"})

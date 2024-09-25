@@ -14,7 +14,6 @@ function TableList() {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState<BookingInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [currentTime, setCurrentTime] = useState<string>("");
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
   const [bookingid, setBookingID] = useState<number>(0);
 
@@ -34,10 +33,10 @@ function TableList() {
         setBookingData(res.data);
         setBookingID(res.data.ID);
       } else {
-        message.error(res.data.error || "Unable to fetch data");
+        message.error(res.data.error || "ไม่สามารถดึงข้อมูลได้");
       }
     } catch (error) {
-      message.error("Error fetching data");
+      message.error("เกิดข้อผิดพลาดในการดึงข้อมูล");
     } finally {
       setLoading(false);
     }
@@ -46,12 +45,6 @@ function TableList() {
   useEffect(() => {
     fetchBookingData();
     fetchQrcode(bookingid);
-
-    const interval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000);
-
-    return () => clearInterval(interval);
   }, [bookingid]);
 
   const handleButtonClick = () => {
@@ -64,16 +57,16 @@ function TableList() {
 
   const handleDelete = (id: number) => {
     Modal.confirm({
-      title: "Confirm Deletion",
-      content: "Are you sure you want to delete this booking?",
+      title: "ยืนยันการลบ",
+      content: "คุณแน่ใจหรือไม่ว่าต้องการลบการจองนี้?",
       centered: true,
       onOk: async () => {
         try {
           await DeleteBookingByID(id.toString());
-          message.success("Booking deleted successfully");
+          message.success("ลบการจองสำเร็จ");
           fetchBookingData();
         } catch (error) {
-          message.error("Failed to delete booking");
+          message.error("ลบการจองไม่สำเร็จ");
         }
       },
     });
@@ -81,7 +74,7 @@ function TableList() {
 
   const handleQrCodeClick = (id: number) => {
     Modal.info({
-      title: `QR Code for Booking ${id}`,
+      title: `QR Code สำหรับการจอง ${id}`,
       content: (
         <div
           style={{
@@ -94,7 +87,7 @@ function TableList() {
         >
           <img
             src={qrCodeUrl}
-            alt={`QR Code for booking ${id}`}
+            alt={`QR Code สำหรับการจอง ${id}`}
             style={{
               width: "300px",
               height: "300px",
@@ -108,7 +101,7 @@ function TableList() {
         <Row justify="space-between" style={{ width: "100%" }}>
           <Col>
             <Button key="cancel" onClick={() => Modal.destroyAll()}>
-              Cancel
+              ยกเลิก
             </Button>
           </Col>
           <Col style={{ textAlign: "right" }}>
@@ -207,16 +200,12 @@ function TableList() {
         <h1 className="heading-style">รายการจองโต๊ะ</h1>
       </Col>
       <Col xs={24}>
-        <div className="current-time">
-          <span>เวลา: </span>
-          <span className="time-display">{currentTime}</span>
-        </div>
         <Table
           dataSource={bookingData}
           columns={columns}
           pagination={{ pageSize: 8 }}
           bordered
-          title={() => "Booking List"}
+          title={() => "รายการจอง"}
           loading={loading}
           className="table-list"
           rowKey="ID"

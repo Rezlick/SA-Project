@@ -7,6 +7,7 @@ import {
   Form,
   message,
   InputNumber,
+  Tooltip,
 } from "antd";
 import {
   GetBookingByID,
@@ -40,13 +41,13 @@ function EditBookingTable() {
 
   const onFinish = async (values: any) => {
     if (!id) {
-      messageApi.error("รหัสการจองไม่ถูกต้อง!");
+      messageApi.error("ไอดีการจองไม่ถูกต้อง");
       return;
     }
 
     const selectedSoups = values.soups || [];
     if (selectedSoups.length < 2 || selectedSoups.length > 4) {
-      messageApi.error("กรุณาเลือกซุปจำนวน 2 ถึง 4 ชนิด!");
+      messageApi.error("กรุณาเลือกซุปจำนวน 2 หรือ 4 ซุป");
       return;
     }
 
@@ -58,7 +59,7 @@ function EditBookingTable() {
       });
 
       if (res && res.status === 200) {
-        messageApi.success("การจองอัปเดตเรียบร้อยแล้ว.");
+        messageApi.success("การจองอัปเดตเรียบร้อยแล้ว");
 
         const soupData: BookingSoupInterface[] = selectedSoups.map(
           (soupId: number) => ({
@@ -69,18 +70,18 @@ function EditBookingTable() {
 
         const soupRes = await UpdateBookingSoups(String(id), soupData);
         if (soupRes && soupRes.status === 200) {
-          messageApi.success("อัปเดตซุปเรียบร้อยแล้ว.");
+          messageApi.success("อัปเดตซุปเรียบร้อยแล้ว");
         } else {
-          messageApi.error("ไม่สามารถอัปเดตซุปได้.");
+          messageApi.error("ไม่สามารถอัปเดตซุปได้");
         }
 
         setTimeout(() => navigate("/booking/booking_list"), 2000);
       } else {
-        throw new Error("การอัปเดตล้มเหลว.");
+        throw new Error("การอัปเดตล้มเหลว");
       }
     } catch (error) {
       console.error("เกิดข้อผิดพลาดในการอัปเดตการจอง:", error);
-      messageApi.error("เกิดข้อผิดพลาดระหว่างการอัปเดตการจอง.");
+      messageApi.error("เกิดข้อผิดพลาดระหว่างการอัปเดตการจอง");
     } finally {
       setLoading(false);
     }
@@ -88,7 +89,7 @@ function EditBookingTable() {
 
   const fetchBookingById = async () => {
     if (!id) {
-      messageApi.error("รหัสการจองไม่ถูกต้อง!");
+      messageApi.error("ไอดีการจองไม่ถูกต้อง!");
       return;
     }
 
@@ -96,7 +97,7 @@ function EditBookingTable() {
       const res = await GetBookingByID(id);
       if (res && res.data) {
         setBooking(res.data);
-        setTableName(res.data.table?.table_name ?? "ไม่ระบุ");
+        setTableName(res.data.table?.table_name ?? "ไม่พบ");
         form.setFieldsValue({
           number_of_customer: res.data.number_of_customer,
           package_id: res.data.package_id,
@@ -109,7 +110,7 @@ function EditBookingTable() {
       }
     } catch (error) {
       const errorMessage =
-        (error as Error).message || "เกิดข้อผิดพลาดที่ไม่รู้จัก";
+        (error as Error).message || "เกิดข้อผิดพลาด";
       console.error("เกิดข้อผิดพลาดในการดึงข้อมูลการจอง:", error);
       messageApi.error("ไม่สามารถดึงข้อมูลการจองได้: " + errorMessage);
     }
@@ -154,11 +155,11 @@ function EditBookingTable() {
         setPackages(res.data);
       } else {
         setPackages([]);
-        messageApi.error(res.data.error || "ไม่สามารถดึงแพ็กเกจได้.");
+        messageApi.error(res.data.error || "ไม่สามารถดึงแพ็กเกจได้");
       }
     } catch (error) {
       setPackages([]);
-      messageApi.error("เกิดข้อผิดพลาดในการดึงแพ็กเกจ.");
+      messageApi.error("เกิดข้อผิดพลาดในการดึงแพ็กเกจ");
     }
   };
 
@@ -183,7 +184,7 @@ function EditBookingTable() {
               rules={[
                 {
                   required: index < 2,
-                  message: "กรุณาเลือก 2 หรือ 4 ซุป!",
+                  message: "กรุณาเลือก 2 หรือ 4 ซุป",
                 },
               ]}
             >
@@ -273,23 +274,27 @@ function EditBookingTable() {
               <Row gutter={[16, 16]}>{renderSoupFields()}</Row>
               <Row justify="space-between">
                 <Col>
-                  <Button
-                    type="default"
-                    onClick={handleBackButtonClick}
-                    className="back-button-style"
-                  >
-                    ย้อนกลับ
-                  </Button>
+                  <Tooltip title="กลับไปยังรายการจองโต๊ะ">
+                    <Button
+                      type="primary"
+                      onClick={handleBackButtonClick}
+                      className="back-button-style"
+                    >
+                      กลับ
+                    </Button>
+                  </Tooltip>
                 </Col>
                 <Col>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    loading={loading}
-                    className="button-style"
-                  >
-                    บันทึกการจอง
-                  </Button>
+                  <Tooltip title="ยืนยันการแก้ไข">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={loading}
+                      className="button-style"
+                    >
+                      ยืนยัน
+                    </Button>
+                  </Tooltip>
                 </Col>
               </Row>
             </Form>

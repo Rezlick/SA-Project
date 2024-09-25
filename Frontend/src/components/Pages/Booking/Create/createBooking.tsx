@@ -35,7 +35,7 @@ function CreateBookingTable() {
 
   const queryParams = new URLSearchParams(location.search);
   const tableId = queryParams.get("tableId") || "";
-  const tableName = queryParams.get("tableName") || "Unknown Table";
+  const tableName = queryParams.get("tableName") || "ไม่พบข้อมูลโต๊ะ";
 
   const [soups, setSoups] = useState<SoupInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
@@ -57,13 +57,13 @@ function CreateBookingTable() {
       ]);
       return { soupsRes, packagesRes, tablesRes, capsRes };
     } catch (error) {
-      throw new Error("Error fetching data");
+      throw new Error("เกิดข้อผิดพลาดในการดึงข้อมูล");
     }
   };
 
   useEffect(() => {
     if (!tableId) {
-      message.error("Table ID is missing. Please try again.");
+      message.error("ไม่พบไอดีของโต๊ะ โปรดลองอีกครั้ง");
       navigate("/booking");
       return;
     }
@@ -81,7 +81,7 @@ function CreateBookingTable() {
         if (tablesRes.status === 200) setTables(tablesRes.data);
         if (capsRes.status === 200) setTableCaps(capsRes.data);
       } catch (error) {
-        message.error("Error fetching data. Please try again.");
+        message.error("เกิดข้อผิดพลาดในการดึงข้อมูล โปรดลองอีกครั้ง");
       } finally {
         setLoadingSoups(false);
         setLoadingPackages(false);
@@ -130,11 +130,11 @@ function CreateBookingTable() {
       onOk: async () => {
         const tableIdNumber = Number(tableId);
         if (!tableId || isNaN(tableIdNumber) || tableIdNumber <= 0) {
-          message.error("Invalid or missing table ID.");
+          message.error("ไอดีไม่ถูกต้องหรือไม่พบ");
           return;
         }
         if (!accountid) {
-          message.error("User ID is missing. Please log in.");
+          message.error("ไม่พบไอดีผู้ใช้ โปรดเข้าสู่ระบบอีกครั้ง");
           return;
         }
 
@@ -149,7 +149,7 @@ function CreateBookingTable() {
           const bookingRes = await CreateBooking(bookingPayload);
           const bookingId = bookingRes?.booking_id;
           if (!bookingId)
-            throw new Error("Booking ID is missing from the response");
+            throw new Error("ไม่พบไอดีการจอง");
 
           const selectedSoupIds = [
             values.soup1,
@@ -169,20 +169,20 @@ function CreateBookingTable() {
           }
 
           await updateTableStatus(tableIdNumber, 2);
-          message.success("ทำรายการสำเร็จ!");
+          message.success("ทำรายการสำเร็จ");
           navigate("/booking/booking_list");
         } catch (error) {
-          message.error("Booking failed! Please try again.");
+          message.error("เกิดข้อผิดพลาดในการจอง! โปรดลองอีกครั้ง");
         }
       },
       onCancel: () => {
-        message.info("Booking was cancelled.");
+        message.info("รายการถูกยกเลิก");
       },
     });
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error("Please correct the errors in the form.");
+    message.error("กรุณากรอกฟอร์มให้ครบถ้วน!");
   };
 
   const handleBackButtonClick = () => {
@@ -198,10 +198,10 @@ function CreateBookingTable() {
         <Form.Item
           label={`ซุป ${i + 1}`}
           name={`soup${i + 1}`}
-          rules={[{ required: true, message: "Please select a soup!" }]}
+          rules={[{ required: true, message: "กรุณาเลือกโต๊ะ!" }]}
         >
           <Select
-            placeholder="Select a soup"
+            placeholder="เลือกซุป"
             className="select-style"
             options={soups.map((soup) => ({
               value: soup.ID,
@@ -218,7 +218,7 @@ function CreateBookingTable() {
     <>
       <Row gutter={[16, 16]} justify="center" style={{ marginBottom: "20px" }}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h1 className="heading-style">จองโต๊ะสำหรับ {tableName}</h1>
+          <h1 className="heading-style">จองโต๊ะ {tableName}</h1>
         </Col>
       </Row>
       <Row gutter={[16, 16]} justify="center" style={{ marginTop: "0px" }}>
@@ -238,15 +238,15 @@ function CreateBookingTable() {
                     rules={[
                       {
                         required: true,
-                        message: "Please enter the number of customers!",
+                        message: "กรุณากรอกจำนวนลูกค้า!",
                       },
                       {
                         type: "number",
                         min: fetchTableCapacityLimits().min || 1,
                         max: fetchTableCapacityLimits().max || 10,
-                        message: `Number of customers must be between ${
+                        message: `จำนวนลูกค้าสามารถกรอกได้ตั้งแต่ ${
                           fetchTableCapacityLimits().min || 1
-                        } and ${fetchTableCapacityLimits().max || 10}!`,
+                        } ถึง ${fetchTableCapacityLimits().max || 10}!`,
                       },
                     ]}
                   >

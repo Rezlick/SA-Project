@@ -11,6 +11,7 @@ import {
   Col,
   Modal,
   Divider,
+  notification
 } from "antd";
 import {
   SearchOutlined,
@@ -190,12 +191,17 @@ export default function StockCategory({
         fetchStockData();
         setIsAdding(false);
         form.resetFields();
+
+        notification.success({
+          message: 'บันทึกข้อมูลสำเร็จ',
+          description: 'ข้อมูลสินค้าได้ถูกบันทึกเรียบร้อยแล้ว',
+        });
       }
     } catch (error) {
       console.error("Error in submitting stock:", error);
-      Modal.error({
-        title: "Error",
-        content: "มีข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองอีกครั้ง",
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: 'มีข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองอีกครั้ง',
       });
     }
   };
@@ -216,7 +222,7 @@ export default function StockCategory({
   };
 
   const columns = [
-    { title: "รหัสรายการ", dataIndex: "stock", key: "stock" },
+    { title: "รหัสรายการ", dataIndex: "stock", key: "stock"  ,sorter: (a, b) => a.stock - b.stock,},
     { title: "รหัสสินค้า", dataIndex: "code", key: "code" },
     { title: "ชื่อสินค้า", dataIndex: "name", key: "name" },
     { title: "จำนวน", dataIndex: "quantity", key: "quantity" },
@@ -488,12 +494,13 @@ export default function StockCategory({
                 </Button>
               </Col>
               <Col>
-                <Button type="primary" onClick={handleAdd}>
+                <Button type="primary" onClick={handleAdd} className="custom-button">
                   เพิ่ม
                 </Button>
               </Col>
             </Row>
             <Table
+              className="custom-table"
               dataSource={filteredData}
               columns={columns}
               pagination={{
@@ -558,7 +565,7 @@ export default function StockCategory({
                       <Button
                         onClick={openForm}
                         type="primary"
-                        style={{ marginLeft: 10 }}
+                        style={{ marginLeft: 10 ,backgroundColor: '#D95D25',color: 'white',width:"205px"}}
                       >
                         <PlusSquareOutlined />
                         ไม่มีรหัส ? คลิกเพื่อเพิ่ม
@@ -638,6 +645,7 @@ export default function StockCategory({
                     style={{ width: "100%" }}
                     showTime={{ format: "HH:mm" }}
                     format="M/D/YYYY HH:mm"
+                    disabledDate={(current) => current && current > moment().endOf('day')}
                   />
                 </Form.Item>
 
@@ -650,11 +658,27 @@ export default function StockCategory({
                     style={{ width: "100%" }}
                     showTime={{ format: "HH:mm" }}
                     format="M/D/YYYY HH:mm"
+                    disabledDate={(current) => current && current < moment().startOf('day')}
                   />
                 </Form.Item>
 
                 <Form.Item>
-                  <Button type="primary" onClick={showModal}>
+                  <Button type="primary"
+                   onClick={() => {
+                    form
+                      .validateFields()
+                      .then(() => {
+                        // ถ้าทุกฟิลด์ถูกต้องให้แสดง Modal
+                        setIsModalVisible(true);
+                      })
+                      .catch((errorInfo) => {
+                        // ถ้ามีข้อผิดพลาดให้แสดง error message
+                        console.log('Validation Failed:', errorInfo);
+                      });
+                  }}
+                   
+                   
+                   >
                     บันทึก
                   </Button>
                   <Button

@@ -1,5 +1,6 @@
 .header {
-    background: linear-gradient(135deg, #deaa22, #f2e895); /* Gradient สีฟ้า */
+  background: linear-gradient(to right, #f1f1f0, #434343);
+
       padding: 0 20px;
       display: flex;
       justify-content: space-between;

@@ -21,7 +21,7 @@ function CustomerSider() {
                     onClick={() => navigate(`/customer/${id}`)} 
                 />
                 <FloatButton 
-                    icon={<ShoppingCartOutlined />} 
+                    icon={<ShoppingCartOutlined  />} 
                     onClick={() => navigate(`/customer/cart/${id}`)} 
                 />
                 <FloatButton 

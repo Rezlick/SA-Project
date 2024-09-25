@@ -22,7 +22,7 @@ func CreateMember(c *gin.Context) {
 
     // ค้นหา rank ด้วย id
 	var rank entity.Rank
-	db.First(&rank, member.RankID)
+	db.First(&rank, 1)
 	if rank.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "rank not found"})
 		return
@@ -41,7 +41,7 @@ func CreateMember(c *gin.Context) {
         FirstName:  member.FirstName,					
 	    LastName:   member.LastName,				
 	    PhoneNumber:member.PhoneNumber,					
-	    RankID:     member.RankID,		
+	    RankID:     1,		
 	    Rank:       rank,					
 	    EmployeeID: member.EmployeeID,				
         Employee:   employee,

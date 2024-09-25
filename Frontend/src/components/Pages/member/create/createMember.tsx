@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Space,
   Button,
@@ -11,7 +11,7 @@ import {
   message,
 } from "antd";
 import { MemberInterface } from "../../../../interfaces/Member";
-import { CheckPhone, CreateMember, GetRanks } from "../../../../services/https";
+import { CheckPhone, CreateMember } from "../../../../services/https";
 import { useNavigate, Link } from "react-router-dom";
 
 function MemberCreate() {
@@ -61,7 +61,6 @@ function MemberCreate() {
     }
 
     values.EmployeeID = parseInt(employeeID || "", 10);
-    values.RankID = 1;
     const res = await CreateMember(values);
 
     if (res.status === 201) {

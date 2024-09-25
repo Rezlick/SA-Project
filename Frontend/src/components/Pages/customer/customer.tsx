@@ -13,8 +13,11 @@ import PorkBelly from "../../../assets/imagesCustomer/PorkBelly.webp";
 import V1 from "../../../assets/imagesCustomer/veg1.jpg";
 import V2 from "../../../assets/imagesCustomer/veg2.png";
 import Chicken from "../../../assets/imagesCustomer/ChickenPepper.webp";
-import Shrimp from "../../../assets/imagesCustomer/shrimp.webp"
-import Shell from "../../../assets/imagesCustomer/0zvuqr.jpg"
+import Shrimp from "../../../assets/imagesCustomer/shrimp.webp";
+import Shell from "../../../assets/imagesCustomer/0zvuqr.jpg";
+import chocolate from "../../../assets/imagesCustomer/ice-cream-choccolate.webp";
+import strawBerry from "../../../assets/imagesCustomer/ice-cream-strawberry.webp";
+import Coke from "../../../assets/imagesCustomer/coke.webp";
 
 function Customer() {
     const { id } = useParams<{ id: string }>();
@@ -27,12 +30,9 @@ function Customer() {
     const [quantity, setQuantity] = useState(1);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [cartData, setCartData] = useState(null);
     const [allorderproduct, setAllOrderProduct] = useState<OrderProductInterface[]>([]);
 
     const fetchOrderProductData = async () => {
-        setLoading(true);
         try {
             const res = await GetAllOrderProducts();
             if (res.status === 200) {
@@ -43,7 +43,6 @@ function Customer() {
         } catch (error) {
             message.error("Error fetching order-product data");
         } finally {
-            setLoading(false);
         }
     };
 
@@ -104,8 +103,9 @@ function Customer() {
         { productCode: 'M002', image: Brisket, category: 'เนื้อ' },
         { productCode: 'M003', image: PorkSlice, category: 'หมู' },
         { productCode: 'M004', image: PorkBelly, category: 'หมู' },
-        { productCode: 'B003', image: 'https://path/to/icecream1.png', category: 'ของหวาน' },
-        { productCode: 'B004', image: 'https://path/to/drink2.png', category: 'ของหวาน' },
+        { productCode: 'B001', image: Coke, category: 'ของหวาน' },
+        { productCode: 'B003', image: chocolate, category: 'ของหวาน' },
+        { productCode: 'B004', image: strawBerry, category: 'ของหวาน' },
         { productCode: 'V001', image: V1, category: 'ผัก' },
         { productCode: 'V002', image: V2, category: 'ผัก' },
         { productCode: 'S001', image: Shrimp, category: 'ซีฟู้ด' },
@@ -160,7 +160,6 @@ function Customer() {
         }
 
         localStorage.setItem('cartData', JSON.stringify(updatedCart));
-        setCartData(updatedCart);
         message.success("เพิ่มไปยังตะกร้าแล้ว!");
         handleCancel();
     };
@@ -231,233 +230,235 @@ function Customer() {
 
     return (
         <div>
-            <Row>
-                <Col xs={24} >
-                    <Card className="card-white" style={{ marginTop: '7vh', zIndex: "2", maxWidth: '450px', height: 'auto' }}>
-                        <Statistic value={booking?.ID} prefix="หมายเลขออเดอร์ : " valueStyle={{ fontSize: '20px', fontWeight: 'bold' }} />
-                        <Statistic value={tableName} prefix="หมายเลขโต๊ะ : " valueStyle={{ fontSize: '20px', fontWeight: 'bold' }} />
-                        <Statistic value={packages} prefix="แพ็คเกจอาหาร : " valueStyle={{ fontSize: '20px', fontWeight: 'bold' }} />
-                    </Card>
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={24}>
-                    <Card size="small" style={{ marginTop: '15px', overflowX: 'auto', maxHeight: '150px', maxWidth: '450px' }}>
-                        <div style={{ display: 'flex', whiteSpace: 'nowrap' }}>
-                            {packages !== "หมู,ไก่" && packages !== "ทะเล" && (
-                                <Col xs={7}>
-                                    <Card
-                                        onClick={() => handleCardClick('เนื้อ', 'M')}
-                                        style={{
-                                            fontSize: '20px',      // Moved these into the correct "style" attribute
-                                            fontWeight: 'bold',    // Moved these into the correct "style" attribute
-                                            textAlign: 'center',
-                                            width: '120px',
-                                            backgroundColor: selectedCard === 'เนื้อ' ? 'lightgray' : 'white'
-                                        }}
-                                    >
-                                        เนื้อ
-                                    </Card>
-                                </Col>
-                            )}
-                            {packages !== "หมู,ไก่" && (
-                                <Col xs={7}>
-                                    <Card
-                                        onClick={() => handleCardClick('ซีฟู้ด', 'S')}
-                                        style={{
-                                            fontSize: '20px',      // Moved these into the correct "style" attribute
-                                            fontWeight: 'bold',    // Moved these into the correct "style" attribute
-                                            textAlign: 'center',
-                                            width: '120px',
-                                            backgroundColor: selectedCard === 'ซีฟู้ด' ? 'lightgray' : 'white'
-                                        }}
-                                    >
-                                        ซีฟู้ด
-                                    </Card>
-                                </Col>
-                            )}
-                            <Col xs={7}>
-                                <Card
-                                    onClick={() => handleCardClick('หมู', 'M')}
-                                    style={{
-                                        fontSize: '20px',      // Moved these into the correct "style" attribute
-                                        fontWeight: 'bold',    // Moved these into the correct "style" attribute
-                                        textAlign: 'center',
-                                        width: '120px',
-                                        backgroundColor: selectedCard === 'หมู' ? 'lightgray' : 'white'
-                                    }}
-                                >
-                                    หมู
-                                </Card>
-                            </Col>
-                            <Col xs={7}>
-                                <Card
-                                    onClick={() => handleCardClick('ไก่', 'M')}
-                                    style={{
-                                        fontSize: '20px',      // Moved these into the correct "style" attribute
-                                        fontWeight: 'bold',    // Moved these into the correct "style" attribute
-                                        textAlign: 'center',
-                                        width: '120px',
-                                        backgroundColor: selectedCard === 'ไก่' ? 'lightgray' : 'white'
-                                    }}
-                                >
-                                    ไก่
-                                </Card>
-                            </Col>
-                            <Col xs={7}>
-                                <Card
-                                    onClick={() => handleCardClick('ผัก', 'V')}
-                                    style={{
-                                        fontSize: '20px',      // Moved these into the correct "style" attribute
-                                        fontWeight: 'bold',    // Moved these into the correct "style" attribute
-                                        textAlign: 'center',
-                                        width: '120px',
-                                        backgroundColor: selectedCard === 'ผัก' ? 'lightgray' : 'white'
-                                    }}
-                                >
-                                    ผัก
-                                </Card>
-                            </Col>
-                            <Col xs={7}>
-                                <Card
-                                    onClick={() => handleCardClick('ของหวาน', 'B')}
-                                    style={{
-                                        fontSize: '20px',      // Moved these into the correct "style" attribute
-                                        fontWeight: 'bold',    // Moved these into the correct "style" attribute
-                                        textAlign: 'center',
-                                        width: '120px',
-                                        backgroundColor: selectedCard === 'ของหวาน' ? 'lightgray' : 'white'
-                                    }}
-                                >
-                                    ของหวาน
-                                </Card>
-                            </Col>
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={24}>
-                    <Card style={{ marginTop: '15px' }}>
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={filteredData}
-                            renderItem={(item) => (
-                                <List.Item onClick={() => showModal(item)} style={{ cursor: 'pointer' }}>
-                                    <List.Item.Meta
-                                        avatar={<Avatar src={item.image} shape="square" size={100} />}
-                                        title={<span style={{ fontSize: '18px', fontWeight: 'bold' }}>{item.product_name || "ไม่มีชื่อสินค้า"}</span>}
-                                    />
-                                </List.Item>
-
-                            )}
-                        >
-                            {filteredData.length === 0 && (
-                                <Col>
-                                    <Row style={{ justifyContent: 'center', marginTop: '20px', fontSize: '48px', color: 'gray', fontWeight: 'bold' }}>
-                                        <ContainerOutlined />
-                                    </Row>
-                                    <Row style={{ justifyContent: 'center', marginTop: '10px', fontSize: '20px', color: 'gray', fontWeight: 'bold' }}>
-                                        กรุณาเลือกหมวดหมู่
-                                    </Row>
-                                </Col>
-                            )}
-                        </List>
-
-                        <Modal
-                            title={selectedItem?.product_name || "รายละเอียดสินค้า"}
-                            visible={isModalVisible}
-                            onCancel={handleCancel}
-                            footer={null}
-                        >
-                            {selectedItem && (
-                                <div>
-                                    <Card>
-                                        <img
-                                            alt="example"
-                                            src={selectedItem.image}
+            <Card style={{ marginTop: '20px', backgroundColor: '#2C2C2C',border: '3px solid #FFD700'}}>
+                <Row>
+                    <Col xs={24} >
+                        <Card className="card-white" style={{ marginTop: '10px', zIndex: "2", maxWidth: '450px', height: 'auto' }}>
+                            <Statistic value={booking?.ID} prefix="หมายเลขออเดอร์ : " valueStyle={{ fontSize: '20px', fontWeight: 'bold' }} />
+                            <Statistic value={tableName} prefix="หมายเลขโต๊ะ : " valueStyle={{ fontSize: '20px', fontWeight: 'bold' }} />
+                            <Statistic value={packages} prefix="แพ็คเกจอาหาร : " valueStyle={{ fontSize: '20px', fontWeight: 'bold' }} />
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={24}>
+                        <Card size="small" style={{ marginTop: '15px', overflowX: 'auto', maxHeight: '150px', maxWidth: '450px' }}>
+                            <div style={{ display: 'flex', whiteSpace: 'nowrap' }}>
+                                {packages !== "หมู,ไก่" && packages !== "ทะเล" && (
+                                    <Col xs={7}>
+                                        <Card
+                                            onClick={() => handleCardClick('เนื้อ', 'M')}
                                             style={{
-                                                width: '200px',
-                                                height: '150px',
-                                                objectFit: 'cover',
-                                                display: 'block',
-                                                marginLeft: 'auto',
-                                                marginRight: 'auto',
+                                                fontSize: '20px',      // Moved these into the correct "style" attribute
+                                                fontWeight: 'bold',    // Moved these into the correct "style" attribute
+                                                textAlign: 'center',
+                                                width: '120px',
+                                                backgroundColor: selectedCard === 'เนื้อ' ? 'lightgray' : 'white'
                                             }}
-                                        />
+                                        >
+                                            เนื้อ
+                                        </Card>
+                                    </Col>
+                                )}
+                                {packages !== "หมู,ไก่" && (
+                                    <Col xs={7}>
+                                        <Card
+                                            onClick={() => handleCardClick('ซีฟู้ด', 'S')}
+                                            style={{
+                                                fontSize: '20px',      // Moved these into the correct "style" attribute
+                                                fontWeight: 'bold',    // Moved these into the correct "style" attribute
+                                                textAlign: 'center',
+                                                width: '120px',
+                                                backgroundColor: selectedCard === 'ซีฟู้ด' ? 'lightgray' : 'white'
+                                            }}
+                                        >
+                                            ซีฟู้ด
+                                        </Card>
+                                    </Col>
+                                )}
+                                <Col xs={7}>
+                                    <Card
+                                        onClick={() => handleCardClick('หมู', 'M')}
+                                        style={{
+                                            fontSize: '20px',      // Moved these into the correct "style" attribute
+                                            fontWeight: 'bold',    // Moved these into the correct "style" attribute
+                                            textAlign: 'center',
+                                            width: '120px',
+                                            backgroundColor: selectedCard === 'หมู' ? 'lightgray' : 'white'
+                                        }}
+                                    >
+                                        หมู
                                     </Card>
-                                    <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                                        <p>จำนวน:</p>
-                                        <MinusCircleOutlined
-                                            onClick={decreaseQuantity}
-                                            style={{ fontSize: '24px', color: quantity <= 1 ? 'gray' : '#1890ff', cursor: 'pointer' }}
-                                            disabled={quantity <= 1}
+                                </Col>
+                                <Col xs={7}>
+                                    <Card
+                                        onClick={() => handleCardClick('ไก่', 'M')}
+                                        style={{
+                                            fontSize: '20px',      // Moved these into the correct "style" attribute
+                                            fontWeight: 'bold',    // Moved these into the correct "style" attribute
+                                            textAlign: 'center',
+                                            width: '120px',
+                                            backgroundColor: selectedCard === 'ไก่' ? 'lightgray' : 'white'
+                                        }}
+                                    >
+                                        ไก่
+                                    </Card>
+                                </Col>
+                                <Col xs={7}>
+                                    <Card
+                                        onClick={() => handleCardClick('ผัก', 'V')}
+                                        style={{
+                                            fontSize: '20px',      // Moved these into the correct "style" attribute
+                                            fontWeight: 'bold',    // Moved these into the correct "style" attribute
+                                            textAlign: 'center',
+                                            width: '120px',
+                                            backgroundColor: selectedCard === 'ผัก' ? 'lightgray' : 'white'
+                                        }}
+                                    >
+                                        ผัก
+                                    </Card>
+                                </Col>
+                                <Col xs={7}>
+                                    <Card
+                                        onClick={() => handleCardClick('ของหวาน', 'B')}
+                                        style={{
+                                            fontSize: '20px',      // Moved these into the correct "style" attribute
+                                            fontWeight: 'bold',    // Moved these into the correct "style" attribute
+                                            textAlign: 'center',
+                                            width: '120px',
+                                            backgroundColor: selectedCard === 'ของหวาน' ? 'lightgray' : 'white'
+                                        }}
+                                    >
+                                        ของหวาน
+                                    </Card>
+                                </Col>
+                            </div>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={24}>
+                        <Card style={{ marginTop: '15px', overflow: 'auto', maxHeight: '300px' }}>
+                            <List
+                                itemLayout="horizontal"
+                                dataSource={filteredData}
+                                renderItem={(item) => (
+                                    <List.Item onClick={() => showModal(item)} style={{ cursor: 'pointer' }}>
+                                        <List.Item.Meta
+                                            avatar={<Avatar src={item.image} shape="square" size={100} />}
+                                            title={<span style={{ fontSize: '18px', fontWeight: 'bold' }}>{item.product_name || "ไม่มีชื่อสินค้า"}</span>}
                                         />
-                                        <input
-                                            type="number"
-                                            value={quantity === 0 ? '' : quantity}
-                                            onChange={(e) => {
-                                                const value = parseInt(e.target.value, 10);
-                                                const maxQuantity = Math.min(50, getMaxQuantityFromBackend(selectedItem.code_id));  // จำกัดจำนวนสูงสุดจาก stock และ allorderproduct
+                                    </List.Item>
 
-                                                if (isNaN(value)) {
-                                                    setQuantity(0);
-                                                } else if (value >= 0 && value <= maxQuantity) {
-                                                    setQuantity(value);
-                                                } else if (value > maxQuantity) {
-                                                    message.error("จำนวนสินค้าต้องไม่เกินจำนวนที่อนุญาตในสต็อก");  // แจ้งเตือนเมื่อเกินจำนวนสูงสุด
-                                                } else if (value <= 0) {
-                                                    message.warning("กรุณาระบุจำนวนที่ถูกต้อง");  // แจ้งเตือนเมื่อใส่ค่า 0 หรือติดลบ
-                                                }
-                                            }}
-                                            style={{ margin: '0 10px', width: '60px', textAlign: 'center', fontSize: '18px' }}
-                                        />
-                                        <PlusCircleOutlined
-                                            onClick={() => {
-                                                const maxQuantity = Math.min(50, getMaxQuantityFromBackend(selectedItem.code_id));  // จำกัดจำนวนสูงสุดจาก stock และ allorderproduct
-                                                if (quantity < maxQuantity) {
-                                                    setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
-                                                } else {
-                                                    message.error("จำนวนสินค้าต้องไม่เกินจำนวนที่อนุญาตในสต็อก");  // แจ้งเตือนเมื่อพยายามเพิ่มเกินจำนวนสูงสุด
-                                                }
-                                            }}
-                                            style={{ fontSize: '24px', color: quantity >= getMaxQuantityFromBackend(selectedItem.code_id) ? 'gray' : '#1890ff', cursor: 'pointer' }}
-                                            disabled={quantity >= getMaxQuantityFromBackend(selectedItem.code_id) || getMaxQuantityFromBackend(selectedItem.code_id) <= 0}  // ปิดปุ่มเมื่อจำนวนถึงค่าสูงสุดหรือน้อยกว่า 0
-                                        />
-                                    </div>
+                                )}
+                            >
+                                {filteredData.length === 0 && (
+                                    <Col>
+                                        <Row style={{ justifyContent: 'center', marginTop: '20px', fontSize: '48px', color: 'gray', fontWeight: 'bold' }}>
+                                            <ContainerOutlined />
+                                        </Row>
+                                        <Row style={{ justifyContent: 'center', marginTop: '10px', fontSize: '20px', color: 'gray', fontWeight: 'bold' }}>
+                                            กรุณาเลือกหมวดหมู่
+                                        </Row>
+                                    </Col>
+                                )}
+                            </List>
 
-                                    {/* คำนวณล่วงหน้าว่าจะอนุญาตให้กดปุ่มได้หรือไม่ */}
-                                    {(() => {
-                                        const maxQuantity = getMaxQuantityFromBackend(selectedItem.code_id);  // ดึงค่ามาก่อนเพื่อใช้ในปุ่ม
+                            <Modal
+                                title={selectedItem?.product_name || "รายละเอียดสินค้า"}
+                                visible={isModalVisible}
+                                onCancel={handleCancel}
+                                footer={null}
+                            >
+                                {selectedItem && (
+                                    <div>
+                                        <Card>
+                                            <img
+                                                alt="example"
+                                                src={selectedItem.image}
+                                                style={{
+                                                    width: '200px',
+                                                    height: '150px',
+                                                    objectFit: 'cover',
+                                                    display: 'block',
+                                                    marginLeft: 'auto',
+                                                    marginRight: 'auto',
+                                                }}
+                                            />
+                                        </Card>
+                                        <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                                            <p>จำนวน:</p>
+                                            <MinusCircleOutlined
+                                                onClick={decreaseQuantity}
+                                                style={{ fontSize: '24px', color: quantity <= 1 ? 'gray' : '#1890ff', cursor: 'pointer' }}
+                                                disabled={quantity <= 1}
+                                            />
+                                            <input
+                                                type="number"
+                                                value={quantity === 0 ? '' : quantity}
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value, 10);
+                                                    const maxQuantity = Math.min(50, getMaxQuantityFromBackend(selectedItem.code_id));  // จำกัดจำนวนสูงสุดจาก stock และ allorderproduct
 
-                                        return (
-                                            <Button
-                                                type="primary"
-                                                block
-                                                onClick={() => {
-                                                    if (quantity === 0) {
-                                                        message.warning("กรุณาระบุจำนวนที่ถูกต้อง");  // แจ้งเตือนเมื่อผู้ใช้ระบุจำนวนเป็น 0
-                                                    } else {
-                                                        handleAddToCart();
+                                                    if (isNaN(value)) {
+                                                        setQuantity(0);
+                                                    } else if (value >= 0 && value <= maxQuantity) {
+                                                        setQuantity(value);
+                                                    } else if (value > maxQuantity) {
+                                                        message.error("จำนวนสินค้าต้องไม่เกินจำนวนที่อนุญาตในสต็อก");  // แจ้งเตือนเมื่อเกินจำนวนสูงสุด
+                                                    } else if (value <= 0) {
+                                                        message.warning("กรุณาระบุจำนวนที่ถูกต้อง");  // แจ้งเตือนเมื่อใส่ค่า 0 หรือติดลบ
                                                     }
                                                 }}
-                                                disabled={maxQuantity <= 0 || quantity <= 0}  // ปิดปุ่มถ้า maxQuantity <= 0 หรือ จำนวน <= 0
-                                                style={{
-                                                    backgroundColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff',
-                                                    borderColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff'
+                                                style={{ margin: '0 10px', width: '60px', textAlign: 'center', fontSize: '18px' }}
+                                            />
+                                            <PlusCircleOutlined
+                                                onClick={() => {
+                                                    const maxQuantity = Math.min(50, getMaxQuantityFromBackend(selectedItem.code_id));  // จำกัดจำนวนสูงสุดจาก stock และ allorderproduct
+                                                    if (quantity < maxQuantity) {
+                                                        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
+                                                    } else {
+                                                        message.error("จำนวนสินค้าต้องไม่เกินจำนวนที่อนุญาตในสต็อก");  // แจ้งเตือนเมื่อพยายามเพิ่มเกินจำนวนสูงสุด
+                                                    }
                                                 }}
-                                            >
-                                                เพิ่มไปยังตะกร้า
-                                            </Button>
-                                        );
-                                    })()}
-                                </div>
-                            )}
-                        </Modal>
+                                                style={{ fontSize: '24px', color: quantity >= getMaxQuantityFromBackend(selectedItem.code_id) ? 'gray' : '#1890ff', cursor: 'pointer' }}
+                                                disabled={quantity >= getMaxQuantityFromBackend(selectedItem.code_id) || getMaxQuantityFromBackend(selectedItem.code_id) <= 0}  // ปิดปุ่มเมื่อจำนวนถึงค่าสูงสุดหรือน้อยกว่า 0
+                                            />
+                                        </div>
 
-                    </Card>
-                </Col>
-            </Row>
+                                        {/* คำนวณล่วงหน้าว่าจะอนุญาตให้กดปุ่มได้หรือไม่ */}
+                                        {(() => {
+                                            const maxQuantity = getMaxQuantityFromBackend(selectedItem.code_id);  // ดึงค่ามาก่อนเพื่อใช้ในปุ่ม
+
+                                            return (
+                                                <Button
+                                                    type="primary"
+                                                    block
+                                                    onClick={() => {
+                                                        if (quantity === 0) {
+                                                            message.warning("กรุณาระบุจำนวนที่ถูกต้อง");  // แจ้งเตือนเมื่อผู้ใช้ระบุจำนวนเป็น 0
+                                                        } else {
+                                                            handleAddToCart();
+                                                        }
+                                                    }}
+                                                    disabled={maxQuantity <= 0 || quantity <= 0}  // ปิดปุ่มถ้า maxQuantity <= 0 หรือ จำนวน <= 0
+                                                    style={{
+                                                        backgroundColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff',
+                                                        borderColor: (maxQuantity <= 0 || quantity <= 0) ? 'gray' : '#1890ff'
+                                                    }}
+                                                >
+                                                    เพิ่มไปยังตะกร้า
+                                                </Button>
+                                            );
+                                        })()}
+                                    </div>
+                                )}
+                            </Modal>
+
+                        </Card>
+                    </Col>
+                </Row>
+            </Card>
         </div>
     );
 }

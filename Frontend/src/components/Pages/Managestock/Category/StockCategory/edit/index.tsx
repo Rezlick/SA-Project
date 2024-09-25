@@ -56,7 +56,7 @@ export default function StockEdit() {
 
       notification.success({
         message: "Success",
-        description: "Product details updated successfully",
+        description: "บันทึกข้อมูลสำเร็จ",
       });
       navigate(`/ManageStock/${path}`);
     } catch (error: any) {

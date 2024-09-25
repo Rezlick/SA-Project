@@ -198,12 +198,10 @@ function EmployeeCreate() {
                     listType="picture-card"
                     onPreview={onPreview}
                   >
-                    {fileList.length === 0 && (
-                      <div>
-                        <PlusOutlined />
-                        <div style={{ marginTop: 8 }}>อัพโหลด</div>
-                      </div>
-                    )}
+                    <div>
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>อัพโหลด</div>
+                    </div>
                   </Upload>
                 </ImgCrop>
               </Form.Item>

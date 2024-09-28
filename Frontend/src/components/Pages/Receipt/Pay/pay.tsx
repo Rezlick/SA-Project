@@ -149,7 +149,7 @@ function Pay() {
         setRankDiscount(RankDiscount)
         setTotalPrice(totalprice)
         setTotalDiscount(totaldiscount)
-        setNetTotal(nettotal-totaldiscount)
+        setNetTotal(nettotal)
         form.setFieldsValue({
             RankDiscount: RankDiscount,
             NetTotal: NetTotal,

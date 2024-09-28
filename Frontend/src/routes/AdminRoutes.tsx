@@ -218,6 +218,10 @@ const AdminRoutes = (isLoggedIn: boolean, role: string): RouteObject => {
         ]
       },
       {
+        path: "/coupon",
+        element: <Coupon />,
+      },
+      {
         path: "/member",
         children: memberRoutes,
       },
